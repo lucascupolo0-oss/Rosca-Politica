@@ -1,7 +1,5 @@
 import streamlit as st
 import random
-import pandas as pd
-import plotly.express as px
 
 # --- CONFIGURACIÓN ---
 st.set_page_config(page_title="Rosca Política: 136", layout="wide", page_icon="🇦🇷")
@@ -91,7 +89,7 @@ COSTOS_FIJOS = {
 
 # --- CANDIDATOS ---
 PARTIDOS = {
-    "PJ": {"color": "#1f77b4", "candidatos": {
+    "PJ": {"color": "🔵", "candidatos": {
         "Cristina Kirchner": {"emoji": "✌️", "FG": 10, "TR": 15, "ET": 15, "PN": 15, "PC": -25, "PE": 20, "EA": -45, "CP": 15, "SO": -15, "REL": -5, "JUV": -5, "EMP": -25, "PROG": 30, "PYME": 10},
         "Juan Schiaretti": {"emoji": "🧱", "FG": 20, "TR": 0, "ET": -5, "PN": 5, "PC": 10, "PE": -10, "EA": -5, "CP": 10, "SO": 10, "REL": 5, "JUV": -5, "EMP": 20, "PROG": -15, "PYME": 35},
         "Juan Grabois": {"emoji": "🌱", "FG": -10, "TR": 10, "ET": 30, "PN": 0, "PC": -10, "PE": 30, "EA": -25, "CP": 5, "SO": -25, "REL": 15, "JUV": 30, "EMP": -30, "PROG": 35, "PYME": -10},
@@ -106,7 +104,7 @@ PARTIDOS = {
         "Aníbal Fernández": {"emoji": "🧳", "FG": 20, "TR": 10, "ET": 5, "PN": 5, "PC": 15, "PE": 30, "EA": -40, "CP": 25, "SO": 35, "REL": 5, "JUV": -25, "EMP": -25, "PROG": 10, "PYME": 5},
         "Wado de Pedro": {"emoji": "🚜", "FG": 20, "TR": 10, "ET": 15, "PN": 5, "PC": -30, "PE": 25, "EA": -35, "CP": 5, "SO": -10, "REL": -20, "JUV": 10, "EMP": -15, "PROG": 20, "PYME": 10}
     }},
-    "LLA": {"color": "#9467bd", "candidatos": {
+    "LLA": {"color": "🟣", "candidatos": {
         "Javier Milei": {"emoji": "🦁", "FG": 20, "TR": 20, "ET": -20, "PN": -20, "PC": 30, "PE": -45, "EA": 30, "CP": -10, "SO": 20, "REL": 25, "JUV": 35, "EMP": 35, "PROG": -45, "PYME": -5},
         "Patricia Bullrich": {"emoji": "🍷", "FG": 35, "TR": -20, "ET": -10, "PN": -40, "PC": 0, "PE": -30, "EA": 20, "CP": -20, "SO": 35, "REL": 30, "JUV": 5, "EMP": 20, "PROG": -40, "PYME": -10},
         "Ramiro Marra": {"emoji": "📉", "FG": 20, "TR": -10, "ET": -30, "PN": -30, "PC": 40, "PE": -50, "EA": 10, "CP": -5, "SO": 20, "REL": 10, "JUV": 30, "EMP": 40, "PROG": -20, "PYME": -15},
@@ -120,7 +118,7 @@ PARTIDOS = {
         "F. Sturzenegger": {"emoji": "📝", "FG": 10, "TR": 0, "ET": 0, "PN": -10, "PC": -5, "PE": -15, "EA": 30, "CP": -30, "SO": -5, "REL": 20, "JUV": -30, "EMP": 45, "PROG": -30, "PYME": -35},
         "Diego Santilli": {"emoji": "👱", "FG": 20, "TR": 15, "ET": -10, "PN": -20, "PC": -10, "PE": -5, "EA": 0, "CP": -30, "SO": 20, "REL": 25, "JUV": 10, "EMP": 25, "PROG": 0, "PYME": -10}
     }},
-    "PRO": {"color": "#ff7f0e", "candidatos": {
+    "PRO": {"color": "🟡", "candidatos": {
         "Mauricio Macri": {"emoji": "🐱", "FG": 20, "TR": 25, "ET": -20, "PN": -30, "PC": -20, "PE": -20, "EA": 45, "CP": -40, "SO": 20, "REL": 20, "JUV": -35, "EMP": 50, "PROG": -20, "PYME": 15},
         "H. R. Larreta": {"emoji": "👽", "FG": 30, "TR": 5, "ET": 5, "PN": -30, "PC": -30, "PE": -10, "EA": 20, "CP": -45, "SO": 15, "REL": 10, "JUV": -15, "EMP": 25, "PROG": 5, "PYME": 20},
         "R. López Murphy": {"emoji": "bulldog", "FG": 5, "TR": 5, "ET": -35, "PN": -25, "PC": -20, "PE": -45, "EA": 25, "CP": -35, "SO": 5, "REL": 25, "JUV": -35, "EMP": 25, "PROG": -30, "PYME": -5},
@@ -130,7 +128,7 @@ PARTIDOS = {
         "Néstor Grindetti": {"emoji": "⚽", "FG": 10, "TR": -5, "ET": -15, "PN": -5, "PC": -20, "PE": 5, "EA": 0, "CP": -20, "SO": 15, "REL": 10, "JUV": -15, "EMP": 20, "PROG": 0, "PYME": 10},
         "Luis Juez": {"emoji": "🌭", "FG": 25, "TR": -25, "ET": -20, "PN": -10, "PC": 20, "PE": 5, "EA": 5, "CP": 0, "SO": 5, "REL": 5, "JUV": -30, "EMP": -5, "PROG": -5, "PYME": 0}
     }},
-    "UCR": {"color": "#d3d3d3", "candidatos": {
+    "UCR": {"color": "⚪", "candidatos": {
         "Martín Lousteau": {"emoji": "🎓", "FG": 30, "TR": -25, "ET": 10, "PN": 5, "PC": -20, "PE": 10, "EA": 0, "CP": -10, "SO": 10, "REL": -15, "JUV": 25, "EMP": 15, "PROG": 25, "PYME": 15},
         "Roberto Lavagna": {"emoji": "🧦", "FG": 10, "TR": 20, "ET": 0, "PN": -5, "PC": -15, "PE": 5, "EA": 10, "CP": -40, "SO": 5, "REL": 10, "JUV": -10, "EMP": 20, "PROG": 5, "PYME": 20},
         "Facundo Manes": {"emoji": "🧠", "FG": 20, "TR": -10, "ET": 5, "PN": 0, "PC": -20, "PE": 5, "EA": 0, "CP": -30, "SO": -10, "REL": 5, "JUV": 20, "EMP": 10, "PROG": 10, "PYME": 10},
@@ -140,7 +138,7 @@ PARTIDOS = {
         "Ricardo Alfonsín": {"emoji": "👴", "FG": 0, "TR": -10, "ET": 15, "PN": 5, "PC": 5, "PE": 15, "EA": 5, "CP": -20, "SO": -15, "REL": 15, "JUV": 0, "EMP": -15, "PROG": 30, "PYME": 5},
         "Lula Levy": {"emoji": "🤳", "FG": 25, "TR": -45, "ET": 30, "PN": 5, "PC": 15, "PE": 10, "EA": 10, "CP": -5, "SO": -10, "REL": -10, "JUV": 40, "EMP": 5, "PROG": 15, "PYME": 10}
     }},
-    "FIT-U": {"color": "#d62728", "candidatos": {
+    "FIT-U": {"color": "🔴", "candidatos": {
         "Myriam Bregman": {"emoji": "✊", "FG": -35, "TR": 15, "ET": 40, "PN": 10, "PC": 10, "PE": 30, "EA": -20, "CP": -15, "SO": -20, "REL": -10, "JUV": 50, "EMP": -30, "PROG": 25, "PYME": -20},
         "Nicolás del Caño": {"emoji": "📹", "FG": -25, "TR": 10, "ET": 25, "PN": 10, "PC": 15, "PE": 25, "EA": 0, "CP": 0, "SO": -25, "REL": -25, "JUV": 30, "EMP": -25, "PROG": 30, "PYME": -25},
         "Gabriel Solano": {"emoji": "📢", "FG": -40, "TR": 25, "ET": 30, "PN": 10, "PC": 0, "PE": 25, "EA": -10, "CP": -10, "SO": -30, "REL": -35, "JUV": 20, "EMP": -35, "PROG": 35, "PYME": -20},
@@ -150,7 +148,7 @@ PARTIDOS = {
         "Federico Winokur": {"emoji": "🏫", "FG": -40, "TR": 20, "ET": 50, "PN": 15, "PC": -50, "PE": 30, "EA": -50, "CP": -35, "SO": -45, "REL": -40, "JUV": 25, "EMP": -50, "PROG": 45, "PYME": -10},
         "Luca Bonfante": {"emoji": "🎓", "FG": -10, "TR": 25, "ET": 30, "PN": 10, "PC": 10, "PE": 25, "EA": -5, "CP": -5, "SO": -25, "REL": -30, "JUV": 35, "EMP": -35, "PROG": 40, "PYME": 0}
     }},
-    "PN": {"color": "#2c3e50", "candidatos": {
+    "PN": {"color": "⚫", "candidatos": {
         "Victoria Villarruel": {"emoji": "🛡️", "FG": 0, "TR": 15, "ET": -20, "PN": 20, "PC": 5, "PE": -30, "EA": 10, "CP": 5, "SO": 35, "REL": 35, "JUV": 10, "EMP": 15, "PROG": -30, "PYME": 5},
         "Santiago Cúneo": {"emoji": "📺", "FG": 10, "TR": 0, "ET": -35, "PN": 40, "PC": -20, "PE": 0, "EA": -5, "CP": 0, "SO": 20, "REL": 15, "JUV": 20, "EMP": -15, "PROG": 10, "PYME": 10},
         "Gómez Centurión": {"emoji": "⚔️", "FG": -10, "TR": 25, "ET": 0, "PN": 25, "PC": -5, "PE": -10, "EA": -5, "CP": -5, "SO": 40, "REL": 40, "JUV": -25, "EMP": -10, "PROG": -25, "PYME": 10},
@@ -160,7 +158,7 @@ PARTIDOS = {
         "Larry de Clay": {"emoji": "🎩", "FG": -10, "TR": 10, "ET": -5, "PN": 10, "PC": -15, "PE": -5, "EA": -15, "CP": 25, "SO": 10, "REL": 15, "JUV": 40, "EMP": 5, "PROG": -10, "PYME": 10},
         "José Bonacci": {"emoji": "📜", "FG": -65, "TR": 25, "ET": -20, "PN": 20, "PC": -45, "PE": 5, "EA": -30, "CP": -15, "SO": 40, "REL": 30, "JUV": -55, "EMP": 20, "PROG": -60, "PYME": 20}
     }},
-    "INDEPENDIENTES": {"color": "#eeeeee", "candidatos": {
+    "INDEPENDIENTES": {"color": "⬜", "candidatos": {
         "Elisa Carrió": {"emoji": "✝️", "FG": 15, "TR": -5, "ET": 10, "PN": -10, "PC": 25, "PE": -5, "EA": 40, "CP": -10, "SO": 10, "REL": 25, "JUV": -10, "EMP": -15, "PROG": 20, "PYME": -10},
         "Daniel Scioli": {"emoji": "🚤", "FG": 5, "TR": 0, "ET": -10, "PN": -10, "PC": -15, "PE": 0, "EA": 10, "CP": 10, "SO": 15, "REL": 10, "JUV": 10, "EMP": 20, "PROG": 15, "PYME": 20},
         "R. Caruso Lombardi": {"emoji": "💨", "FG": -25, "TR": 15, "ET": 5, "PN": 5, "PC": 20, "PE": -10, "EA": 15, "CP": -20, "SO": -20, "REL": 0, "JUV": 35, "EMP": -10, "PROG": 5, "PYME": -10},
@@ -383,7 +381,7 @@ def procesar_turno():
     # 1. IA
     for cand, info in st.session_state.p.items():
         if info["is_ia"]:
-            # SOCIAL
+            # SOCIAL (Prioridad a cerrar)
             for g in SOCIAL_GROUPS:
                 curr = st.session_state.social_slots[g].get(cand, 0)
                 should_buy = (curr > 0 and curr < 3) or (curr == 0 and (get_total_money(cand) > 350000 or st.session_state.turno < 8))
@@ -394,7 +392,7 @@ def procesar_turno():
                         inv_social[g][cand] = needed
                         gastar_dinero(cand, g, needed, True)
 
-            # PROVINCIAS
+            # PROVINCIAS (Weight by votes)
             attempts = 0
             while get_total_money(cand) > 15000 and attempts < 30:
                 posibles = [p for p in MAPA_DATA if not st.session_state.hard_locked[p] and st.session_state.slots[p].get(cand, 0) < 10]
@@ -405,8 +403,8 @@ def procesar_turno():
                 
                 curr = st.session_state.slots[target].get(cand, 0)
                 has_landed = cand in st.session_state.landed_status.get(target, [])
-                
                 limit = 2 if (curr==0 and not has_landed) else (10-curr)
+                
                 qty = 0
                 for q in range(limit, 0, -1):
                     prev = inversiones_turno[target].get(cand, 0)
