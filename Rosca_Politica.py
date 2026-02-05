@@ -279,11 +279,11 @@ PARTIDOS = {
         "Lousteau 125": {"emoji": "📉", "FG": -20, "TR": -50, "ET": 10, "PN": -150, "PC": 10, "PE": 35, "EA": -20, "CP": -30, "SO": 0, "REL": -20, "JUV": 10, "EMP": -50, "PROG": 25, "PYME": -50},
         "Cristina Presa": {"emoji": "⛓️", "FG": -30, "TR": -30, "ET": -30, "PN": -30, "PC": -30, "PE": -30, "EA": -30, "CP": -30, "SO": -30, "REL": -30, "JUV": -30, "EMP": -30, "PROG": -30, "PYME": -30},
         "Perón Exilio": {"emoji": "✈️", "FG": -72, "TR": 72, "ET": 72, "PN": 72, "PC": -72, "PE": 72, "EA": -72, "CP": 72, "SO": -72, "REL": -72, "JUV": 72, "EMP": -72, "PROG": 72, "PYME": 72},
-        "Manuel Belgrano": {"emoji": "🇦🇷", "FG": 50, "TR": 75, "ET": 60, "PN": 55, "PC": 100, "PE": 55, "EA": 100, "CP": 100, "SO": 50, "REL": 50, "JUV": 50, "EMP": 0, "PROG": 50, "PYME": 0},
-        "José de San Martín": {"emoji": "🗡️", "FG": 100, "TR": 75, "ET": 75, "PN": 75, "PC": 75, "PE": 75, "EA": 75, "CP": 75, "SO": 100, "REL": 75, "JUV": 75, "EMP": 75, "PROG": 75, "PYME": 75},
         "Cornelio Saavedra": {"emoji": "🎩", "FG": 75, "TR": 50, "ET": 50, "PN": 50, "PC": 50, "PE": 50, "EA": 50, "CP": 50, "SO": 100, "REL": 50, "JUV": 50, "EMP": 50, "PROG": 50, "PYME": 50},
         "Juana Azurduy": {"emoji": "⚔️", "FG": 25, "TR": 30, "ET": 20, "PN": 15, "PC": 40, "PE": 40, "EA": 0, "CP": 25, "SO": 25, "REL": 0, "JUV": 50, "EMP": 0, "PROG": 75, "PYME": 0},
-        "Juan M. de Rosas": {"emoji": "🌹", "FG": 200, "TR": 10, "ET": 10, "PN": 50, "PC": 25, "PE": 25, "EA": -25, "CP": 5, "SO": 100, "REL": 100, "JUV": 25, "EMP": 0, "PROG": 10, "PYME": 0}
+        "Juan M. de Rosas": {"emoji": "🌹", "FG": 200, "TR": 10, "ET": 10, "PN": 50, "PC": 25, "PE": 25, "EA": -25, "CP": 5, "SO": 100, "REL": 100, "JUV": 25, "EMP": 0, "PROG": 10, "PYME": 0},
+        "Manuel Belgrano": {"emoji": "🇦🇷", "FG": 80, "TR": 20, "ET": 50, "PN": 50, "PC": 50, "PE": 50, "EA": 20, "CP": 20, "SO": 50, "REL": 50, "JUV": 50, "EMP": 20, "PROG": 50, "PYME": 20},
+        "San Martín": {"emoji": "⚔️", "FG": 100, "TR": 20, "ET": 20, "PN": 20, "PC": 50, "PE": 50, "EA": 20, "CP": 20, "SO": 100, "REL": 50, "JUV": 20, "EMP": 20, "PROG": 50, "PYME": 20}
     }},
     "HIST": {"color": "#DAA520", "candidatos": {
         "Bernardino Rivadavia": {"emoji": "🪑", "FG": -50, "TR": 0, "ET": 25, "PN": -5, "PC": 35, "PE": 10, "EA": 20, "CP": -10, "SO": 20, "REL": 25, "JUV": 0, "EMP": 40, "PROG": -20, "PYME": 0},
@@ -531,40 +531,27 @@ def procesar_turno():
                 if fichas_mias > lider_enemigo and fichas_mias >= 3: score += 5000 # Cerrar puerta
                 if lider_enemigo >= 8: score += 2000 # Intentar bloquear al rival (arriesgado)
                 
+                # --- Personalidad Random ---
+                score *= random.uniform(0.9, 1.15)
+
                 objetivos_prov.append((score, p))
             
             objetivos_prov.sort(reverse=True)
             
-            # EJECUCIÓN DE GASTO TERRITORIAL
-            for score, target in objetivos_prov:
-                costo = COSTOS_FIJOS[target]
-                
-                # Umbral de Ahorro Dinámico (Más bajo = Más agresivo)
-                umbral_ahorro = 20000 # Muy bajo, para que inviertan siempre
-                if any(v >= 2 for v in st.session_state.ai_conflict_memory[cand].values()):
-                    umbral_ahorro = 80000 # Si se golpeó mucho, ahorra un poco
+            # --- LISTA UNIFICADA DE OPORTUNIDADES ---
+            # Vamos a mezclar provincias y grupos sociales
+            oportunidades = []
 
-                if dinero_actual >= costo and score > 0:
-                    curr = st.session_state.slots[target].get(cand, 0)
-                    landed = cand in st.session_state.landed_status.get(target, [])
-                    limit = 2 if (curr == 0 and not landed) else (10-curr)
-                    
-                    # Compra Agresiva
-                    qty = 1
-                    if score >= 4000: qty = min(limit, int(dinero_actual / costo)) # All-in si es clave
-                    elif score > 1500: qty = min(limit, 2)
-                    
-                    if qty > 0:
-                        inversiones_turno[target][cand] = inversiones_turno[target].get(cand, 0) + qty
-                        gastar_dinero(cand, target, qty, False)
-                        if target not in st.session_state.landed_status: st.session_state.landed_status[target] = []
-                        if cand not in st.session_state.landed_status[target]: st.session_state.landed_status[target].append(cand)
-                        dinero_actual -= (costo * qty)
-                    
-                    if dinero_actual < umbral_ahorro: break
+            # Agregar Provincias a la lista
+            for score, p in objetivos_prov:
+                oportunidades.append({
+                    "tipo": "PROVINCIA",
+                    "id": p,
+                    "score": score,
+                    "costo": COSTOS_FIJOS[p]
+                })
 
-            # --- ESTRATEGIA SOCIAL (Secundaria) ---
-            objetivos_sociales = []
+            # Agregar Grupos Sociales a la lista
             for g in SOCIAL_GROUPS:
                 fichas_mias = st.session_state.social_slots[g].get(cand, 0)
                 if fichas_mias >= 10: continue
@@ -573,27 +560,69 @@ def procesar_turno():
                 fichas_enemigo = 0
                 for c_rival, q in st.session_state.social_slots[g].items():
                     if c_rival != cand and q > fichas_enemigo: fichas_enemigo = q
-                
-                afinidad = calcular_afinidad(cand, "SOCIAL", g)
-                score = 0
-                if fichas_enemigo >= 8 and fichas_mias > 0: score += 1500 
-                elif fichas_mias >= 8: score += 1000 
-                score += afinidad * 20
-                objetivos_sociales.append((score, g))
-            
-            objetivos_sociales.sort(reverse=True)
-            
-            compras_sociales = 0
-            for score, g in objetivos_sociales:
-                if score > 0 and compras_sociales < 1 and dinero_actual > SOCIAL_GROUPS[g]["costo"]:
-                    qty = 1 
-                    if score >= 3000: qty = min(2, int(dinero_actual / SOCIAL_GROUPS[g]["costo"]))
 
-                    if qty > 0 and check_solvencia(cand, g, qty, True):
-                        inv_social[g][cand] = qty
-                        gastar_dinero(cand, g, qty, True)
-                        dinero_actual -= SOCIAL_GROUPS[g]["costo"] * qty
-                        compras_sociales += 1
+                afinidad = calcular_afinidad(cand, "SOCIAL", g)
+                
+                # Score base social
+                social_score = (SOCIAL_GROUPS[g]["renta"] / 20) + (afinidad * 50)
+                
+                if fichas_enemigo >= 8 and fichas_mias > 0: social_score += 1500 
+                elif fichas_mias >= 8: social_score += 1000 
+                elif fichas_enemigo > fichas_mias: social_score += 500
+                
+                # Personalidad
+                social_score *= random.uniform(0.9, 1.15)
+
+                oportunidades.append({
+                    "tipo": "SOCIAL",
+                    "id": g,
+                    "score": social_score,
+                    "costo": SOCIAL_GROUPS[g]["costo"]
+                })
+            
+            # Ordenar todo por score descendente
+            oportunidades.sort(key=lambda x: x["score"], reverse=True)
+
+            # --- EJECUCIÓN DE COMPRAS ---
+            # Umbral de Ahorro Dinámico
+            umbral_ahorro = 20000 
+            if any(v >= 2 for v in st.session_state.ai_conflict_memory[cand].values()):
+                umbral_ahorro = 80000 
+
+            for op in oportunidades:
+                if dinero_actual < umbral_ahorro: break
+
+                if dinero_actual >= op["costo"] and op["score"] > 0:
+                    target = op["id"]
+                    
+                    # Calcular limite de compra
+                    if op["tipo"] == "PROVINCIA":
+                        curr = st.session_state.slots[target].get(cand, 0)
+                        landed = cand in st.session_state.landed_status.get(target, [])
+                    else:
+                        curr = st.session_state.social_slots[target].get(cand, 0)
+                        landed = cand in st.session_state.landed_status.get(target, [])
+                    
+                    limit = 2 if (curr == 0 and not landed) else (10-curr)
+                    
+                    # Decisión de cantidad
+                    qty = 1
+                    if op["score"] >= 4000: qty = min(limit, int(dinero_actual / op["costo"]))
+                    elif op["score"] > 2000: qty = min(limit, 2)
+                    
+                    # Ejecutar
+                    if qty > 0 and check_solvencia(cand, target, qty, op["tipo"] == "SOCIAL"):
+                        if op["tipo"] == "PROVINCIA":
+                            inversiones_turno[target][cand] = inversiones_turno[target].get(cand, 0) + qty
+                            if target not in st.session_state.landed_status: st.session_state.landed_status[target] = []
+                            if cand not in st.session_state.landed_status[target]: st.session_state.landed_status[target].append(cand)
+                        else:
+                            inv_social[target][cand] = qty
+                            if target not in st.session_state.landed_status: st.session_state.landed_status[target] = []
+                            if cand not in st.session_state.landed_status[target]: st.session_state.landed_status[target].append(cand)
+
+                        gastar_dinero(cand, target, qty, op["tipo"] == "SOCIAL")
+                        dinero_actual -= (op["costo"] * qty)
 
     # 2. PROCESAR JUGADOR REAL
     for ent, cant in st.session_state.pending_user.items():
@@ -626,7 +655,9 @@ def procesar_turno():
                     nombres = ", ".join(candidatos)
                     reporte.append(f"💥 **{ent}**: Choque entre {nombres} intentando llegar a {total_obj} fichas.")
                     for c in candidatos:
+                        # IA: Aprende del choque (solo en provincias para no complicar)
                         if is_prov and c in memory_dict: memory_dict[c][ent] = memory_dict[c].get(ent, 0) + 1
+                        
                         if ent not in st.session_state.landed_status: st.session_state.landed_status[ent] = []
                         if c not in st.session_state.landed_status[ent]: st.session_state.landed_status[ent].append(c)
                 else:
@@ -795,6 +826,32 @@ else:
     if st.session_state.get('election_pending', False):
         st.sidebar.markdown("<div class='warning-msg'>⚠️ ELECCIÓN PRÓXIMO TURNO</div>", unsafe_allow_html=True)
 
+    # --- SIMULACIÓN DE GASTO PARA VISUALIZACIÓN ---
+    sim_wallets = st.session_state.p[mi_nombre]["wallets"].copy()
+    gasto_breakdown = {"General": 0}
+    
+    for ent, cant in st.session_state.pending_user.items():
+        if ent in SOCIAL_GROUPS:
+            costo = SOCIAL_GROUPS[ent]["costo"] * cant
+            gasto_breakdown["General"] = gasto_breakdown.get("General", 0) + costo
+            if sim_wallets["base"] >= costo: sim_wallets["base"] -= costo
+        else:
+            costo_total = COSTOS_FIJOS[ent] * cant
+            grupos_prov = PROV_TO_GROUP_RAW.get(ent, [])
+            for g in grupos_prov:
+                if costo_total <= 0: break
+                if sim_wallets.get(g, 0) > 0:
+                    deduccion = min(costo_total, sim_wallets[g])
+                    sim_wallets[g] -= deduccion
+                    costo_total -= deduccion
+                    gasto_breakdown[g] = gasto_breakdown.get(g, 0) + deduccion
+            if costo_total > 0:
+                gasto_breakdown["General"] = gasto_breakdown.get("General", 0) + costo_total
+                if sim_wallets["base"] >= costo_total: sim_wallets["base"] -= costo_total
+
+    total_gasto_display = sum(gasto_breakdown.values())
+    dinero_disp = get_total_money(mi_nombre)
+
     tab_rank, tab_spy, tab_terr = st.sidebar.tabs(["📊 Ranking", "🕵️ Espionaje", "🏳️ Territorio"])
     
     with tab_rank:
@@ -832,31 +889,6 @@ else:
     if st.session_state.get('election_pending', False):
         st.markdown("<div class='warning-msg'>🗳️ ¡ATENCIÓN! EL MAPA ESTÁ COMPLETO. LA VOTACIÓN SERÁ AL FINALIZAR ESTE TURNO.</div>", unsafe_allow_html=True)
 
-    # --- SIMULACIÓN DE GASTO PARA VISUALIZACIÓN ---
-    sim_wallets = st.session_state.p[mi_nombre]["wallets"].copy()
-    gasto_breakdown = {"General": 0}
-    
-    for ent, cant in st.session_state.pending_user.items():
-        if ent in SOCIAL_GROUPS:
-            costo = SOCIAL_GROUPS[ent]["costo"] * cant
-            gasto_breakdown["General"] = gasto_breakdown.get("General", 0) + costo
-            if sim_wallets["base"] >= costo: sim_wallets["base"] -= costo
-        else:
-            costo_total = COSTOS_FIJOS[ent] * cant
-            grupos_prov = PROV_TO_GROUP_RAW.get(ent, [])
-            for g in grupos_prov:
-                if costo_total <= 0: break
-                if sim_wallets.get(g, 0) > 0:
-                    deduccion = min(costo_total, sim_wallets[g])
-                    sim_wallets[g] -= deduccion
-                    costo_total -= deduccion
-                    gasto_breakdown[g] = gasto_breakdown.get(g, 0) + deduccion
-            if costo_total > 0:
-                gasto_breakdown["General"] = gasto_breakdown.get("General", 0) + costo_total
-                if sim_wallets["base"] >= costo_total: sim_wallets["base"] -= costo_total
-
-    total_gasto_display = sum(gasto_breakdown.values())
-    dinero_disp = get_total_money(mi_nombre)
     
     # --- VISUALIZACIÓN DE CAJA Y GASTOS ---
     col_caja, col_gasto, col_btn = st.columns(3)
