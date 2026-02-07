@@ -2,7 +2,7 @@ import streamlit as st
 import random
 
 # --- CONFIGURACIÓN ---
-st.set_page_config(page_title="Rosca Política: 189", layout="wide", page_icon="🇦🇷")
+st.set_page_config(page_title="Rosca Política: 189", layout="wide", page_icon="🗳️")
 
 # --- VARIABLES GLOBALES ---
 PRESUPUESTO_INICIAL = 250000
@@ -12,50 +12,56 @@ VOTOS_PARA_GANAR = 189
 # --- ESTILOS CSS ---
 st.markdown("""
     <style>
+    /* Botones del Mapa */
     .stButton>button { 
         width: 100%; 
-        border-radius: 5px; 
-        font-weight: bold; 
+        border-radius: 6px; 
+        font-weight: 700; 
         text-align: left; 
         white-space: pre-wrap; 
         height: auto !important;
-        padding-top: 10px;
-        padding-bottom: 10px;
+        padding: 8px;
+        font-size: 0.8rem;
+        border: 1px solid rgba(0,0,0,0.2);
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
-    .metric-card { background-color: #f0f2f6; padding: 10px; border-radius: 10px; border-left: 5px solid #333; }
-    div[data-testid="stMetricValue"] { font-size: 1.1rem; }
     
-    /* Pantallas Finales y Avisos */
+    .stButton>button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+        border-color: #ffc107;
+        z-index: 10;
+    }
+
+    /* Cards y Paneles */
+    .metric-card { background-color: #f8f9fa; padding: 10px; border-radius: 10px; border-left: 5px solid #333; }
+    div[data-testid="stMetricValue"] { font-size: 1.1rem; }
+
+    /* Pantallas Finales */
     .win-msg {
-        font-size: 40px; font-weight: 800; color: #155724; text-align: center;
-        padding: 30px; border: 3px solid #c3e6cb; border-radius: 15px;
+        font-size: 35px; font-weight: 800; color: #155724; text-align: center;
+        padding: 20px; border: 3px solid #c3e6cb; border-radius: 15px;
         background-color: #d4edda; margin-bottom: 20px;
     }
     .lose-msg {
-        font-size: 40px; font-weight: 800; color: #721c24; text-align: center;
-        padding: 30px; border: 3px solid #f5c6cb; border-radius: 15px;
+        font-size: 35px; font-weight: 800; color: #721c24; text-align: center;
+        padding: 20px; border: 3px solid #f5c6cb; border-radius: 15px;
         background-color: #f8d7da; margin-bottom: 20px;
     }
     .warning-msg {
-        font-size: 30px; font-weight: 700; color: #856404; text-align: center;
-        padding: 20px; border: 3px solid #ffeeba; border-radius: 15px;
-        background-color: #fff3cd; margin-bottom: 20px;
+        font-size: 1.2rem; font-weight: 700; color: #856404; text-align: center;
+        padding: 10px; border: 2px solid #ffeeba; border-radius: 10px;
+        background-color: #fff3cd; margin-bottom: 15px;
     }
-    /* Estilos para Caja y Gastos */
-    .money-box {
-        background-color: #e8f5e9;
-        padding: 15px;
-        border-radius: 10px;
-        border: 1px solid #c8e6c9;
-    }
-    .expense-box {
-        background-color: #ffebee;
-        padding: 15px;
-        border-radius: 10px;
-        border: 1px solid #ffcdd2;
-    }
-    .money-title { font-weight: bold; font-size: 1.2rem; margin-bottom: 5px; }
-    .money-item { font-family: monospace; font-size: 1rem; }
+
+    /* Cajas de Dinero */
+    .money-box { background-color: #e8f5e9; padding: 12px; border-radius: 8px; border: 1px solid #c8e6c9; color: #155724; }
+    .expense-box { background-color: #ffebee; padding: 12px; border-radius: 8px; border: 1px solid #dc3545; color: #721c24; }
+    .money-title { font-weight: 900; font-size: 1.1rem; margin-bottom: 5px; }
+    .money-item { font-family: monospace; font-size: 0.9rem; }
+    
+    /* Sidebar Headers */
+    .sidebar-h { font-size: 1rem; font-weight: bold; border-bottom: 2px solid #ddd; margin-top: 10px; margin-bottom: 5px; padding-bottom: 2px; }
     </style>
 """, unsafe_allow_html=True)
 
@@ -82,76 +88,43 @@ SOCIAL_GROUPS = {
 
 # --- 2. MAPA DE GRUPOS ---
 PROV_TO_GROUP_RAW = {
-    "Jujuy": ["PE", "EA"],
-    "Formosa": ["PE", "CP"],
-    "Salta": ["FG", "PC"],
-    "Chaco": ["PE", "CP"],
-    "Misiones": ["FG", "PN"],
-    "Tucumán": ["FG", "PN", "CP"],
-    "Santiago del Estero": ["CP"],
-    "Corrientes": ["EA"],
-    "La Rioja": ["PE", "CP"],
-    "Catamarca": ["PN", "PE", "CP"],
-    "San Juan": ["PN", "CP"],
-    "Santa Fe": ["FG", "ET", "PN", "PC"],
-    "Entre Ríos": ["PN", "PC"],
-    "San Luis": ["PC", "CP"], 
-    "Córdoba": ["FG", "ET", "PN", "EA"],
-    "PBA Norte": ["FG", "TR", "ET"],
-    "CABA": ["FG", "TR", "ET", "EA"],
-    "Mendoza": ["FG", "ET", "PN"],
-    "PBA Oeste": ["FG", "PE", "CP"],
-    "PBA Centro": ["ET", "PN"], 
-    "La Pampa": ["PE", "CP"],
-    "PBA Costa": ["TR", "ET"],
-    "Neuquén": ["TR", "PN", "PC"], 
-    "Río Negro": ["TR", "EA"],
-    "Chubut": ["TR", "PN", "PC"], 
-    "Santa Cruz": ["PN", "PE", "CP"],
-    "Tierra del Fuego": ["TR", "PE"]
+    "Jujuy": ["PE", "EA"], "Formosa": ["PE", "CP"], "Salta": ["FG", "PC"], "Chaco": ["PE", "CP"],
+    "Misiones": ["FG", "PN"], "Tucumán": ["FG", "PN", "CP"], "Santiago del Estero": ["CP"],
+    "Corrientes": ["EA"], "La Rioja": ["PE", "CP"], "Catamarca": ["PN", "PE", "CP"],
+    "San Juan": ["PN", "CP"], "Santa Fe": ["FG", "ET", "PN", "PC"], "Entre Ríos": ["PN", "PC"],
+    "San Luis": ["PC", "CP"], "Córdoba": ["FG", "ET", "PN", "EA"], "PBA Norte": ["FG", "TR", "ET"],
+    "CABA": ["FG", "TR", "ET", "EA"], "Mendoza": ["FG", "ET", "PN"], "PBA Oeste": ["FG", "PE", "CP"],
+    "PBA Centro": ["ET", "PN"], "La Pampa": ["PE", "CP"], "PBA Costa": ["TR", "ET"],
+    "Neuquén": ["TR", "PN", "PC"], "Río Negro": ["TR", "EA"], "Chubut": ["TR", "PN", "PC"],
+    "Santa Cruz": ["PN", "PE", "CP"], "Tierra del Fuego": ["TR", "PE"]
 }
 
 # --- 3. COSTOS FIJOS ---
 COSTOS_FIJOS = {
-    "Jujuy": 20000, "Formosa": 15000, "Salta": 35000, "Chaco": 25000,
-    "Misiones": 35000, "Tucumán": 75000, "Santiago del Estero": 30000,
-    "Corrientes": 30000, "La Rioja": 10000, "Catamarca": 12500,
-    "San Juan": 25000, "Santa Fe": 200000, "Entre Ríos": 37500,
-    "San Luis": 15000, "Córdoba": 200000, "PBA Norte": 125000,
-    "CABA": 150000, "Mendoza": 75000, "PBA Oeste": 200000,
-    "PBA Centro": 50000, "La Pampa": 12500, "PBA Costa": 35000,
-    "Neuquén": 22500, "Río Negro": 25000, "Chubut": 20000,
+    "Jujuy": 20000, "Formosa": 15000, "Salta": 35000, "Chaco": 25000, "Misiones": 35000,
+    "Tucumán": 75000, "Santiago del Estero": 30000, "Corrientes": 30000, "La Rioja": 10000,
+    "Catamarca": 12500, "San Juan": 25000, "Santa Fe": 200000, "Entre Ríos": 37500,
+    "San Luis": 15000, "Córdoba": 200000, "PBA Norte": 125000, "CABA": 150000,
+    "Mendoza": 75000, "PBA Oeste": 200000, "PBA Centro": 50000, "La Pampa": 12500,
+    "PBA Costa": 35000, "Neuquén": 22500, "Río Negro": 25000, "Chubut": 20000,
     "Santa Cruz": 10000, "Tierra del Fuego": 10000
 }
 
 # --- 4. MAPA DE VOTOS Y POSICIONES ---
 MAPA_DATA = {
-    "Jujuy": {"votos": 8, "pos": (0, 1)}, 
-    "Formosa": {"votos": 6, "pos": (0, 3)},
-    "Salta": {"votos": 14, "pos": (1, 1)}, 
-    "Chaco": {"votos": 11, "pos": (1, 3)},
-    "Misiones": {"votos": 13, "pos": (1, 4)}, 
-    "Tucumán": {"votos": 17, "pos": (2, 1)},
-    "Santiago del Estero": {"votos": 11, "pos": (2, 2)}, 
-    "Corrientes": {"votos": 12, "pos": (2, 3)},
-    "La Rioja": {"votos": 4, "pos": (3, 0)}, 
-    "Catamarca": {"votos": 4, "pos": (3, 1)},
-    "San Juan": {"votos": 8, "pos": (4, 0)}, 
-    "Santa Fe": {"votos": 36, "pos": (4, 2)},
-    "Entre Ríos": {"votos": 14, "pos": (4, 3)}, 
-    "San Luis": {"votos": 6, "pos": (5, 0)},
-    "Córdoba": {"votos": 40, "pos": (5, 1)}, 
-    "PBA Norte": {"votos": 28, "pos": (5, 2)},
-    "CABA": {"votos": 31, "pos": (5, 3)}, 
-    "Mendoza": {"votos": 20, "pos": (6, 0)},
-    "PBA Oeste": {"votos": 35, "pos": (6, 1)}, 
-    "PBA Centro": {"votos": 15, "pos": (6, 2)},
-    "La Pampa": {"votos": 4, "pos": (7, 1)}, 
-    "PBA Costa": {"votos": 12, "pos": (7, 2)},
-    "Neuquén": {"votos": 7, "pos": (8, 0)}, 
-    "Río Negro": {"votos": 8, "pos": (8, 1)},
-    "Chubut": {"votos": 6, "pos": (9, 1)}, 
-    "Santa Cruz": {"votos": 3, "pos": (10, 1)},
+    "Jujuy": {"votos": 8, "pos": (0, 1)}, "Formosa": {"votos": 6, "pos": (0, 3)},
+    "Salta": {"votos": 14, "pos": (1, 1)}, "Chaco": {"votos": 11, "pos": (1, 3)},
+    "Misiones": {"votos": 13, "pos": (1, 4)}, "Tucumán": {"votos": 17, "pos": (2, 1)},
+    "Santiago del Estero": {"votos": 11, "pos": (2, 2)}, "Corrientes": {"votos": 12, "pos": (2, 3)},
+    "La Rioja": {"votos": 4, "pos": (3, 0)}, "Catamarca": {"votos": 4, "pos": (3, 1)},
+    "San Juan": {"votos": 8, "pos": (4, 0)}, "Santa Fe": {"votos": 36, "pos": (4, 2)},
+    "Entre Ríos": {"votos": 14, "pos": (4, 3)}, "San Luis": {"votos": 6, "pos": (5, 0)},
+    "Córdoba": {"votos": 40, "pos": (5, 1)}, "PBA Norte": {"votos": 28, "pos": (5, 2)},
+    "CABA": {"votos": 31, "pos": (5, 3)}, "Mendoza": {"votos": 20, "pos": (6, 0)},
+    "PBA Oeste": {"votos": 35, "pos": (6, 1)}, "PBA Centro": {"votos": 15, "pos": (6, 2)},
+    "La Pampa": {"votos": 4, "pos": (7, 1)}, "PBA Costa": {"votos": 12, "pos": (7, 2)},
+    "Neuquén": {"votos": 7, "pos": (8, 0)}, "Río Negro": {"votos": 8, "pos": (8, 1)},
+    "Chubut": {"votos": 6, "pos": (9, 1)}, "Santa Cruz": {"votos": 3, "pos": (10, 1)},
     "Tierra del Fuego": {"votos": 3, "pos": (11, 1)}
 }
 
@@ -159,6 +132,7 @@ MAPA_DATA = {
 PARTIDOS = {
     "PJ": {"color": "🔵", "candidatos": {
         "Cristina Kirchner": {"emoji": "✌️", "FG": 10, "TR": 15, "ET": 15, "PN": 15, "PC": -25, "PE": 20, "EA": -45, "CP": 15, "SO": -15, "REL": -5, "JUV": -5, "EMP": -25, "PROG": 30, "PYME": 10},
+        "Hugo Moyano": {"emoji": "🚛", "FG": -30, "TR": 40, "ET": 15, "PN": 5, "PC": -40, "PE": 20, "EA": -45, "CP": 5, "SO": 10, "REL": -5, "JUV": -30, "EMP": -50, "PROG": 50, "PYME": -45},
         "Juan Schiaretti": {"emoji": "🧱", "FG": 20, "TR": 0, "ET": -5, "PN": 5, "PC": 10, "PE": -10, "EA": -5, "CP": 10, "SO": 10, "REL": 5, "JUV": -5, "EMP": 20, "PROG": -15, "PYME": 35},
         "Juan Grabois": {"emoji": "🌱", "FG": -10, "TR": 10, "ET": 30, "PN": 0, "PC": -10, "PE": 30, "EA": -25, "CP": 5, "SO": -25, "REL": 15, "JUV": 30, "EMP": -30, "PROG": 35, "PYME": -10},
         "Guillermo Moreno": {"emoji": "🌭", "FG": 10, "TR": 0, "ET": -10, "PN": 5, "PC": 0, "PE": 5, "EA": -50, "CP": 30, "SO": 10, "REL": 40, "JUV": 5, "EMP": -5, "PROG": -5, "PYME": 15},
@@ -168,6 +142,7 @@ PARTIDOS = {
         "Florencio Randazzo": {"emoji": "🚆", "FG": 15, "TR": 5, "ET": -5, "PN": 10, "PC": -10, "PE": -15, "EA": 0, "CP": -10, "SO": -10, "REL": 5, "JUV": -5, "EMP": 20, "PROG": -5, "PYME": 15},
         "Alberto Fernandez": {"emoji": "🎸", "FG": 20, "TR": -25, "ET": 5, "PN": -10, "PC": 5, "PE": 15, "EA": -10, "CP": -5, "SO": -15, "REL": -15, "JUV": -25, "EMP": 5, "PROG": 30, "PYME": 10},
         "Leandro Santoro": {"emoji": "🏙️", "FG": 10, "TR": -20, "ET": 10, "PN": 5, "PC": 10, "PE": 10, "EA": 5, "CP": 5, "SO": -5, "REL": 20, "JUV": 10, "EMP": -10, "PROG": 30, "PYME": 5},
+        "Cecilia Moreau": {"emoji": "👩", "FG": 10, "TR": -20, "ET": 25, "PN": 10, "PC": -25, "PE": 20, "EA": -15, "CP": 15, "SO": 5, "REL": -10, "JUV": 20, "EMP": -10, "PROG": 30, "PYME": -10},
         "Fernando Gray": {"emoji": "📡", "FG": 15, "TR": -25, "ET": -10, "PN": 10, "PC": -30, "PE": 10, "EA": -55, "CP": 25, "SO": 5, "REL": 10, "JUV": -10, "EMP": 5, "PROG": -5, "PYME": 35},
         "Aníbal Fernández": {"emoji": "🧳", "FG": 30, "TR": -15, "ET": -5, "PN": -5, "PC": 15, "PE": 30, "EA": -40, "CP": 15, "SO": 35, "REL": 5, "JUV": -25, "EMP": -25, "PROG": -10, "PYME": -15},
         "Wado de Pedro": {"emoji": "🚜", "FG": -10, "TR": 10, "ET": 15, "PN": 20, "PC": -30, "PE": 25, "EA": -35, "CP": 5, "SO": -10, "REL": -20, "JUV": 10, "EMP": -15, "PROG": 30, "PYME": 10}
@@ -184,7 +159,11 @@ PARTIDOS = {
         "Karina Milei": {"emoji": "🔮", "FG": 20, "TR": -5, "ET": -40, "PN": -20, "PC": 30, "PE": -20, "EA": 15, "CP": -40, "SO": 25, "REL": 5, "JUV": 35, "EMP": 35, "PROG": -25, "PYME": -5},
         "Luis Caputo": {"emoji": "💰", "FG": -25, "TR": 10, "ET": -10, "PN": 5, "PC": -10, "PE": -30, "EA": 10, "CP": -30, "SO": -10, "REL": 20, "JUV": 5, "EMP": 55, "PROG": -30, "PYME": -40},
         "F. Sturzenegger": {"emoji": "📝", "FG": 10, "TR": 0, "ET": 0, "PN": -10, "PC": -5, "PE": -45, "EA": 30, "CP": -30, "SO": -5, "REL": 20, "JUV": -30, "EMP": 65, "PROG": -30, "PYME": -35},
-        "Diego Santilli": {"emoji": "👱", "FG": 10, "TR": 5, "ET": -10, "PN": -5, "PC": 5, "PE": -5, "EA": 5, "CP": -15, "SO": 10, "REL": 5, "JUV": 15, "EMP": 15, "PROG": 0, "PYME": -10}
+        "Diego Santilli": {"emoji": "👱", "FG": 10, "TR": 5, "ET": -10, "PN": -5, "PC": 5, "PE": -5, "EA": 5, "CP": -15, "SO": 10, "REL": 5, "JUV": 15, "EMP": 15, "PROG": 0, "PYME": -10},
+        "Benegas Lynch": {"emoji": "🦅", "FG": -10, "TR": -25, "ET": -20, "PN": -10, "PC": -15, "PE": -40, "EA": 35, "CP": -30, "SO": 10, "REL": 15, "JUV": -10, "EMP": 45, "PROG": -50, "PYME": 10},
+        "Tronco Figliuolo": {"emoji": "🪵", "FG": -25, "TR": -10, "ET": -5, "PN": 10, "PC": 5, "PE": -15, "EA": 20, "CP": -10, "SO": 20, "REL": 10, "JUV": 35, "EMP": 20, "PROG": -25, "PYME": 20},
+        "Carolina Píparo": {"emoji": "👩", "FG": 10, "TR": -10, "ET": 0, "PN": 5, "PC": 15, "PE": -10, "EA": 15, "CP": -5, "SO": 40, "REL": 15, "JUV": 10, "EMP": 10, "PROG": -30, "PYME": 15},
+        "Luis Juez": {"emoji": "🌭", "FG": 5, "TR": -5, "ET": -20, "PN": 10, "PC": -10, "PE": -15, "EA": 15, "CP": 0, "SO": 5, "REL": 5, "JUV": -30, "EMP": -5, "PROG": -5, "PYME": 0}
     }},
     "PRO": {"color": "🟡", "candidatos": {
         "Mauricio Macri": {"emoji": "🐱", "FG": 20, "TR": 5, "ET": -20, "PN": 10, "PC": -20, "PE": -20, "EA": 45, "CP": -40, "SO": 20, "REL": 25, "JUV": 10, "EMP": 55, "PROG": -15, "PYME": -10},
@@ -194,17 +173,25 @@ PARTIDOS = {
         "Jorge Macri": {"emoji": "🏙️", "FG": 10, "TR": 10, "ET": -30, "PN": 0, "PC": 10, "PE": 10, "EA": 10, "CP": -55, "SO": 40, "REL": 5, "JUV": 5, "EMP": 30, "PROG": -15, "PYME": 15},
         "Silvia Lospennato": {"emoji": "🗳️", "FG": -5, "TR": 5, "ET": 10, "PN": -5, "PC": -20, "PE": -25, "EA": 5, "CP": -15, "SO": 10, "REL": -5, "JUV": 5, "EMP": 5, "PROG": 25, "PYME": -10},
         "Néstor Grindetti": {"emoji": "⚽", "FG": 10, "TR": -5, "ET": -15, "PN": -5, "PC": -20, "PE": -25, "EA": 0, "CP": -20, "SO": 25, "REL": 10, "JUV": -15, "EMP": 20, "PROG": 0, "PYME": 10},
-        "Luis Juez": {"emoji": "🌭", "FG": 5, "TR": -5, "ET": -20, "PN": 10, "PC": -10, "PE": -15, "EA": 15, "CP": 0, "SO": 5, "REL": 5, "JUV": -30, "EMP": -5, "PROG": -5, "PYME": 0}
+        "Cristian Ritondo": {"emoji": "👮‍♂️", "FG": 10, "TR": 5, "ET": 10, "PN": 5, "PC": -10, "PE": -10, "EA": 25, "CP": -30, "SO": 45, "REL": 15, "JUV": -30, "EMP": 20, "PROG": -40, "PYME": 5},
+        "Federico Pinedo": {"emoji": "🧐", "FG": 25, "TR": -10, "ET": 10, "PN": 5, "PC": -30, "PE": -10, "EA": 20, "CP": -10, "SO": 5, "REL": 5, "JUV": -20, "EMP": 35, "PROG": -40, "PYME": 20},
+        "Hernán Lombardi": {"emoji": "🎭", "FG": 15, "TR": -5, "ET": 30, "PN": -5, "PC": -5, "PE": -10, "EA": 25, "CP": -15, "SO": -10, "REL": -10, "JUV": -10, "EMP": 5, "PROG": -10, "PYME": 10}
     }},
     "UCR": {"color": "⚪", "candidatos": {
         "Martín Lousteau": {"emoji": "🎓", "FG": 30, "TR": -25, "ET": 25, "PN": -25, "PC": -20, "PE": 20, "EA": 5, "CP": -20, "SO": 10, "REL": -20, "JUV": 25, "EMP": 15, "PROG": 25, "PYME": 15},
-        "Roberto Lavagna": {"emoji": "🧦", "FG": 20, "TR": 20, "ET": 0, "PN": 15, "PC": -25, "PE": 0, "EA": 10, "CP": -20, "SO": 5, "REL": 5, "JUV": -25, "EMP": 20, "PROG": 5, "PYME": 20},
         "Facundo Manes": {"emoji": "🧠", "FG": -10, "TR": 5, "ET": 35, "PN": 10, "PC": -20, "PE": 5, "EA": 5, "CP": -30, "SO": -25, "REL": 0, "JUV": 5, "EMP": -10, "PROG": 10, "PYME": 10},
         "Gerardo Morales": {"emoji": "🌵", "FG": 35, "TR": -5, "ET": -10, "PN": 25, "PC": -40, "PE": 5, "EA": 5, "CP": -20, "SO": 25, "REL": 20, "JUV": -15, "EMP": 5, "PROG": -15, "PYME": 15},
         "Julio Cobos": {"emoji": "👎", "FG": 30, "TR": 5, "ET": 0, "PN": -10, "PC": -30, "PE": -5, "EA": 5, "CP": -30, "SO": 10, "REL": 25, "JUV": -20, "EMP": 10, "PROG": -15, "PYME": 15},
         "Rodrigo de Loredo": {"emoji": "🚌", "FG": 5, "TR": 5, "ET": -10, "PN": 5, "PC": -10, "PE": -15, "EA": 5, "CP": -40, "SO": 5, "REL": -15, "JUV": 30, "EMP": 5, "PROG": 10, "PYME": 10},
         "Ricardo Alfonsín": {"emoji": "👴", "FG": 20, "TR": -20, "ET": 15, "PN": 5, "PC": -15, "PE": 20, "EA": 15, "CP": -20, "SO": -15, "REL": 10, "JUV": 0, "EMP": -15, "PROG": 30, "PYME": 5},
-        "Lula Levy": {"emoji": "🤳", "FG": -25, "TR": -45, "ET": 40, "PN": 5, "PC": 15, "PE": 25, "EA": 5, "CP": -35, "SO": -10, "REL": -25, "JUV": 40, "EMP": 5, "PROG": 15, "PYME": 10}
+        "Lula Levy": {"emoji": "🤳", "FG": -25, "TR": -45, "ET": 40, "PN": 5, "PC": 15, "PE": 25, "EA": 5, "CP": -35, "SO": -10, "REL": -25, "JUV": 40, "EMP": 5, "PROG": 15, "PYME": 10},
+        "Eduardo Vischi": {"emoji": "⚪", "FG": 20, "TR": 10, "ET": 10, "PN": 5, "PC": 20, "PE": 10, "EA": 15, "CP": -10, "SO": -10, "REL": -10, "JUV": -20, "EMP": 5, "PROG": 5, "PYME": 5},
+        "Luis Naidenoff": {"emoji": "⚪", "FG": 25, "TR": 10, "ET": -10, "PN": 10, "PC": 20, "PE": 5, "EA": 25, "CP": -30, "SO": 15, "REL": 10, "JUV": -10, "EMP": 10, "PROG": -5, "PYME": 10},
+        "Pamela Verasay": {"emoji": "⚪", "FG": 20, "TR": 5, "ET": 5, "PN": 15, "PC": -10, "PE": 10, "EA": 15, "CP": -10, "SO": -5, "REL": -10, "JUV": -10, "EMP": 5, "PROG": 0, "PYME": 15},
+        "Ricardo Gil Lavedra": {"emoji": "⚖️", "FG": 40, "TR": 5, "ET": 20, "PN": 0, "PC": -15, "PE": 15, "EA": 5, "CP": -25, "SO": -10, "REL": -15, "JUV": -10, "EMP": -5, "PROG": 20, "PYME": 5},
+        "Ernesto Sanz": {"emoji": "🤠", "FG": 30, "TR": -10, "ET": 10, "PN": 5, "PC": 5, "PE": 5, "EA": 30, "CP": -40, "SO": 5, "REL": 0, "JUV": -20, "EMP": 10, "PROG": -10, "PYME": 10},
+        "Mario Negri": {"emoji": "👴", "FG": 10, "TR": 10, "ET": 15, "PN": 5, "PC": -10, "PE": 10, "EA": 15, "CP": -20, "SO": 5, "REL": -10, "JUV": -25, "EMP": 10, "PROG": 5, "PYME": 10},
+        "Alfredo Cornejo": {"emoji": "🍇", "FG": 30, "TR": 10, "ET": 10, "PN": 10, "PC": 20, "PE": 10, "EA": 25, "CP": -50, "SO": 20, "REL": -5, "JUV": -15, "EMP": 20, "PROG": -15, "PYME": 20}
     }},
     "FIT-U": {"color": "🔴", "candidatos": {
         "Myriam Bregman": {"emoji": "✊", "FG": -35, "TR": -5, "ET": 30, "PN": 30, "PC": 10, "PE": 30, "EA": -20, "CP": -25, "SO": -20, "REL": -10, "JUV": 50, "EMP": -30, "PROG": 25, "PYME": -20},
@@ -214,7 +201,11 @@ PARTIDOS = {
         "Christian Castillo": {"emoji": "📕", "FG": -20, "TR": 10, "ET": 15, "PN": 10, "PC": -10, "PE": 20, "EA": -30, "CP": -30, "SO": -40, "REL": -30, "JUV": 10, "EMP": -40, "PROG": 40, "PYME": -30},
         "Romina Del Plá": {"emoji": "🏫", "FG": -35, "TR": 20, "ET": 35, "PN": 5, "PC": 10, "PE": 30, "EA": -40, "CP": -25, "SO": -30, "REL": -25, "JUV": 15, "EMP": -25, "PROG": 50, "PYME": -25},
         "Federico Winokur": {"emoji": "🏫", "FG": -40, "TR": 20, "ET": 50, "PN": 15, "PC": -50, "PE": 30, "EA": -50, "CP": -35, "SO": -45, "REL": -40, "JUV": 25, "EMP": -50, "PROG": 45, "PYME": -10},
-        "Luca Bonfante": {"emoji": "🎓", "FG": -10, "TR": 5, "ET": 45, "PN": 5, "PC": -10, "PE": 25, "EA": -5, "CP": -5, "SO": -25, "REL": -45, "JUV": 55, "EMP": -45, "PROG": 50, "PYME": 0}
+        "Luca Bonfante": {"emoji": "🎓", "FG": -10, "TR": 5, "ET": 45, "PN": 5, "PC": -10, "PE": 25, "EA": -5, "CP": -5, "SO": -25, "REL": -45, "JUV": 55, "EMP": -45, "PROG": 50, "PYME": 0},
+        "Hugo Bodart": {"emoji": "🚩", "FG": -30, "TR": 30, "ET": 25, "PN": 15, "PC": -25, "PE": 40, "EA": -20, "CP": -35, "SO": -15, "REL": -35, "JUV": -20, "EMP": -50, "PROG": 50, "PYME": -15},
+        "Jorge Altamira": {"emoji": "👴", "FG": -35, "TR": 25, "ET": 30, "PN": 15, "PC": -10, "PE": 35, "EA": -10, "CP": -10, "SO": -45, "REL": -25, "JUV": 10, "EMP": -45, "PROG": 45, "PYME": -10},
+        "Juan Carlos Giordano": {"emoji": "📢", "FG": 5, "TR": 20, "ET": 20, "PN": 30, "PC": 5, "PE": 25, "EA": -5, "CP": -5, "SO": -25, "REL": -20, "JUV": -5, "EMP": -45, "PROG": 50, "PYME": 5},
+        "Vanina Biasi": {"emoji": "✊", "FG": -25, "TR": 15, "ET": 25, "PN": 10, "PC": 20, "PE": 30, "EA": -10, "CP": -10, "SO": -30, "REL": -35, "JUV": 25, "EMP": -40, "PROG": 55, "PYME": -5}
     }},
     "PN": {"color": "⚫", "candidatos": {
         "Victoria Villarruel": {"emoji": "🛡️", "FG": -10, "TR": 15, "ET": -20, "PN": 5, "PC": 5, "PE": 20, "EA": 10, "CP": 5, "SO": 55, "REL": 35, "JUV": 10, "EMP": 15, "PROG": -30, "PYME": 5},
@@ -224,9 +215,17 @@ PARTIDOS = {
         "Cesar Biondini": {"emoji": "🐣", "FG": 5, "TR": 0, "ET": -25, "PN": 35, "PC": 5, "PE": 10, "EA": -45, "CP": -35, "SO": 35, "REL": 15, "JUV": 20, "EMP": -30, "PROG": -25, "PYME": -10},
         "Alberto Samid": {"emoji": "🥩", "FG": -35, "TR": -15, "ET": -30, "PN": 50, "PC": 5, "PE": 10, "EA": -5, "CP": 10, "SO": 10, "REL": 25, "JUV": 5, "EMP": 10, "PROG": -15, "PYME": 15},
         "Larry de Clay": {"emoji": "🎩", "FG": -10, "TR": 5, "ET": -15, "PN": 20, "PC": -25, "PE": -5, "EA": -15, "CP": 25, "SO": 10, "REL": 25, "JUV": 30, "EMP": 5, "PROG": -30, "PYME": 10},
-        "José Bonacci": {"emoji": "📜", "FG": -65, "TR": 25, "ET": -20, "PN": 50, "PC": -45, "PE": 5, "EA": -30, "CP": -15, "SO": 40, "REL": 30, "JUV": -25, "EMP": 20, "PROG": -60, "PYME": 20}
+        "José Bonacci": {"emoji": "📜", "FG": -65, "TR": 25, "ET": -20, "PN": 50, "PC": -45, "PE": 5, "EA": -30, "CP": -15, "SO": 40, "REL": 30, "JUV": -25, "EMP": 20, "PROG": -60, "PYME": 20},
+        "Cynthia Hotton": {"emoji": "✝️", "FG": 5, "TR": 10, "ET": -20, "PN": 10, "PC": 5, "PE": 5, "EA": 10, "CP": -30, "SO": 20, "REL": 70, "JUV": -25, "EMP": 10, "PROG": -75, "PYME": 5},
+        "Eduardo Amadeo": {"emoji": "💼", "FG": 10, "TR": -10, "ET": -10, "PN": 10, "PC": 10, "PE": 10, "EA": 10, "CP": -10, "SO": 10, "REL": 10, "JUV": -10, "EMP": 10, "PROG": -10, "PYME": 10},
+        "Miguel Ángel Pichetto": {"emoji": "👔", "FG": 20, "TR": 10, "ET": 10, "PN": 20, "PC": 20, "PE": 0, "EA": -20, "CP": -20, "SO": 25, "REL": -10, "JUV": -20, "EMP": 30, "PROG": -10, "PYME": 15},
+        "Jorge Sobisch": {"emoji": "🏔️", "FG": 20, "TR": 0, "ET": -20, "PN": 25, "PC": 30, "PE": 10, "EA": -10, "CP": -25, "SO": 30, "REL": 15, "JUV": -30, "EMP": 15, "PROG": -25, "PYME": 20},
+        "Raúl Castells": {"emoji": "🧔", "FG": -50, "TR": -30, "ET": -25, "PN": 70, "PC": 40, "PE": 0, "EA": -45, "CP": -45, "SO": 10, "REL": 30, "JUV": 50, "EMP": -50, "PROG": 30, "PYME": -50},
+        "Aldo Rico": {"emoji": "🪖", "FG": -20, "TR": 15, "ET": -10, "PN": 20, "PC": 10, "PE": 5, "EA": -25, "CP": -5, "SO": 50, "REL": 40, "JUV": -30, "EMP": -15, "PROG": -25, "PYME": 20},
+        "Rocío Bonacci": {"emoji": "💅", "FG": -10, "TR": 5, "ET": -30, "PN": 5, "PC": 20, "PE": -45, "EA": 10, "CP": 5, "SO": 35, "REL": 45, "JUV": -10, "EMP": 15, "PROG": -40, "PYME": 5}
     }},
     "INDEPENDIENTES": {"color": "⬜", "candidatos": {
+        "Roberto Lavagna": {"emoji": "🧦", "FG": 20, "TR": 20, "ET": 0, "PN": 15, "PC": -25, "PE": 0, "EA": 10, "CP": -20, "SO": 5, "REL": 5, "JUV": -25, "EMP": 20, "PROG": 5, "PYME": 20},
         "Elisa Carrió": {"emoji": "✝️", "FG": 15, "TR": -5, "ET": 10, "PN": 5, "PC": 25, "PE": 5, "EA": 40, "CP": -20, "SO": -10, "REL": 25, "JUV": -10, "EMP": -15, "PROG": 20, "PYME": 0},
         "Daniel Scioli": {"emoji": "🚤", "FG": 5, "TR": 0, "ET": -10, "PN": -10, "PC": -15, "PE": 0, "EA": 10, "CP": 10, "SO": 15, "REL": 10, "JUV": 10, "EMP": 20, "PROG": 15, "PYME": 20},
         "Fernanda Tokumoto": {"emoji": "🌸", "FG": -20, "TR": 5, "ET": -10, "PN": -30, "PC": -30, "PE": -5, "EA": 10, "CP": -10, "SO": 20, "REL": -5, "JUV": -5, "EMP": 5, "PROG": 5, "PYME": 35},
@@ -239,7 +238,23 @@ PARTIDOS = {
         "Domingo Cavallo": {"emoji": "💲", "FG": -10, "TR": -25, "ET": -35, "PN": -20, "PC": 50, "PE": -25, "EA": 35, "CP": 20, "SO": 20, "REL": 30, "JUV": 5, "EMP": 65, "PROG": -40, "PYME": 0},
         "Claudio Vidal": {"emoji": "🛢️", "FG": 15, "TR": 25, "ET": -35, "PN": -20, "PC": 50, "PE": 10, "EA": -35, "CP": -20, "SO": 10, "REL": 0, "JUV": -15, "EMP": 45, "PROG": 30, "PYME": -5},
         "Carlos del Frade": {"emoji": "🌾", "FG": -5, "TR": 5, "ET": 5, "PN": 30, "PC": 10, "PE": 30, "EA": -20, "CP": 0, "SO": 0, "REL": -30, "JUV": -20, "EMP": -40, "PROG": 20, "PYME": -10},
-        "Juan Carlos Blanco": {"emoji": "⚪", "FG": -10, "TR": 10, "ET": 5, "PN": 10, "PC": 20, "PE": 20, "EA": -20, "CP": -20, "SO": 5, "REL": 5, "JUV": -10, "EMP": -10, "PROG": 20, "PYME": -5}
+        "Juan Carlos Blanco": {"emoji": "⚪", "FG": -10, "TR": 10, "ET": 5, "PN": 10, "PC": 20, "PE": 20, "EA": -20, "CP": -20, "SO": 5, "REL": 5, "JUV": -10, "EMP": -10, "PROG": 20, "PYME": -5},
+        "Turco García": {"emoji": "⚽", "FG": -10, "TR": 5, "ET": 5, "PN": -10, "PC": 10, "PE": 20, "EA": 5, "CP": 0, "SO": 0, "REL": 15, "JUV": 25, "EMP": -20, "PROG": -5, "PYME": 0},
+        "R. Caruso Lombardi": {"emoji": "💨", "FG": -45, "TR": -5, "ET": 5, "PN": 5, "PC": 20, "PE": -10, "EA": 15, "CP": -20, "SO": -20, "REL": 0, "JUV": 35, "EMP": -10, "PROG": 5, "PYME": -10},
+        "Leopoldo Moreau": {"emoji": "🦊", "FG": 20, "TR": 15, "ET": 20, "PN": 10, "PC": -40, "PE": 20, "EA": -10, "CP": -10, "SO": -10, "REL": -20, "JUV": -10, "EMP": 0, "PROG": 25, "PYME": 10},
+        "Margarita Stolbizer": {"emoji": "👜", "FG": 20, "TR": 10, "ET": 20, "PN": 5, "PC": -15, "PE": 15, "EA": 0, "CP": -15, "SO": 0, "REL": -10, "JUV": 5, "EMP": -10, "PROG": 20, "PYME": 10},
+        "Sergio Abrevaya": {"emoji": "👓", "FG": 15, "TR": 10, "ET": 10, "PN": 5, "PC": -30, "PE": 15, "EA": -10, "CP": -20, "SO": -10, "REL": -5, "JUV": 0, "EMP": -10, "PROG": 15, "PYME": 20},
+        "Amalia Granata": {"emoji": "💙", "FG": 5, "TR": -10, "ET": 0, "PN": 25, "PC": -30, "PE": -15, "EA": -40, "CP": 5, "SO": 30, "REL": 35, "JUV": 10, "EMP": -10, "PROG": -25, "PYME": 20},
+        "Alberto Rodríguez Saá": {"emoji": "🏞️", "FG": 25, "TR": 20, "ET": -15, "PN": -20, "PC": 10, "PE": -15, "EA": 15, "CP": 15, "SO": 10, "REL": 10, "JUV": -25, "EMP": 10, "PROG": 0, "PYME": 15},
+        "José Luis Ramón": {"emoji": "📢", "FG": 15, "TR": -5, "ET": 10, "PN": 5, "PC": 30, "PE": 15, "EA": -20, "CP": -20, "SO": -10, "REL": -5, "JUV": 10, "EMP": -15, "PROG": 10, "PYME": 10},
+        "Luis Rosales": {"emoji": "👔", "FG": 15, "TR": 5, "ET": 10, "PN": -20, "PC": 5, "PE": -25, "EA": 5, "CP": -20, "SO": 10, "REL": 5, "JUV": -25, "EMP": 5, "PROG": -10, "PYME": 15},
+        "Andres Passamonti": {"emoji": "🔵", "FG": 10, "TR": 0, "ET": 5, "PN": 5, "PC": 25, "PE": -5, "EA": 0, "CP": -10, "SO": 10, "REL": 10, "JUV": -10, "EMP": 5, "PROG": -10, "PYME": 5},
+        "Monica Fein": {"emoji": "🌹", "FG": 20, "TR": 10, "ET": 25, "PN": 10, "PC": 0, "PE": 25, "EA": -20, "CP": -15, "SO": -20, "REL": -20, "JUV": 10, "EMP": -10, "PROG": 35, "PYME": 15},
+        "José Bordón": {"emoji": "🍷", "FG": 30, "TR": 10, "ET": 0, "PN": 15, "PC": -15, "PE": -5, "EA": 5, "CP": 10, "SO": 10, "REL": 5, "JUV": -15, "EMP": 10, "PROG": 5, "PYME": 10},
+        "Chacho Álvarez": {"emoji": "✌️", "FG": -25, "TR": 5, "ET": -15, "PN": -15, "PC": 35, "PE": 10, "EA": 25, "CP": 25, "SO": -25, "REL": -10, "JUV": -5, "EMP": -5, "PROG": 0, "PYME": 10},
+        "Carlos Zapata": {"emoji": "🎩", "FG": -15, "TR": 5, "ET": 10, "PN": 15, "PC": 20, "PE": -35, "EA": 10, "CP": 5, "SO": 20, "REL": 20, "JUV": -25, "EMP": 10, "PROG": -25, "PYME": 25},
+        "Alfredo Olmedo": {"emoji": "🚜", "FG": -10, "TR": 10, "ET": -15, "PN": 25, "PC": -10, "PE": -15, "EA": 10, "CP": -10, "SO": 35, "REL": 50, "JUV": -30, "EMP": 15, "PROG": -45, "PYME": 20},
+        "Candidato Independiente": {"emoji": "👤", "FG": 0, "TR": 0, "ET": 0, "PN": 0, "PC": 0, "PE": 0, "EA": 0, "CP": 0, "SO": 0, "REL": 0, "JUV": 0, "EMP": 0, "PROG": 0, "PYME": 0}
     }},
     "ESPECIALES": {"color": "#FFD700", "candidatos": {
         "Palito Ortega": {"emoji": "🎤", "FG": 15, "TR": 20, "ET": 10, "PN": 15, "PC": 25, "PE": 10, "EA": -20, "CP": 30, "SO": 5, "REL": 20, "JUV": -15, "EMP": 5, "PROG": 15, "PYME": 20},
@@ -266,8 +281,12 @@ PARTIDOS = {
         "Nancy Pazos": {"emoji": "👚", "FG": -15, "TR": 0, "ET": 15, "PN": 0, "PC": -25, "PE": 25, "EA": -25, "CP": 5, "SO": -20, "REL": -35, "JUV": 15, "EMP": -15, "PROG": 45, "PYME": 5},
         "Juan R. Riquelme": {"emoji": "🔟", "FG": -15, "TR": 10, "ET": 35, "PN": 0, "PC": 25, "PE": 35, "EA": -45, "CP": 25, "SO": -20, "REL": 0, "JUV": 15, "EMP": 5, "PROG": 25, "PYME": 5},
         "Chino Luna": {"emoji": "⚽", "FG": 15, "TR": 5, "ET": -20, "PN": 5, "PC": 10, "PE": -5, "EA": 25, "CP": -40, "SO": 5, "REL": 0, "JUV": 20, "EMP": 10, "PROG": -25, "PYME": -20},
-        "Ricardo Caruso Lombardi": {"emoji": "💨", "FG": -45, "TR": -5, "ET": 5, "PN": 5, "PC": 20, "PE": -5, "EA": 15, "CP": -20, "SO": -20, "REL": 0, "JUV": 35, "EMP": -10, "PROG": 5, "PYME": -10},
+        "Alejandro Fantino": {"emoji": "⚔️", "FG": 15, "TR": 5, "ET": -20, "PN": 10, "PC": 25, "PE": -30, "EA": 0, "CP": -10, "SO": 5, "REL": 0, "JUV": 35, "EMP": 35, "PROG": -25, "PYME": -20},
+        "Ailén Barbani": {"emoji": "👩‍🎤", "FG": -45, "TR": 5, "ET": 40, "PN": -5, "PC": -25, "PE": 35, "EA": -55, "CP": -35, "SO": -35, "REL": -50, "JUV": 70, "EMP": -65, "PROG": 25, "PYME": -20},
         "Claudio 'Turco' Garcia": {"emoji": "⚽", "FG": -25, "TR": 5, "ET": 5, "PN": -10, "PC": 10, "PE": 20, "EA": 5, "CP": 0, "SO": 0, "REL": 15, "JUV": 25, "EMP": -20, "PROG": -5, "PYME": 0},
+        "Hermes Binner": {"emoji": "🌹", "FG": -10, "TR": 25, "ET": 35, "PN": 20, "PC": 30, "PE": 30, "EA": -5, "CP": -10, "SO": -20, "REL": -10, "JUV": 10, "EMP": -10, "PROG": 35, "PYME": 15},
+        "Ricardo Balbín": {"emoji": "👴", "FG": 45, "TR": 10, "ET": 20, "PN": 5, "PC": -10, "PE": 10, "EA": 50, "CP": -50, "SO": 10, "REL": -5, "JUV": -25, "EMP": -5, "PROG": -5, "PYME": 5},
+        "Mohamed Alí Seineldin": {"emoji": "🔫", "FG": -45, "TR": 10, "ET": -15, "PN": 30, "PC": -15, "PE": -10, "EA": -5, "CP": -5, "SO": 60, "REL": 50, "JUV": -50, "EMP": -30, "PROG": -40, "PYME": 5},
         "Scioli Presidente": {"emoji": "🦾", "FG": 30, "TR": 10, "ET": 25, "PN": 25, "PC": 50, "PE": 25, "EA": -5, "CP": 50, "SO": 5, "REL": 25, "JUV": 25, "EMP": -10, "PROG": 25, "PYME": -10},
         "Bullrich Montonera": {"emoji": "💣", "FG": -50, "TR": 5, "ET": 10, "PN": 5, "PC": -35, "PE": 15, "EA": -10, "CP": -5, "SO": 50, "REL": -10, "JUV": 15, "EMP": -45, "PROG": 10, "PYME": -20},
         "Luis Juez (Mix)": {"emoji": "🌭", "FG": 5, "TR": -5, "ET": 5, "PN": -5, "PC": 5, "PE": -5, "EA": 5, "CP": 5, "SO": -5, "REL": 5, "JUV": 0, "EMP": 5, "PROG": 5, "PYME": -5},
@@ -279,11 +298,13 @@ PARTIDOS = {
         "Lousteau 125": {"emoji": "📉", "FG": -20, "TR": -50, "ET": 10, "PN": -150, "PC": 10, "PE": 35, "EA": -20, "CP": -30, "SO": 0, "REL": -20, "JUV": 10, "EMP": -50, "PROG": 25, "PYME": -50},
         "Cristina Presa": {"emoji": "⛓️", "FG": -30, "TR": -30, "ET": -30, "PN": -30, "PC": -30, "PE": -30, "EA": -30, "CP": -30, "SO": -30, "REL": -30, "JUV": -30, "EMP": -30, "PROG": -30, "PYME": -30},
         "Perón Exilio": {"emoji": "✈️", "FG": -72, "TR": 72, "ET": 72, "PN": 72, "PC": -72, "PE": 72, "EA": -72, "CP": 72, "SO": -72, "REL": -72, "JUV": 72, "EMP": -72, "PROG": 72, "PYME": 72},
+        "Manuel Belgrano": {"emoji": "🇦🇷", "FG": 50, "TR": 75, "ET": 60, "PN": 55, "PC": 100, "PE": 55, "EA": 100, "CP": 100, "SO": 50, "REL": 50, "JUV": 50, "EMP": 0, "PROG": 50, "PYME": 0},
+        "José de San Martín": {"emoji": "🗡️", "FG": 100, "TR": 75, "ET": 75, "PN": 75, "PC": 75, "PE": 75, "EA": 75, "CP": 75, "SO": 100, "REL": 75, "JUV": 75, "EMP": 75, "PROG": 75, "PYME": 75},
         "Cornelio Saavedra": {"emoji": "🎩", "FG": 75, "TR": 50, "ET": 50, "PN": 50, "PC": 50, "PE": 50, "EA": 50, "CP": 50, "SO": 100, "REL": 50, "JUV": 50, "EMP": 50, "PROG": 50, "PYME": 50},
         "Juana Azurduy": {"emoji": "⚔️", "FG": 25, "TR": 30, "ET": 20, "PN": 15, "PC": 40, "PE": 40, "EA": 0, "CP": 25, "SO": 25, "REL": 0, "JUV": 50, "EMP": 0, "PROG": 75, "PYME": 0},
         "Juan M. de Rosas": {"emoji": "🌹", "FG": 200, "TR": 10, "ET": 10, "PN": 50, "PC": 25, "PE": 25, "EA": -25, "CP": 5, "SO": 100, "REL": 100, "JUV": 25, "EMP": 0, "PROG": 10, "PYME": 0},
-        "Manuel Belgrano": {"emoji": "🇦🇷", "FG": 80, "TR": 20, "ET": 50, "PN": 50, "PC": 50, "PE": 50, "EA": 20, "CP": 20, "SO": 50, "REL": 50, "JUV": 50, "EMP": 20, "PROG": 50, "PYME": 20},
-        "San Martín": {"emoji": "⚔️", "FG": 100, "TR": 20, "ET": 20, "PN": 20, "PC": 50, "PE": 50, "EA": 20, "CP": 20, "SO": 100, "REL": 50, "JUV": 20, "EMP": 20, "PROG": 50, "PYME": 20}
+        "PDBCEM": {"emoji": "🎲", "FG": 45, "TR": 15, "ET": 35, "PN": 50, "PC": 40, "PE": 20, "EA": 5, "CP": 5, "SO": 30, "REL": -5, "JUV": 30, "EMP": -10, "PROG": 60, "PYME": 15},
+        "MILICHO CHORRO": {"emoji": "👮", "FG": -50, "TR": -50, "ET": -50, "PN": -50, "PC": -50, "PE": -50, "EA": -50, "CP": -50, "SO": -50, "REL": -50, "JUV": -50, "EMP": -50, "PROG": -50, "PYME": -50}
     }},
     "HIST": {"color": "#DAA520", "candidatos": {
         "Bernardino Rivadavia": {"emoji": "🪑", "FG": -50, "TR": 0, "ET": 25, "PN": -5, "PC": 35, "PE": 10, "EA": 20, "CP": -10, "SO": 20, "REL": 25, "JUV": 0, "EMP": 40, "PROG": -20, "PYME": 0},
@@ -350,7 +371,6 @@ def calcular_afinidad(cand, tipo, nombre_entidad):
     return score
 
 def update_owners():
-    # Provincias
     for p in MAPA_DATA:
         slots = st.session_state.slots[p]
         mx = max(slots.values()) if slots else 0
@@ -361,13 +381,11 @@ def update_owners():
                 st.session_state.owners[p] = lideres[0]
         else:
             st.session_state.owners[p] = None
-            
-    # Grupos Sociales
     for g in SOCIAL_GROUPS:
         slots = st.session_state.social_slots[g]
-        max_f = max(slots.values()) if slots else 0
-        if max_f >= 3:
-            lideres = [c for c, q in slots.items() if q == max_f]
+        mx = max(slots.values()) if slots else 0
+        if mx >= 3:
+            lideres = [c for c, q in slots.items() if q == mx]
             curr = st.session_state.social_owners[g]
             if curr not in lideres:
                 st.session_state.social_owners[g] = lideres[0]
@@ -421,45 +439,33 @@ def check_election_readiness():
 def eliminar_candidato(nombre):
     if nombre in st.session_state.p:
         del st.session_state.p[nombre]
-    
     for p in MAPA_DATA:
         if nombre in st.session_state.slots[p]:
-            if st.session_state.slots[p][nombre] >= 10:
-                st.session_state.hard_locked[p] = False
-            del st.session_state.slots[p][nombre]
-
+            if st.session_state.slots[p].get(nombre, 0) >= 10: st.session_state.hard_locked[p] = False
+            if nombre in st.session_state.slots[p]: del st.session_state.slots[p][nombre]
     for g in SOCIAL_GROUPS:
         if nombre in st.session_state.social_slots[g]:
-            if st.session_state.social_slots[g][nombre] >= 10:
-                st.session_state.hard_locked[g] = False
-            del st.session_state.social_slots[g][nombre]
-    
+            if st.session_state.social_slots[g].get(nombre, 0) >= 10: st.session_state.hard_locked[g] = False
+            if nombre in st.session_state.social_slots[g]: del st.session_state.social_slots[g][nombre]
     if nombre in st.session_state.ai_conflict_memory:
         del st.session_state.ai_conflict_memory[nombre]
-
     update_owners()
 
 def calcular_control_grupos():
     fuerza_grupos = {code: {c: 0 for c in st.session_state.p} for code in STATE_GROUPS}
     total_votos_grupo = {code: 0 for code in STATE_GROUPS}
-
     for p_name, p_data in MAPA_DATA.items():
         grupos_prov = PROV_TO_GROUP_RAW.get(p_name, [])
         for g in grupos_prov:
             total_votos_grupo[g] += p_data["votos"]
-
     for p_name, owner in st.session_state.owners.items():
         if not owner or owner not in st.session_state.p: continue
-        
         fichas_owner = st.session_state.slots[p_name].get(owner, 0)
         if fichas_owner < 3: continue 
-        
         grupos_prov = PROV_TO_GROUP_RAW.get(p_name, [])
         fuerza = MAPA_DATA[p_name]["votos"] 
-        
         for g in grupos_prov:
             fuerza_grupos[g][owner] += fuerza
-
     return fuerza_grupos, total_votos_grupo
 
 def procesar_turno():
@@ -473,8 +479,6 @@ def procesar_turno():
         st.session_state.ai_conflict_memory = {c: {} for c in st.session_state.p}
 
     is_late_game = st.session_state.turno >= 15
-
-    # 1. GENERAR OBJETIVOS DE IA (Estrategia de Grupos)
     fuerza_grupos, total_votos_group = calcular_control_grupos()
 
     for cand, info in st.session_state.p.items():
@@ -482,20 +486,21 @@ def procesar_turno():
             dinero_actual = get_total_money(cand)
             stats = get_candidate_stats(cand)
             
-            # --- ESTRATEGIA TERRITORIAL (Grand Strategy) ---
-            # Identificar qué grupos quiere dominar la IA
+            oportunidades = []
+
+            # Grupos deseados
             grupos_deseados = []
             for g, data in STATE_GROUPS.items():
-                if stats.get(g, 0) > 0: # Si tiene afinidad positiva
-                    # Calcular cuan cerca esta de ganar el grupo
+                if stats.get(g, 0) > 0:
                     votos_mios = fuerza_grupos[g][cand]
                     total = total_votos_group[g]
                     distancia = (total * 0.51) - votos_mios
-                    prioridad = stats.get(g, 0) + (1000 if distancia <= 0 else 0) # Prioriza mantener lo ganado
+                    prioridad = stats.get(g, 0) + (1000 if distancia <= 0 else 0)
                     grupos_deseados.append((prioridad, g))
             grupos_deseados.sort(reverse=True)
-            
-            objetivos_prov = []
+            top_grupos = [x[1] for x in grupos_deseados[:3]]
+
+            # Provincias
             for p in MAPA_DATA:
                 fichas_mias = st.session_state.slots[p].get(cand, 0)
                 if fichas_mias >= 10: continue
@@ -507,51 +512,27 @@ def procesar_turno():
                     total_fichas_prov += q
                     if c != cand and q > lider_enemigo: lider_enemigo = q
                 
-                # --- Puntuación Base ---
                 afinidad = calcular_afinidad(cand, "PROVINCIA", p)
                 votos = MAPA_DATA[p]["votos"]
                 score = votos * 50 + afinidad * 5 
                 
-                # --- Bonus por Estrategia de Grupo ---
                 prov_grupos = PROV_TO_GROUP_RAW.get(p, [])
-                for prio, g_code in grupos_deseados[:3]: # Mira sus top 3 grupos
-                    if g_code in prov_grupos:
-                        score += 2000 # Gran incentivo para completar grupos
-                
-                # --- Lógica de Conflicto y Retirada ---
+                for g_code in top_grupos:
+                    if g_code in prov_grupos: score += 2000
+
                 conflict_count = st.session_state.ai_conflict_memory[cand].get(p, 0)
                 if conflict_count >= 2: score -= 500000 
                 elif conflict_count == 1: score -= 1000
                 
-                # Retirada si el enemigo es muy fuerte
                 if lider_enemigo >= 7 and fichas_mias < 3: score -= 10000
-
-                # --- Oportunismo ---
-                if total_fichas_prov == 0: score += 3000 # Agarrar tierra de nadie
-                if fichas_mias > lider_enemigo and fichas_mias >= 3: score += 5000 # Cerrar puerta
-                if lider_enemigo >= 8: score += 2000 # Intentar bloquear al rival (arriesgado)
+                if total_fichas_prov == 0: score += 3000 
+                if fichas_mias > lider_enemigo and fichas_mias >= 3: score += 5000 
+                if lider_enemigo >= 8: score += 2000 
                 
-                # --- Personalidad Random ---
                 score *= random.uniform(0.9, 1.15)
+                oportunidades.append({"tipo": "PROVINCIA", "id": p, "score": score, "costo": COSTOS_FIJOS[p]})
 
-                objetivos_prov.append((score, p))
-            
-            objetivos_prov.sort(reverse=True)
-            
-            # --- LISTA UNIFICADA DE OPORTUNIDADES ---
-            # Vamos a mezclar provincias y grupos sociales
-            oportunidades = []
-
-            # Agregar Provincias a la lista
-            for score, p in objetivos_prov:
-                oportunidades.append({
-                    "tipo": "PROVINCIA",
-                    "id": p,
-                    "score": score,
-                    "costo": COSTOS_FIJOS[p]
-                })
-
-            # Agregar Grupos Sociales a la lista
+            # Social
             for g in SOCIAL_GROUPS:
                 fichas_mias = st.session_state.social_slots[g].get(cand, 0)
                 if fichas_mias >= 10: continue
@@ -562,40 +543,24 @@ def procesar_turno():
                     if c_rival != cand and q > fichas_enemigo: fichas_enemigo = q
 
                 afinidad = calcular_afinidad(cand, "SOCIAL", g)
-                
-                # Score base social
                 social_score = (SOCIAL_GROUPS[g]["renta"] / 20) + (afinidad * 50)
-                
                 if fichas_enemigo >= 8 and fichas_mias > 0: social_score += 1500 
                 elif fichas_mias >= 8: social_score += 1000 
                 elif fichas_enemigo > fichas_mias: social_score += 500
                 
-                # Personalidad
                 social_score *= random.uniform(0.9, 1.15)
-
-                oportunidades.append({
-                    "tipo": "SOCIAL",
-                    "id": g,
-                    "score": social_score,
-                    "costo": SOCIAL_GROUPS[g]["costo"]
-                })
+                oportunidades.append({"tipo": "SOCIAL", "id": g, "score": social_score, "costo": SOCIAL_GROUPS[g]["costo"]})
             
-            # Ordenar todo por score descendente
             oportunidades.sort(key=lambda x: x["score"], reverse=True)
 
-            # --- EJECUCIÓN DE COMPRAS ---
-            # Umbral de Ahorro Dinámico
             umbral_ahorro = 20000 
             if any(v >= 2 for v in st.session_state.ai_conflict_memory[cand].values()):
                 umbral_ahorro = 80000 
 
             for op in oportunidades:
                 if dinero_actual < umbral_ahorro: break
-
                 if dinero_actual >= op["costo"] and op["score"] > 0:
                     target = op["id"]
-                    
-                    # Calcular limite de compra
                     if op["tipo"] == "PROVINCIA":
                         curr = st.session_state.slots[target].get(cand, 0)
                         landed = cand in st.session_state.landed_status.get(target, [])
@@ -604,13 +569,10 @@ def procesar_turno():
                         landed = cand in st.session_state.landed_status.get(target, [])
                     
                     limit = 2 if (curr == 0 and not landed) else (10-curr)
-                    
-                    # Decisión de cantidad
                     qty = 1
                     if op["score"] >= 4000: qty = min(limit, int(dinero_actual / op["costo"]))
                     elif op["score"] > 2000: qty = min(limit, 2)
                     
-                    # Ejecutar
                     if qty > 0 and check_solvencia(cand, target, qty, op["tipo"] == "SOCIAL"):
                         if op["tipo"] == "PROVINCIA":
                             inversiones_turno[target][cand] = inversiones_turno[target].get(cand, 0) + qty
@@ -862,25 +824,76 @@ else:
             st.write(f"**{c}**: {v} votos | ${d:,}")
             
     with tab_spy:
-        target = st.sidebar.selectbox("Ver:", list(st.session_state.p.keys()))
+        # PESTAÑA ESPIONAJE MEJORADA
+        target = st.selectbox("Seleccionar Candidato:", list(st.session_state.p.keys()))
         stats = get_candidate_stats(target)
+        
+        st.markdown(f"### 📊 Stats de {target}")
         for k, v in stats.items():
             if k != "emoji":
                 name = STATE_GROUPS.get(k, {}).get("nombre", SOCIAL_GROUPS.get(k, {}).get("nombre", k))
                 col = "green" if v > 0 else "red"
-                st.sidebar.markdown(f":{col}[{name}: {v:+}%]")
+                st.markdown(f":{col}[{name}: {v:+}%]")
+        
+        st.markdown("---")
+        st.markdown("### 🗺️ Inversiones")
+        found_inv = False
+        
+        st.markdown("**Provincias:**")
+        for p_name, slots in st.session_state.slots.items():
+            fichas = slots.get(target, 0)
+            if fichas > 0:
+                found_inv = True
+                estado = f"{fichas} fichas"
+                if st.session_state.hard_locked[p_name] and fichas >= 10:
+                    estado = "🔒 CERRADO (10 fichas)"
+                st.write(f"- **{p_name}**: {estado}")
+
+        st.markdown("**Grupos Sociales:**")
+        for g_code, slots in st.session_state.social_slots.items():
+            fichas = slots.get(target, 0)
+            if fichas > 0:
+                found_inv = True
+                g_name = SOCIAL_GROUPS[g_code]["nombre"]
+                estado = f"{fichas} fichas"
+                if st.session_state.hard_locked.get(g_code, False) and fichas >= 10:
+                    estado = "🔒 CERRADO (10 fichas)"
+                st.write(f"- **{g_name}**: {estado}")
+                
+        if not found_inv:
+            st.caption("No tiene inversiones activas.")
 
     with tab_terr:
+        # PESTAÑA TERRITORIO MEJORADA
         fuerza_grupos, total_votos_g = calcular_control_grupos()
-        for g, data in STATE_GROUPS.items():
-            with st.sidebar.expander(f"{data['color']} {data['nombre']}"):
-                total = total_votos_g[g]
+        
+        for g_code, data in STATE_GROUPS.items():
+            with st.expander(f"{data['color']} {data['nombre']}"):
+                # 1. Lista de Provincias del Grupo
+                provs_in_group = [p for p, groups in PROV_TO_GROUP_RAW.items() if g_code in groups]
+                st.markdown("**Provincias:**")
+                for p in provs_in_group:
+                    owner = st.session_state.owners[p]
+                    emoji_owner = "⬜"
+                    if owner:
+                        emoji_owner = get_candidate_stats(owner).get("emoji", "🟦")
+                    st.write(f"{emoji_owner} **{p}**")
+                
+                st.markdown("---")
+                # 2. Porcentajes de Control
+                st.markdown("**Control del Grupo:**")
+                total = total_votos_g[g_code]
                 if total > 0:
-                    for c, f in sorted(fuerza_grupos[g].items(), key=lambda x: x[1], reverse=True):
+                    ranking_grupo = sorted(fuerza_grupos[g_code].items(), key=lambda x: x[1], reverse=True)
+                    has_data = False
+                    for c, f in ranking_grupo:
                         if f > 0:
-                            pct = f / total
-                            st.write(f"{c}: {int(pct*100)}%")
-                            st.progress(min(pct, 1.0))
+                            has_data = True
+                            pct = (f / total) * 100
+                            st.write(f"{c}: {pct:.1f}%")
+                            st.progress(min(f/total, 1.0))
+                    if not has_data:
+                        st.caption("Nadie controla votos en este grupo aún.")
 
     # MAIN
     try: st.image("rosca politica.jpg", use_container_width=True)
@@ -888,7 +901,6 @@ else:
     
     if st.session_state.get('election_pending', False):
         st.markdown("<div class='warning-msg'>🗳️ ¡ATENCIÓN! EL MAPA ESTÁ COMPLETO. LA VOTACIÓN SERÁ AL FINALIZAR ESTE TURNO.</div>", unsafe_allow_html=True)
-
     
     # --- VISUALIZACIÓN DE CAJA Y GASTOS ---
     col_caja, col_gasto, col_btn = st.columns(3)
@@ -925,29 +937,47 @@ else:
             if total_gasto_display > dinero_disp: st.error("No alcanza")
             else: procesar_turno(); st.rerun()
 
-    tab1, tab2 = st.tabs(["🗺️ Mapa", "🗣️ Grupos Sociales"])
+    tab1, tab2 = st.tabs(["🗺️ Mapa Electoral", "🗣️ Grupos Sociales"])
 
     with tab1:
+        # CONTENEDOR DEL MAPA VISUAL
         if st.session_state.selected_prov is None:
-            for r in range(12):
-                cols = st.columns(5)
+            # Usar st.columns para simular la grilla visualmente.
+            for r in range(12): # 12 filas
+                cols = st.columns(5) # 5 columnas
                 for c in range(5):
-                    p_n = next((n for n, d in MAPA_DATA.items() if d["pos"] == (r, c)), None)
-                    if p_n:
-                        own = st.session_state.owners[p_n]
-                        e = get_candidate_stats(own)["emoji"] if own else "⬜"
-                        grps = PROV_TO_GROUP_RAW.get(p_n, [])
-                        dots = "".join([STATE_GROUPS[g]["color"] for g in grps])
-                        cost_k = int(COSTOS_FIJOS[p_n]/1000)
-                        
-                        votos_display = MAPA_DATA[p_n]["votos"]
-                        btn_label = f"{dots} {e} {p_n} ({votos_display}v)\n${cost_k}k"
-                        
-                        if cols[c].button(btn_label, key=p_n):
-                            st.session_state.selected_prov = p_n; st.rerun()
+                    # Buscar si hay provincia en esta coord
+                    prov_found = None
+                    for p_name, data in MAPA_DATA.items():
+                        if data["pos"] == (r, c):
+                            prov_found = p_name
+                            break
+                    
+                    with cols[c]:
+                        if prov_found:
+                            data = MAPA_DATA[prov_found]
+                            owner = st.session_state.owners[prov_found]
+                            
+                            # GENERAR GRUPOS PARA EL BOTÓN
+                            grps = PROV_TO_GROUP_RAW.get(prov_found, [])
+                            grps_str = "-".join(grps)
+
+                            color_emoji = "⬜"
+                            if owner:
+                                stats = get_candidate_stats(owner)
+                                color_emoji = stats.get("emoji", "🟦")
+                            
+                            # Botón con estilo
+                            label = f"{prov_found}\n{data['votos']}v | {grps_str}\n{color_emoji}"
+                            if st.button(label, key=f"btn_{prov_found}", use_container_width=True):
+                                st.session_state.selected_prov = prov_found
+                                st.rerun()
+                        else:
+                            # Espacio vacío
+                            st.write("")
         else:
             p = st.session_state.selected_prov
-            st.button("🔙", on_click=lambda: setattr(st.session_state, 'selected_prov', None))
+            st.button("🔙 Volver al Mapa", on_click=lambda: setattr(st.session_state, 'selected_prov', None))
             st.header(p)
             
             # Info detallada de la provincia seleccionada
@@ -1032,17 +1062,6 @@ else:
                             st.session_state.pending_user[g_code] -= 1
                             st.rerun()
                 st.divider()
-
-    st.divider()
-    st.subheader("🌐 Panorama Nacional")
-    cols_global = st.columns(len(st.session_state.p))
-    update_votos()
-    sorted_global = sorted(st.session_state.votos_resolved.items(), key=lambda x: x[1], reverse=True)
-    
-    for i, (c, v) in enumerate(sorted_global):
-        if c in st.session_state.p:
-            with cols_global[i]:
-                st.metric(f"{get_candidate_stats(c)['emoji']} {c}", f"{v} Votos", f"${get_total_money(c):,}")
 
     if st.session_state.last_report:
         with st.expander("Reporte"):
