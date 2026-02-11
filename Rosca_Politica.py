@@ -9,36 +9,76 @@ PRESUPUESTO_INICIAL = 250000
 RENTA_BASE_TURNO = 250000
 VOTOS_PARA_GANAR = 189 
 
+# --- AUDIO (EFECTOS) ---
+SFX_WIN = "https://www.myinstants.com/media/sounds/aplausos_1.mp3"
+SFX_LOSE = "https://www.myinstants.com/media/sounds/boo.mp3"
+
 # --- ESTILOS CSS ---
 st.markdown("""
     <style>
-    /* Estilo de Botones del Mapa */
+    /* Estilo General */
+    .main { background-color: #f5f5f5; }
+    
+    /* Botones del Mapa - FORZAR TEXTO NEGRO */
     .stButton>button { 
         width: 100%; 
         border-radius: 6px; 
         font-weight: 700; 
-        text-align: center; /* Centrado para que la abreviatura se vea bien */
+        text-align: left; 
         white-space: pre-wrap; 
-        height: 70px !important;
-        padding: 2px;
+        height: 75px !important;
+        padding: 5px 8px;
         font-size: 0.8rem;
-        border: 1px solid rgba(0,0,0,0.2);
+        border: 1px solid #ccc;
+        background-color: white !important;
+        color: #000000 !important;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         line-height: 1.2;
     }
     
     .stButton>button:hover {
         transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        border-color: #ffc107;
-        z-index: 10;
+        border-color: #333;
+        z-index: 5;
+    }
+    
+    /* Paneles de Reporte - TEXTO NEGRO */
+    .report-card { 
+        background-color: white; 
+        padding: 15px; 
+        border-radius: 8px; 
+        border-left: 5px solid #666; 
+        margin-bottom: 10px; 
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        color: #000000 !important;
+    }
+    .report-conflict { border-left-color: #dc3545; background-color: #fff5f5; }
+    .report-invest { border-left-color: #28a745; background-color: #f0fff4; }
+    .report-change { border-left-color: #ffc107; background-color: #fff9db; }
+    
+    /* Barra de Progreso Superior */
+    .voto-bar-wrapper {
+        width: 100%;
+        background-color: #e0e0e0;
+        border-radius: 10px;
+        height: 25px;
+        margin-bottom: 20px;
+        position: relative;
+        overflow: hidden;
+    }
+    .voto-bar-fill {
+        height: 100%;
+        border-radius: 10px;
+        text-align: center;
+        color: white;
+        font-weight: bold;
+        line-height: 25px;
+        font-size: 0.9rem;
+        transition: width 0.5s;
+        min-width: 2%;
     }
 
-    /* Cards y Paneles */
-    .metric-card { background-color: #f8f9fa; padding: 10px; border-radius: 10px; border-left: 5px solid #333; }
-    div[data-testid="stMetricValue"] { font-size: 1.1rem; }
-
-    /* Pantallas Finales */
+    /* Avisos Finales */
     .win-msg {
         font-size: 35px; font-weight: 800; color: #155724; text-align: center;
         padding: 20px; border: 3px solid #c3e6cb; border-radius: 15px;
@@ -49,21 +89,46 @@ st.markdown("""
         padding: 20px; border: 3px solid #f5c6cb; border-radius: 15px;
         background-color: #f8d7da; margin-bottom: 20px;
     }
-    .warning-msg {
-        font-size: 1.2rem; font-weight: 700; color: #856404; text-align: center;
-        padding: 10px; border: 2px solid #ffeeba; border-radius: 10px;
-        background-color: #fff3cd; margin-bottom: 15px;
-    }
-
-    /* Cajas de Dinero */
-    .money-box { background-color: #e8f5e9; padding: 12px; border-radius: 8px; border: 1px solid #c8e6c9; color: #155724; }
-    .expense-box { background-color: #ffebee; padding: 12px; border-radius: 8px; border: 1px solid #dc3545; color: #721c24; }
-    .money-title { font-weight: 900; font-size: 1.1rem; margin-bottom: 5px; }
-    .money-item { font-family: monospace; font-size: 0.9rem; }
+    
+    /* Dinero */
+    .money-box { background-color: #e8f5e9; padding: 10px; border-radius: 10px; border: 1px solid #28a745; color: #155724; }
+    .expense-box { background-color: #ffebee; padding: 10px; border-radius: 10px; border: 1px solid #dc3545; color: #721c24; }
     </style>
 """, unsafe_allow_html=True)
 
-# --- 1. GRUPOS ---
+# --- 1. IDENTIDAD DE PARTIDOS ---
+PARTY_COLORS = {
+    "PJ": {"hex": "#1E88E5", "mark": "🟦", "name": "PJ"},
+    "LLA": {"hex": "#8E24AA", "mark": "🟪", "name": "LLA"},
+    "PRO": {"hex": "#FFD700", "mark": "🟨", "name": "PRO"},
+    "UCR": {"hex": "#2E7D32", "mark": "🟩", "name": "UCR"},
+    "FIT-U": {"hex": "#D32F2F", "mark": "🟥", "name": "FIT"},
+    "PN": {"hex": "#212121", "mark": "⬛", "name": "PN"},
+    "INDEPENDIENTES": {"hex": "#FF9800", "mark": "⚪", "name": "IND"},
+    "ESPECIALES": {"hex": "#9E9E9E", "mark": "⬜", "name": "ESP"},
+    "HIST": {"hex": "#795548", "mark": "🟫", "name": "HIST"}
+}
+
+def get_party_from_candidate(cand_name):
+    for p_key, p_data in PARTIDOS.items():
+        if cand_name in p_data["candidatos"]:
+            return p_key
+    return None
+
+def get_visual_id(cand_name):
+    """Devuelve [Marca Color] [Emoji]"""
+    if not cand_name: return "" 
+    p_key = get_party_from_candidate(cand_name)
+    mark = PARTY_COLORS[p_key]["mark"] if p_key else "⬜"
+    
+    # Buscar emoji
+    emoji = "👤"
+    if p_key:
+        emoji = PARTIDOS[p_key]["candidatos"][cand_name].get("emoji", "👤")
+    
+    return f"{mark} {emoji}"
+
+# --- 2. GRUPOS Y MAPA ---
 STATE_GROUPS = {
     "FG": {"nombre": "Federalismo y Gob.", "renta": 50000, "color": "🟢"},
     "TR": {"nombre": "Trabajo", "renta": 100000, "color": "🟠"},
@@ -84,7 +149,6 @@ SOCIAL_GROUPS = {
     "PYME": {"nombre": "Comerciantes y PyMEs", "costo": 75000, "renta": 37500, "color": "🏪"}
 }
 
-# --- 2. MAPA DE GRUPOS ---
 PROV_TO_GROUP_RAW = {
     "Jujuy": ["PE", "EA"], "Formosa": ["PE", "CP"], "Salta": ["FG", "PC"], "Chaco": ["PE", "CP"],
     "Misiones": ["FG", "PN"], "Tucumán": ["FG", "PN", "CP"], "Santiago del Estero": ["CP"],
@@ -97,7 +161,6 @@ PROV_TO_GROUP_RAW = {
     "Santa Cruz": ["PN", "PE", "CP"], "Tierra del Fuego": ["TR", "PE"]
 }
 
-# --- 3. COSTOS FIJOS ---
 COSTOS_FIJOS = {
     "Jujuy": 20000, "Formosa": 15000, "Salta": 35000, "Chaco": 25000, "Misiones": 35000,
     "Tucumán": 75000, "Santiago del Estero": 30000, "Corrientes": 30000, "La Rioja": 10000,
@@ -108,38 +171,37 @@ COSTOS_FIJOS = {
     "Santa Cruz": 10000, "Tierra del Fuego": 10000
 }
 
-# --- 4. MAPA DE VOTOS Y POSICIONES (CON ABREVIATURAS) ---
 MAPA_DATA = {
-    "Jujuy":      {"votos": 8,  "pos": (0, 0), "abbr": "JUJ"}, 
-    "Salta":      {"votos": 14, "pos": (1, 0), "abbr": "SAL"},
-    "Formosa":    {"votos": 6,  "pos": (1, 2), "abbr": "FOR"}, 
-    "Tucumán":    {"votos": 17, "pos": (2, 0), "abbr": "TUC"},
-    "Santiago del Estero": {"votos": 11, "pos": (2, 1), "abbr": "SDE"},
-    "Chaco":      {"votos": 11, "pos": (2, 2), "abbr": "CHA"},
-    "Misiones":   {"votos": 13, "pos": (2, 3), "abbr": "MIS"}, 
-    "Catamarca":  {"votos": 4,  "pos": (3, 0), "abbr": "CAT"},
-    "Santa Fe":   {"votos": 36, "pos": (3, 2), "abbr": "SFE"}, 
-    "Corrientes": {"votos": 12, "pos": (3, 3), "abbr": "CRR"},
-    "La Rioja":   {"votos": 4,  "pos": (4, 0), "abbr": "LRJ"},
-    "Córdoba":    {"votos": 40, "pos": (4, 1), "abbr": "CBA"}, 
-    "Entre Ríos": {"votos": 14, "pos": (4, 2), "abbr": "ERI"},
-    "San Juan":   {"votos": 8,  "pos": (5, 0), "abbr": "SJU"},
-    "San Luis":   {"votos": 6,  "pos": (5, 1), "abbr": "SLU"},
-    "PBA Norte":  {"votos": 28, "pos": (5, 3), "abbr": "PBA-N"},
-    "CABA":       {"votos": 31, "pos": (5, 4), "abbr": "CABA"},
-    "Mendoza":    {"votos": 20, "pos": (6, 0), "abbr": "MDZ"},
-    "PBA Oeste":  {"votos": 35, "pos": (6, 2), "abbr": "PBA-O"},
-    "PBA Centro": {"votos": 15, "pos": (6, 3), "abbr": "PBA-C"},
-    "La Pampa":   {"votos": 4,  "pos": (6, 1), "abbr": "LPA"},
-    "PBA Costa":  {"votos": 12, "pos": (7, 3), "abbr": "PBA-S"},
-    "Neuquén":    {"votos": 7,  "pos": (7, 0), "abbr": "NQN"},
-    "Río Negro":  {"votos": 8,  "pos": (8, 1), "abbr": "RNG"},
-    "Chubut":     {"votos": 6,  "pos": (9, 1), "abbr": "CHU"},
-    "Santa Cruz": {"votos": 3,  "pos": (10, 1), "abbr": "SCR"},
-    "Tierra del Fuego": {"votos": 3, "pos": (11, 2), "abbr": "TDF"}
+    "Jujuy": {"votos": 8, "pos": (0, 1), "abbr": "JUJ"}, 
+    "Formosa": {"votos": 6, "pos": (0, 3), "abbr": "FOR"},
+    "Salta": {"votos": 14, "pos": (1, 1), "abbr": "SAL"}, 
+    "Chaco": {"votos": 11, "pos": (1, 3), "abbr": "CHA"},
+    "Misiones": {"votos": 13, "pos": (1, 4), "abbr": "MIS"}, 
+    "Tucumán": {"votos": 17, "pos": (2, 1), "abbr": "TUC"},
+    "Santiago del Estero": {"votos": 11, "pos": (2, 2), "abbr": "SDE"}, 
+    "Corrientes": {"votos": 12, "pos": (2, 3), "abbr": "CRR"},
+    "La Rioja": {"votos": 4, "pos": (3, 0), "abbr": "LRJ"}, 
+    "Catamarca": {"votos": 4, "pos": (3, 1), "abbr": "CAT"},
+    "San Juan": {"votos": 8, "pos": (4, 0), "abbr": "SJU"}, 
+    "Santa Fe": {"votos": 36, "pos": (4, 2), "abbr": "SFE"},
+    "Entre Ríos": {"votos": 14, "pos": (4, 3), "abbr": "ERI"}, 
+    "San Luis": {"votos": 6, "pos": (5, 0), "abbr": "SLU"},
+    "Córdoba": {"votos": 40, "pos": (5, 1), "abbr": "CBA"}, 
+    "PBA Norte": {"votos": 28, "pos": (5, 2), "abbr": "PBA-N"},
+    "CABA": {"votos": 31, "pos": (5, 3), "abbr": "CABA"}, 
+    "Mendoza": {"votos": 20, "pos": (6, 0), "abbr": "MDZ"},
+    "PBA Oeste": {"votos": 35, "pos": (6, 1), "abbr": "PBA-O"}, 
+    "PBA Centro": {"votos": 15, "pos": (6, 2), "abbr": "PBA-C"},
+    "La Pampa": {"votos": 4, "pos": (7, 1), "abbr": "LPA"}, 
+    "PBA Costa": {"votos": 12, "pos": (7, 2), "abbr": "PBA-S"},
+    "Neuquén": {"votos": 7, "pos": (8, 0), "abbr": "NQN"}, 
+    "Río Negro": {"votos": 8, "pos": (8, 1), "abbr": "RNG"},
+    "Chubut": {"votos": 6, "pos": (9, 1), "abbr": "CHU"}, 
+    "Santa Cruz": {"votos": 3, "pos": (10, 1), "abbr": "SCR"},
+    "Tierra del Fuego": {"votos": 3, "pos": (11, 1), "abbr": "TDF"}
 }
 
-# --- CANDIDATOS ---
+# --- BASE DE DATOS DE CANDIDATOS ---
 PARTIDOS = {
     "PJ": {"color": "🔵", "candidatos": {
         "Cristina Kirchner": {"emoji": "✌️", "FG": 10, "TR": 15, "ET": 15, "PN": 15, "PC": -25, "PE": 20, "EA": -45, "CP": 15, "SO": -15, "REL": -5, "JUV": -5, "EMP": -25, "PROG": 30, "PYME": 10},
@@ -321,30 +383,10 @@ PARTIDOS = {
         "Chino Luna": {"emoji": "⚽", "FG": 15, "TR": 5, "ET": -20, "PN": 5, "PC": 10, "PE": -5, "EA": 25, "CP": -40, "SO": 5, "REL": 0, "JUV": 20, "EMP": 10, "PROG": -25, "PYME": -20},
         "Alejandro Fantino": {"emoji": "⚔️", "FG": 15, "TR": 5, "ET": -20, "PN": 10, "PC": 25, "PE": -30, "EA": 0, "CP": -10, "SO": 5, "REL": 0, "JUV": 35, "EMP": 35, "PROG": -25, "PYME": -20},
         "Ailén Barbani": {"emoji": "👩‍🎤", "FG": -45, "TR": 5, "ET": 40, "PN": -5, "PC": -25, "PE": 35, "EA": -55, "CP": -35, "SO": -35, "REL": -50, "JUV": 70, "EMP": -65, "PROG": 25, "PYME": -20},
+        "Claudio 'Turco' Garcia": {"emoji": "⚽", "FG": -25, "TR": 5, "ET": 5, "PN": -10, "PC": 10, "PE": 20, "EA": 5, "CP": 0, "SO": 0, "REL": 15, "JUV": 25, "EMP": -20, "PROG": -5, "PYME": 0},
         "Hermes Binner": {"emoji": "🌹", "FG": -10, "TR": 25, "ET": 35, "PN": 20, "PC": 30, "PE": 30, "EA": -5, "CP": -10, "SO": -20, "REL": -10, "JUV": 10, "EMP": -10, "PROG": 35, "PYME": 15},
         "Ricardo Balbín": {"emoji": "👴", "FG": 45, "TR": 10, "ET": 20, "PN": 5, "PC": -10, "PE": 10, "EA": 50, "CP": -50, "SO": 10, "REL": -5, "JUV": -25, "EMP": -5, "PROG": -5, "PYME": 5},
         "Mohamed Alí Seineldin": {"emoji": "🔫", "FG": -45, "TR": 10, "ET": -15, "PN": 30, "PC": -15, "PE": -10, "EA": -5, "CP": -5, "SO": 60, "REL": 50, "JUV": -50, "EMP": -30, "PROG": -40, "PYME": 5},
-        "Ofelia Fernandez": {"emoji": "🏳️‍🌈", "FG": -10, "TR": 10, "ET": 35, "PN": -5, "PC": -15, "PE": 20, "EA": -15, "CP": 5, "SO": -25, "REL": -30, "JUV": 50, "EMP": -30, "PROG": 60, "PYME": -5},
-        "Agustin Laje": {"emoji": "📖", "FG": -15, "TR": 5, "ET": -20, "PN": -35, "PC": 5, "PE": -45, "EA": 40, "CP": -35, "SO": 20, "REL": 35, "JUV": 25, "EMP": 30, "PROG": -50, "PYME": 25},
-        "Eva Perón": {"emoji": "👩", "FG": 20, "TR": 40, "ET": 20, "PN": 20, "PC": -10, "PE": 65, "EA": -60, "CP": 60, "SO": 0, "REL": 10, "JUV": 15, "EMP": -50, "PROG": 65, "PYME": -15},
-        "Juan B. Justo": {"emoji": "🌹", "FG": 15, "TR": 35, "ET": 30, "PN": 20, "PC": 20, "PE": 55, "EA": -30, "CP": -20, "SO": -10, "REL": -20, "JUV": 25, "EMP": -30, "PROG": 45, "PYME": -5},
-        "Leandro N. Alem": {"emoji": "🤠", "FG": 25, "TR": 25, "ET": 30, "PN": 10, "PC": 30, "PE": 10, "EA": 65, "CP": -25, "SO": -5, "REL": 0, "JUV": -15, "EMP": -10, "PROG": 25, "PYME": 25},
-        "Nahuel Moreno": {"emoji": "🔴", "FG": -15, "TR": 45, "ET": 35, "PN": 10, "PC": 10, "PE": 45, "EA": -30, "CP": -20, "SO": -40, "REL": -35, "JUV": 20, "EMP": -50, "PROG": 65, "PYME": -25},
-        "Álvaro Alsogaray": {"emoji": "📈", "FG": 10, "TR": -10, "ET": -15, "PN": 25, "PC": 5, "PE": -45, "EA": 45, "CP": -40, "SO": 15, "REL": 20, "JUV": 0, "EMP": 50, "PROG": -45, "PYME": 20},
-        "Lisandro de la Torre": {"emoji": "🦁", "FG": 10, "TR": 10, "ET": -15, "PN": 25, "PC": 25, "PE": -45, "EA": 45, "CP": -40, "SO": 15, "REL": 30, "JUV": 0, "EMP": 50, "PROG": -45, "PYME": 20},
-        "Jose Penelón": {"emoji": "☭", "FG": -10, "TR": 40, "ET": 30, "PN": 10, "PC": -10, "PE": 35, "EA": -15, "CP": 5, "SO": -25, "REL": -20, "JUV": 10, "EMP": -45, "PROG": 45, "PYME": -20},
-        "Oscar Alende": {"emoji": "💊", "FG": 25, "TR": 20, "ET": 35, "PN": 65, "PC": 20, "PE": 20, "EA": 10, "CP": 5, "SO": -5, "REL": -5, "JUV": 10, "EMP": -10, "PROG": 35, "PYME": 20},
-        "Guillermo Brown": {"emoji": "⚓", "FG": 25, "TR": 10, "ET": 15, "PN": 30, "PC": 35, "PE": 15, "EA": 10, "CP": 10, "SO": 65, "REL": 15, "JUV": -10, "EMP": 10, "PROG": 0, "PYME": 15},
-        "Miguel de Güemes": {"emoji": "🐎", "FG": 35, "TR": 25, "ET": 40, "PN": 20, "PC": 40, "PE": 20, "EA": 20, "CP": 20, "SO": 55, "REL": 25, "JUV": 0, "EMP": -5, "PROG": -10, "PYME": 25},
-        "Juan José Castelli": {"emoji": "🗣️", "FG": 10, "TR": 30, "ET": 35, "PN": 10, "PC": 15, "PE": 25, "EA": 5, "CP": 5, "SO": 10, "REL": -40, "JUV": 15, "EMP": -30, "PROG": 45, "PYME": -10},
-        "Juan José Paso": {"emoji": "📜", "FG": 70, "TR": 30, "ET": 35, "PN": 10, "PC": 15, "PE": 25, "EA": 5, "CP": 5, "SO": 10, "REL": 10, "JUV": 15, "EMP": 0, "PROG": 45, "PYME": 0},
-        "Mariano Moreno": {"emoji": "🔥", "FG": 20, "TR": 35, "ET": 40, "PN": 15, "PC": 15, "PE": 35, "EA": 15, "CP": 15, "SO": 10, "REL": 0, "JUV": 20, "EMP": -35, "PROG": 50, "PYME": -15},
-        "Juan Lavalle": {"emoji": "🗡️", "FG": -25, "TR": 10, "ET": 5, "PN": -5, "PC": 20, "PE": -10, "EA": 20, "CP": -20, "SO": 45, "REL": 10, "JUV": -10, "EMP": 5, "PROG": -25, "PYME": -5},
-        "José Artigas": {"emoji": "🇺🇾", "FG": 150, "TR": 25, "ET": 10, "PN": 20, "PC": 40, "PE": 15, "EA": 5, "CP": 10, "SO": 20, "REL": 15, "JUV": 0, "EMP": -15, "PROG": 20, "PYME": 30},
-        "Manuel Dorrego": {"emoji": "🎩", "FG": 50, "TR": 25, "ET": 25, "PN": 15, "PC": 30, "PE": 40, "EA": -10, "CP": 15, "SO": 20, "REL": 10, "JUV": -5, "EMP": -10, "PROG": 25, "PYME": 20},
-        "Martín Rodríguez": {"emoji": "⚔️", "FG": 50, "TR": 15, "ET": 10, "PN": 50, "PC": 50, "PE": 10, "EA": 10, "CP": 10, "SO": 25, "REL": 15, "JUV": -10, "EMP": 15, "PROG": -10, "PYME": 20},
-        "José Maria Paz": {"emoji": "🦾", "FG": -30, "TR": 20, "ET": 35, "PN": 10, "PC": 15, "PE": 15, "EA": 20, "CP": -15, "SO": 65, "REL": 10, "JUV": -10, "EMP": 10, "PROG": -20, "PYME": 10},
-        "Gregorio Lamadrid": {"emoji": "🐎", "FG": -45, "TR": 10, "ET": 40, "PN": 5, "PC": 10, "PE": 10, "EA": 15, "CP": -10, "SO": 100, "REL": 10, "JUV": -10, "EMP": 5, "PROG": -15, "PYME": 10},
         "Scioli Presidente": {"emoji": "🦾", "FG": 30, "TR": 10, "ET": 25, "PN": 25, "PC": 50, "PE": 25, "EA": -5, "CP": 50, "SO": 5, "REL": 25, "JUV": 25, "EMP": -10, "PROG": 25, "PYME": -10},
         "Bullrich Montonera": {"emoji": "💣", "FG": -50, "TR": 5, "ET": 10, "PN": 5, "PC": -35, "PE": 15, "EA": -10, "CP": -5, "SO": 50, "REL": -10, "JUV": 15, "EMP": -45, "PROG": 10, "PYME": -20},
         "Luis Juez (Mix)": {"emoji": "🌭", "FG": 5, "TR": -5, "ET": 5, "PN": -5, "PC": 5, "PE": -5, "EA": 5, "CP": 5, "SO": -5, "REL": 5, "JUV": 0, "EMP": 5, "PROG": 5, "PYME": -5},
@@ -364,7 +406,7 @@ PARTIDOS = {
         "PDBCEM": {"emoji": "🎲", "FG": 45, "TR": 15, "ET": 35, "PN": 50, "PC": 40, "PE": 20, "EA": 5, "CP": 5, "SO": 30, "REL": -5, "JUV": 30, "EMP": -10, "PROG": 60, "PYME": 15},
         "MILICHO CHORRO": {"emoji": "👮", "FG": -50, "TR": -50, "ET": -50, "PN": -50, "PC": -50, "PE": -50, "EA": -50, "CP": -50, "SO": -50, "REL": -50, "JUV": -50, "EMP": -50, "PROG": -50, "PYME": -50}
     }},
-     "HIST": {"color": "#DAA520", "candidatos": {
+    "HIST": {"color": "#DAA520", "candidatos": {
         "Bernardino Rivadavia": {"emoji": "🪑", "FG": -50, "TR": 0, "ET": 25, "PN": -5, "PC": 35, "PE": 10, "EA": 20, "CP": -10, "SO": 20, "REL": 25, "JUV": 0, "EMP": 40, "PROG": -20, "PYME": 0},
         "Vicente López": {"emoji": "🎶", "FG": 10, "TR": 0, "ET": 10, "PN": 0, "PC": 5, "PE": 5, "EA": 5, "CP": 0, "SO": 5, "REL": 10, "JUV": -20, "EMP": 5, "PROG": 0, "PYME": 5},
         "Justo José de Urquiza": {"emoji": "🚜", "FG": 20, "TR": -15, "ET": 10, "PN": 20, "PC": 35, "PE": 20, "EA": 15, "CP": -5, "SO": 45, "REL": 15, "JUV": -30, "EMP": 0, "PROG": 0, "PYME": 15},
@@ -403,7 +445,6 @@ PARTIDOS = {
     }}
 }
 
-
 # --- LÓGICA DE JUEGO ---
 
 def get_candidate_stats(cand_name):
@@ -430,6 +471,7 @@ def calcular_afinidad(cand, tipo, nombre_entidad):
     return score
 
 def update_owners():
+    # Provincias
     for p in MAPA_DATA:
         slots = st.session_state.slots[p]
         mx = max(slots.values()) if slots else 0
@@ -440,11 +482,13 @@ def update_owners():
                 st.session_state.owners[p] = lideres[0]
         else:
             st.session_state.owners[p] = None
+            
+    # Grupos Sociales
     for g in SOCIAL_GROUPS:
         slots = st.session_state.social_slots[g]
-        mx = max(slots.values()) if slots else 0
-        if mx >= 3:
-            lideres = [c for c, q in slots.items() if q == mx]
+        max_f = max(slots.values()) if slots else 0
+        if max_f >= 3:
+            lideres = [c for c, q in slots.items() if q == max_f]
             curr = st.session_state.social_owners[g]
             if curr not in lideres:
                 st.session_state.social_owners[g] = lideres[0]
@@ -498,37 +542,57 @@ def check_election_readiness():
 def eliminar_candidato(nombre):
     if nombre in st.session_state.p:
         del st.session_state.p[nombre]
+    
     for p in MAPA_DATA:
         if nombre in st.session_state.slots[p]:
-            if st.session_state.slots[p].get(nombre, 0) >= 10: st.session_state.hard_locked[p] = False
-            if nombre in st.session_state.slots[p]: del st.session_state.slots[p][nombre]
+            if st.session_state.slots[p].get(nombre, 0) >= 10:
+                st.session_state.hard_locked[p] = False
+            if nombre in st.session_state.slots[p]:
+                del st.session_state.slots[p][nombre]
+
     for g in SOCIAL_GROUPS:
         if nombre in st.session_state.social_slots[g]:
-            if st.session_state.social_slots[g].get(nombre, 0) >= 10: st.session_state.hard_locked[g] = False
-            if nombre in st.session_state.social_slots[g]: del st.session_state.social_slots[g][nombre]
+            if st.session_state.social_slots[g].get(nombre, 0) >= 10:
+                st.session_state.hard_locked[g] = False
+            if nombre in st.session_state.social_slots[g]:
+                del st.session_state.social_slots[g][nombre]
+    
     if nombre in st.session_state.ai_conflict_memory:
         del st.session_state.ai_conflict_memory[nombre]
+
     update_owners()
 
 def calcular_control_grupos():
     fuerza_grupos = {code: {c: 0 for c in st.session_state.p} for code in STATE_GROUPS}
     total_votos_grupo = {code: 0 for code in STATE_GROUPS}
+
     for p_name, p_data in MAPA_DATA.items():
         grupos_prov = PROV_TO_GROUP_RAW.get(p_name, [])
         for g in grupos_prov:
             total_votos_grupo[g] += p_data["votos"]
+
     for p_name, owner in st.session_state.owners.items():
         if not owner or owner not in st.session_state.p: continue
+        
         fichas_owner = st.session_state.slots[p_name].get(owner, 0)
         if fichas_owner < 3: continue 
+        
         grupos_prov = PROV_TO_GROUP_RAW.get(p_name, [])
         fuerza = MAPA_DATA[p_name]["votos"] 
+        
         for g in grupos_prov:
             fuerza_grupos[g][owner] += fuerza
+
     return fuerza_grupos, total_votos_grupo
 
 def procesar_turno():
-    reporte = []
+    reporte = {
+        "inversiones": [],
+        "conflictos": [],
+        "cambios": [],
+        "balance": []
+    }
+    
     mi_nombre = next(c for c, i in st.session_state.p.items() if not i["is_ia"])
     
     inversiones_turno = {p: {} for p in MAPA_DATA}
@@ -545,6 +609,7 @@ def procesar_turno():
             dinero_actual = get_total_money(cand)
             stats = get_candidate_stats(cand)
             
+            # --- ESTRATEGIA UNIFICADA ---
             oportunidades = []
 
             # Grupos deseados
@@ -575,6 +640,10 @@ def procesar_turno():
                 votos = MAPA_DATA[p]["votos"]
                 score = votos * 50 + afinidad * 5 
                 
+                prov_grupos = PROV_TO_GROUP_RAW.get(p, [])
+                for g_code in top_grupos:
+                    if g_code in prov_grupos: score += 2000
+
                 conflict_count = st.session_state.ai_conflict_memory[cand].get(p, 0)
                 if conflict_count >= 2: score -= 500000 
                 elif conflict_count == 1: score -= 1000
@@ -633,10 +702,12 @@ def procesar_turno():
                             inversiones_turno[target][cand] = inversiones_turno[target].get(cand, 0) + qty
                             if target not in st.session_state.landed_status: st.session_state.landed_status[target] = []
                             if cand not in st.session_state.landed_status[target]: st.session_state.landed_status[target].append(cand)
+                            reporte["inversiones"].append(f"{cand} invirtió en {target} (+{qty})")
                         else:
                             inv_social[target][cand] = qty
                             if target not in st.session_state.landed_status: st.session_state.landed_status[target] = []
                             if cand not in st.session_state.landed_status[target]: st.session_state.landed_status[target].append(cand)
+                            reporte["inversiones"].append(f"{cand} apoyó a {SOCIAL_GROUPS[target]['nombre']} (+{qty})")
 
                         gastar_dinero(cand, target, qty, op["tipo"] == "SOCIAL")
                         dinero_actual -= (op["costo"] * qty)
@@ -647,11 +718,13 @@ def procesar_turno():
             if ent in SOCIAL_GROUPS:
                 inv_social[ent][mi_nombre] = cant
                 gastar_dinero(mi_nombre, ent, cant, True)
+                reporte["inversiones"].append(f"TÚ invirtiste en {SOCIAL_GROUPS[ent]['nombre']} (+{cant})")
                 if ent not in st.session_state.landed_status: st.session_state.landed_status[ent] = []
                 if mi_nombre not in st.session_state.landed_status[ent]: st.session_state.landed_status[ent].append(mi_nombre)
             else:
                 inversiones_turno[ent][mi_nombre] = cant
                 gastar_dinero(mi_nombre, ent, cant, False)
+                reporte["inversiones"].append(f"TÚ invirtiste en {ent} (+{cant})")
                 if ent not in st.session_state.landed_status: st.session_state.landed_status[ent] = []
                 if mi_nombre not in st.session_state.landed_status[ent]: st.session_state.landed_status[ent].append(mi_nombre)
 
@@ -670,7 +743,7 @@ def procesar_turno():
             for total_obj, candidatos in proyecciones.items():
                 if len(candidatos) > 1:
                     nombres = ", ".join(candidatos)
-                    reporte.append(f"💥 **{ent}**: Choque entre {nombres} intentando llegar a {total_obj} fichas.")
+                    reporte["conflictos"].append(f"⚔️ **{ent}**: Choque entre {nombres} intentando llegar a {total_obj} fichas.")
                     for c in candidatos:
                         if is_prov and c in memory_dict: memory_dict[c][ent] = memory_dict[c].get(ent, 0) + 1
                         if ent not in st.session_state.landed_status: st.session_state.landed_status[ent] = []
@@ -679,33 +752,42 @@ def procesar_turno():
                     unico_cand = candidatos[0]
                     cant_inv = invs[unico_cand]
                     estado_slots[ent][unico_cand] = estado_slots[ent].get(unico_cand, 0) + cant_inv
+                    
                     if is_prov and unico_cand in memory_dict: memory_dict[unico_cand][ent] = 0 
+                    
                     if estado_slots[ent][unico_cand] >= 10: hard_lock_dict[ent] = True
                     if ent not in st.session_state.landed_status: st.session_state.landed_status[ent] = []
                     if unico_cand not in st.session_state.landed_status[ent]: st.session_state.landed_status[ent].append(unico_cand)
 
     resolver(inversiones_turno, st.session_state.slots, st.session_state.hard_locked, st.session_state.ai_conflict_memory, True)
     resolver(inv_social, st.session_state.social_slots, st.session_state.hard_locked, st.session_state.ai_conflict_memory, False)
+    
+    # Detectar cambios
+    old_owners = st.session_state.owners.copy()
     update_owners()
+    for p in MAPA_DATA:
+        if st.session_state.owners[p] != old_owners[p] and st.session_state.owners[p] is not None:
+             reporte["cambios"].append(f"🚩 **{p}** ahora es territorio de {st.session_state.owners[p]}")
 
     # 4. RENTAS
     fuerza_grupos, total_votos_group = calcular_control_grupos()
     
     for c in st.session_state.p:
         st.session_state.p[c]["wallets"]["base"] += RENTA_BASE_TURNO
+        income = RENTA_BASE_TURNO
         stats = get_candidate_stats(c)
         for g, data in STATE_GROUPS.items():
             if fuerza_grupos[g][c] > (total_votos_group[g] * 0.5):
                 mod = stats.get(g, 0) / 100.0
                 monto = int(data["renta"] * (1 + mod))
                 st.session_state.p[c]["wallets"][g] = st.session_state.p[c]["wallets"].get(g, 0) + monto
-                reporte.append(f"💰 {c} recibe ${monto:,} de **{data['nombre']}**")
+                income += monto
         for g, data in SOCIAL_GROUPS.items():
             if st.session_state.social_owners[g] == c:
                 mod = stats.get(g, 0) / 100.0
                 monto = int(data["renta"] * (1 + mod))
                 st.session_state.p[c]["wallets"]["base"] += monto
-                reporte.append(f"🗣️ {c} recibe ${monto:,} de **{data['nombre']}**")
+                income += monto
 
     st.session_state.last_report = reporte
     st.session_state.pending_user = {}
@@ -717,18 +799,12 @@ def procesar_turno():
     if mapa_completo:
         if not st.session_state.get('election_pending', False):
             st.session_state.election_pending = True
-            st.session_state.last_report.append("⚠️ ¡ATENCIÓN! Todas las provincias tienen presencia. VOTACIÓN EL PRÓXIMO TURNO.")
+            st.toast("⚠️ MAPA COMPLETO: ELECCIÓN PRÓXIMO TURNO", icon="🗳️")
         else:
             st.session_state.modo_eleccion = True
             st.session_state.election_pending = False
     else:
         st.session_state.election_pending = False
-
-    cond_classic = st.session_state.turno > 1 and st.session_state.turno % 4 == 0 and mapa_completo
-    cond_time_limit = len(st.session_state.p) >= 3 and st.session_state.turno >= 20 and mapa_completo 
-    
-    if cond_classic or cond_time_limit:
-       pass 
 
 # --- 3. INICIALIZACIÓN ---
 if 'p' not in st.session_state:
@@ -744,11 +820,23 @@ if st.session_state.winner or st.session_state.loser:
     mi_nombre = next(c for c, i in st.session_state.p.items() if not i["is_ia"])
     
     if st.session_state.winner == mi_nombre:
-        st.markdown(f"<div class='win-msg'>🎉 ¡FELICIDADES {mi_nombre.upper()}! 🎉<br>ERES EL NUEVO PRESIDENTE 🇦🇷</div>", unsafe_allow_html=True)
+        st.markdown(f"""
+            <div class='win-msg'>
+            🎉 ¡FELICIDADES {mi_nombre.upper()}! 🎉<br>
+            ERES EL NUEVO PRESIDENTE 🇦🇷
+            </div>
+            <audio autoplay src="{SFX_WIN}"></audio>
+        """, unsafe_allow_html=True)
         st.balloons()
     else:
         ganador_real = st.session_state.winner if st.session_state.winner else "OTRO CANDIDATO"
-        st.markdown(f"<div class='lose-msg'>💀 Lo siento {mi_nombre}...<br>Ganó {ganador_real}. Vuelve a intentarlo 📉</div>", unsafe_allow_html=True)
+        st.markdown(f"""
+            <div class='lose-msg'>
+            💀 Lo siento {mi_nombre}...<br>
+            Ganó {ganador_real}. Vuelve a intentarlo 📉
+            </div>
+            <audio autoplay src="{SFX_LOSE}"></audio>
+        """, unsafe_allow_html=True)
     
     if st.button("🔄 REINICIAR CAMPAÑA"):
         st.session_state.game_started = False
@@ -800,7 +888,7 @@ elif not st.session_state.game_started:
             st.session_state.modo_eleccion = False
             st.session_state.winner = None
             st.session_state.loser = None
-            st.session_state.last_report = []
+            st.session_state.last_report = None
             st.session_state.selected_prov = None
             st.session_state.game_started = True
             st.rerun()
@@ -823,6 +911,9 @@ elif st.session_state.modo_eleccion:
         if sorted_v[0][1] >= VOTOS_PARA_GANAR:
             if sorted_v[0][0] == mi_name: st.session_state.winner = mi_name
             else: st.session_state.winner = sorted_v[0][0]; st.session_state.loser = mi_name
+        elif len(sorted_v) == 1:
+             st.session_state.winner = sorted_v[0][0]
+             if sorted_v[0][0] != mi_name: st.session_state.loser = mi_name
         elif eliminado == mi_name:
             st.session_state.loser = mi_name
         else:
@@ -869,17 +960,19 @@ else:
     
     with tab_rank:
         update_votos()
-        for c in st.session_state.p:
-            v = st.session_state.votos_resolved.get(c, 0)
+        votos_sorted = sorted(st.session_state.votos_resolved.items(), key=lambda x: x[1], reverse=True)
+        for c, v in votos_sorted:
             d = get_total_money(c)
-            st.write(f"**{c}**: {v} votos | ${d:,}")
+            color = get_party_from_candidate(c)
+            hex_c = PARTY_COLORS[color]["hex"] if color else "#ccc"
+            st.markdown(f"<span style='color:{hex_c}'><b>{c}</b></span><br>🗳️ {v} | 💵 ${d:,}", unsafe_allow_html=True)
+            st.progress(min(v/VOTOS_PARA_GANAR, 1.0))
             
     with tab_spy:
-        # PESTAÑA ESPIONAJE MEJORADA
-        target = st.selectbox("Seleccionar Candidato:", list(st.session_state.p.keys()))
+        target = st.selectbox("Objetivo:", list(st.session_state.p.keys()))
         stats = get_candidate_stats(target)
         
-        st.markdown(f"### 📊 Stats de {target}")
+        st.markdown(f"**Perfil de {target}**")
         for k, v in stats.items():
             if k != "emoji":
                 name = STATE_GROUPS.get(k, {}).get("nombre", SOCIAL_GROUPS.get(k, {}).get("nombre", k))
@@ -887,26 +980,30 @@ else:
                 st.markdown(f":{col}[{name}: {v:+}%]")
         
         st.markdown("---")
-        st.markdown("### 🗺️ Inversiones")
+        st.markdown("**Inversiones Activas:**")
         found_inv = False
         
-        st.markdown("**Provincias:**")
+        st.markdown("*Provincias:*")
         for p_name, slots in st.session_state.slots.items():
             fichas = slots.get(target, 0)
-            if fichas > 0:
+            is_landed = target in st.session_state.landed_status.get(p_name, [])
+            if fichas > 0 or is_landed:
                 found_inv = True
                 estado = f"{fichas} fichas"
+                if fichas == 0 and is_landed: estado = "0 (Pie en el territorio)"
                 if st.session_state.hard_locked[p_name] and fichas >= 10:
                     estado = "🔒 CERRADO (10 fichas)"
                 st.write(f"- **{p_name}**: {estado}")
 
-        st.markdown("**Grupos Sociales:**")
+        st.markdown("*Grupos Sociales:*")
         for g_code, slots in st.session_state.social_slots.items():
             fichas = slots.get(target, 0)
-            if fichas > 0:
+            is_landed = target in st.session_state.landed_status.get(g_code, [])
+            if fichas > 0 or is_landed:
                 found_inv = True
                 g_name = SOCIAL_GROUPS[g_code]["nombre"]
                 estado = f"{fichas} fichas"
+                if fichas == 0 and is_landed: estado = "0 (Pie en el territorio)"
                 if st.session_state.hard_locked.get(g_code, False) and fichas >= 10:
                     estado = "🔒 CERRADO (10 fichas)"
                 st.write(f"- **{g_name}**: {estado}")
@@ -915,45 +1012,43 @@ else:
             st.caption("No tiene inversiones activas.")
 
     with tab_terr:
-        # PESTAÑA TERRITORIO MEJORADA
         fuerza_grupos, total_votos_g = calcular_control_grupos()
-        
         for g_code, data in STATE_GROUPS.items():
             with st.expander(f"{data['color']} {data['nombre']}"):
-                # 1. Lista de Provincias del Grupo
-                provs_in_group = [p for p, groups in PROV_TO_GROUP_RAW.items() if g_code in groups]
-                st.markdown("**Provincias:**")
-                for p in provs_in_group:
-                    owner = st.session_state.owners[p]
-                    emoji_owner = "⬜"
-                    if owner:
-                        emoji_owner = get_candidate_stats(owner).get("emoji", "🟦")
-                    st.write(f"{emoji_owner} **{p}**")
+                provs = [p for p, grps in PROV_TO_GROUP_RAW.items() if g_code in grps]
+                for p in provs:
+                    own = st.session_state.owners[p]
+                    visual = get_visual_id(own)
+                    st.caption(f"{visual} **{p}**")
                 
-                st.markdown("---")
-                # 2. Porcentajes de Control
-                st.markdown("**Control del Grupo:**")
+                st.divider()
                 total = total_votos_g[g_code]
                 if total > 0:
-                    ranking_grupo = sorted(fuerza_grupos[g_code].items(), key=lambda x: x[1], reverse=True)
-                    has_data = False
-                    for c, f in ranking_grupo:
+                    ranking = sorted(fuerza_grupos[g_code].items(), key=lambda x: x[1], reverse=True)
+                    for c, f in ranking:
                         if f > 0:
-                            has_data = True
-                            pct = (f / total) * 100
-                            st.write(f"{c}: {pct:.1f}%")
-                            st.progress(min(f/total, 1.0))
-                    if not has_data:
-                        st.caption("Nadie controla votos en este grupo aún.")
+                            pct = f / total
+                            st.write(f"{c}: {int(pct*100)}%")
+                            st.progress(min(pct, 1.0))
 
-    # MAIN
+    # MAIN AREA
     try: st.image("rosca politica.jpg", use_container_width=True)
     except: pass
     
-    if st.session_state.get('election_pending', False):
-        st.markdown("<div class='warning-msg'>🗳️ ¡ATENCIÓN! EL MAPA ESTÁ COMPLETO. LA VOTACIÓN SERÁ AL FINALIZAR ESTE TURNO.</div>", unsafe_allow_html=True)
+    my_votes = st.session_state.votos_resolved.get(mi_nombre, 0)
+    pct_win = min(my_votes / VOTOS_PARA_GANAR * 100, 100)
     
-    # --- VISUALIZACIÓN DE CAJA Y GASTOS ---
+    st.markdown(f"""
+        <div class="voto-bar-wrapper">
+            <div class="voto-bar-fill" style="width: {max(pct_win, 2)}%; background-color: {PARTY_COLORS[get_party_from_candidate(mi_nombre)]["hex"]};">
+                {my_votes} / {VOTOS_PARA_GANAR}
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
+    
+    if st.session_state.get('election_pending', False):
+        st.markdown("<div class='warning-msg'>🗳️ ¡ATENCIÓN! MAPA COMPLETO. VOTACIÓN INMINENTE.</div>", unsafe_allow_html=True)
+    
     col_caja, col_gasto, col_btn = st.columns(3)
     
     with col_caja:
@@ -982,8 +1077,8 @@ else:
         st.markdown("</div>", unsafe_allow_html=True)
 
     with col_btn:
-        st.write("") # Spacer
-        st.write("") # Spacer
+        st.write("") 
+        st.write("") 
         if st.button("JUGAR TURNO", type="primary", use_container_width=True):
             if total_gasto_display > dinero_disp: st.error("No alcanza")
             else: procesar_turno(); st.rerun()
@@ -991,140 +1086,126 @@ else:
     tab1, tab2 = st.tabs(["🗺️ Mapa Electoral", "🗣️ Grupos Sociales"])
 
     with tab1:
-        # CONTENEDOR DEL MAPA VISUAL
         if st.session_state.selected_prov is None:
-            # Usar st.columns para simular la grilla visualmente.
-            for r in range(12): # 12 filas
-                cols = st.columns(5) # 5 columnas
+            for r in range(12):
+                cols = st.columns(5)
                 for c in range(5):
-                    # Buscar si hay provincia en esta coord
-                    prov_found = None
-                    for p_name, data in MAPA_DATA.items():
-                        if data["pos"] == (r, c):
-                            prov_found = p_name
-                            break
+                    p_name = next((n for n, d in MAPA_DATA.items() if d["pos"] == (r, c)), None)
                     
                     with cols[c]:
-                        if prov_found:
-                            data = MAPA_DATA[prov_found]
-                            owner = st.session_state.owners[prov_found]
+                        if p_name:
+                            data = MAPA_DATA[p_name]
+                            own = st.session_state.owners[p_name]
+                            visual_id = get_visual_id(own)
+                            v = data['votos']
+                            label = f"{visual_id} {p_name}\n🗳️ {v} | 💲{int(COSTOS_FIJOS[p_name]/1000)}k"
                             
-                            # GENERAR GRUPOS PARA EL BOTÓN
-                            grps = PROV_TO_GROUP_RAW.get(prov_found, [])
-                            grps_str = "-".join(grps)
-
-                            color_emoji = "⬜"
-                            if owner:
-                                stats = get_candidate_stats(owner)
-                                color_emoji = stats.get("emoji", "🟦")
-                            
-                            # Botón con estilo
-                            label = f"{data['abbr']}\n{data['votos']}v | {grps_str}\n{color_emoji}"
-                            if st.button(label, key=f"btn_{prov_found}", use_container_width=True):
-                                st.session_state.selected_prov = prov_found
+                            if st.button(label, key=f"btn_{p_name}"):
+                                st.session_state.selected_prov = p_name
                                 st.rerun()
                         else:
-                            # Espacio vacío
                             st.write("")
         else:
             p = st.session_state.selected_prov
-            st.button("🔙 Volver al Mapa", on_click=lambda: setattr(st.session_state, 'selected_prov', None))
-            st.header(p)
+            st.button("🔙 Volver", on_click=lambda: setattr(st.session_state, 'selected_prov', None))
             
-            # Info detallada de la provincia seleccionada
-            my_w = st.session_state.p[mi_nombre]["wallets"]
+            own = st.session_state.owners[p]
+            color_hex = PARTY_COLORS[get_party_from_candidate(own)]["hex"] if own else "#333"
+            
+            st.markdown(f"<h2 style='border-bottom: 5px solid {color_hex}'>{p}</h2>", unsafe_allow_html=True)
+            st.caption(f"Dueño actual: {own if own else 'Nadie'}")
+            
             valid_groups = PROV_TO_GROUP_RAW.get(p, [])
+            st.info(f"Grupos de Interés: {', '.join(valid_groups)}")
             
-            st.info(f"Grupos: {', '.join(valid_groups)}")
-                
             curr = st.session_state.slots[p].get(mi_nombre, 0)
             pend = st.session_state.pending_user.get(p, 0)
             landed = mi_nombre in st.session_state.landed_status.get(p, [])
-            costo = COSTOS_FIJOS[p]
             
             if st.session_state.hard_locked.get(p, False):
-                st.error("🔒 ESTA PROVINCIA ESTÁ CERRADA (10 Fichas Alcanzadas)")
+                 st.error("🔒 PROVINCIA CERRADA")
             else:
-                limit_add = 10 - curr
-                if curr == 0 and not landed: limit_add = min(limit_add, 2)
+                limit = 10 - curr
+                if curr == 0 and not landed: limit = min(limit, 2)
                 
-                # Check simple de solvencia (total) para habilitar botones
-                can_afford = (get_total_money(mi_nombre) - total_gasto_display + (costo if p in st.session_state.pending_user else 0)) >= costo
-
-                c_add, c_rem = st.columns(2)
-                if c_add.button("➕ Comprar Ficha") and pend < limit_add:
-                    if can_afford:
-                        st.session_state.pending_user[p] = pend + 1
-                        st.rerun()
-                    else: st.error("Sin fondos")
-                
-                if c_rem.button("➖ Vender Ficha") and pend > 0:
-                    st.session_state.pending_user[p] -= 1; st.rerun()
-                    
-                st.write(f"Inversión pendiente: {pend} (Total futura: {curr+pend})")
+                c1, c2 = st.columns(2)
+                if c1.button("➕ Comprar") and pend < limit:
+                    st.session_state.pending_user[p] = pend + 1
+                    st.rerun()
+                if c2.button("➖ Vender") and pend > 0:
+                    st.session_state.pending_user[p] -= 1
+                    st.rerun()
+                st.write(f"Inversión Turno: {pend}")
             
             st.divider()
-            for c, q in st.session_state.slots[p].items():
-                st.write(f"{c}: {q}")
-                st.progress(min(q/10, 1.0))
+            
+            active_cands = set(st.session_state.slots[p].keys()) | set(st.session_state.landed_status.get(p, []))
+            display_list = []
+            for c in active_cands:
+                chips = st.session_state.slots[p].get(c, 0)
+                display_list.append((c, chips))
+            sorted_slots = sorted(display_list, key=lambda x: x[1], reverse=True)
+
+            for c, q in sorted_slots:
+                is_landed = c in st.session_state.landed_status.get(p, [])
+                if q > 0 or is_landed:
+                    visual_id = get_visual_id(c)
+                    status_txt = f"{q} fichas"
+                    if q == 0 and is_landed: status_txt = "0 (Pie en el territorio)"
+                    st.write(f"{visual_id} **{c}**: {status_txt}")
+                    st.progress(q/10)
 
     with tab2:
         for g_code, data in SOCIAL_GROUPS.items():
             with st.container():
-                c_img, c_info, c_act = st.columns([1, 3, 2])
-                c_img.write(f"## {data['color']}")
+                c_img, c_info, c_act = st.columns([1, 4, 2])
+                c_img.markdown(f"## {data['color']}")
+                
                 with c_info:
-                    st.write(f"**{data['nombre']}**")
-                    st.caption(f"Renta: ${data['renta']:,} | Costo: ${data['costo']:,}")
                     own = st.session_state.social_owners[g_code]
-                    st.write(f"Líder: **{own if own else 'Nadie'}**")
+                    visual_id = get_visual_id(own)
+                    st.markdown(f"**{data['nombre']}** {visual_id}")
+                    st.caption(f"Renta: ${data['renta']:,} | Costo: ${data['costo']:,}")
                     
-                    has_fichas = False
-                    for c, q in st.session_state.social_slots[g_code].items():
-                        if q > 0:
-                            has_fichas = True
-                            plus = f"(+{st.session_state.pending_user.get(g_code,0)})" if c == mi_nombre else ""
-                            st.write(f"{c}: {q} {plus}")
-                            st.progress(min(q/10, 1.0))
-                    if not has_fichas: st.write("-")
+                    slots = st.session_state.social_slots[g_code]
+                    if slots:
+                        for c, q in slots.items():
+                            if q > 0:
+                                st.write(f"{c}: {q}")
+                                st.progress(q/10)
 
                 with c_act:
                     if st.session_state.hard_locked.get(g_code, False):
-                        st.error("🔒 CERRADO")
+                        st.write("🔒")
                     else:
                         curr = st.session_state.social_slots[g_code].get(mi_nombre, 0)
                         pend = st.session_state.pending_user.get(g_code, 0)
-                        costo = data['costo']
-                        
-                        has_landed = mi_nombre in st.session_state.landed_status.get(g_code, [])
-                        limit_add = 10 - curr 
-                        if curr == 0 and not has_landed: limit_add = min(limit_add, 2)
-                        
-                        # --- CORRECCIÓN AQUÍ: Usar total_gasto_display ---
-                        can_afford = (get_total_money(mi_nombre) - total_gasto_display + (costo if g_code in st.session_state.pending_user else 0)) >= costo
+                        landed = mi_nombre in st.session_state.landed_status.get(g_code, [])
+                        limit = 10 - curr
+                        if curr == 0 and not landed: limit = min(limit, 2)
 
-                        if st.button("➕", key=f"add_{g_code}") and pend < limit_add:
-                            if can_afford:
-                                st.session_state.pending_user[g_code] = pend + 1
-                                st.rerun()
-                            else: st.error("No alcanza")
-                                
-                        if st.button("➖", key=f"rem_{g_code}") and pend > 0:
+                        if st.button("➕", key=f"s_add_{g_code}") and pend < limit:
+                            st.session_state.pending_user[g_code] = pend + 1
+                            st.rerun()
+                        if st.button("➖", key=f"s_rem_{g_code}") and pend > 0:
                             st.session_state.pending_user[g_code] -= 1
                             st.rerun()
+                        if pend > 0: st.write(f"Add: {pend}")
                 st.divider()
 
-    st.divider()
-    st.subheader("🌐 Panorama Nacional")
-    cols_global = st.columns(len(st.session_state.p))
-    update_votos()
-    sorted_global = sorted(st.session_state.votos_resolved.items(), key=lambda x: x[1], reverse=True)
-    
-    for i, (c, v) in enumerate(sorted_global):
-        if c in st.session_state.p:
-            with cols_global[i]:
-                st.metric(f"{get_candidate_stats(c)['emoji']} {c}", f"{v} Votos", f"${get_total_money(c):,}")
-
     if st.session_state.last_report:
-        with st.expander("Reporte"):
-            for l in st.session_state.last_report: st.write(l)
+        st.markdown("### 📰 Reporte del Turno")
+        log = st.session_state.last_report
+        
+        with st.expander("💸 Inversiones", expanded=True):
+            for l in log["inversiones"]: st.markdown(f"<div class='report-card report-invest'>{l}</div>", unsafe_allow_html=True)
+            
+        with st.expander("⚔️ Conflictos", expanded=True):
+            if log["conflictos"]:
+                for l in log["conflictos"]: st.markdown(f"<div class='report-card report-conflict'>{l}</div>", unsafe_allow_html=True)
+            else: st.write("Sin conflictos.")
+            
+        with st.expander("🚩 Cambios de Mando", expanded=True):
+             if log["cambios"]:
+                for l in log["cambios"]: st.markdown(f"<div class='report-card report-change'>{l}</div>", unsafe_allow_html=True)
+             else: st.write("El mapa se mantiene estable.")
