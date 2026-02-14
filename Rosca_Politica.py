@@ -1,5 +1,6 @@
 import streamlit as st
 import random
+import pandas as pd
 
 # --- CONFIGURACIÓN ---
 st.set_page_config(page_title="Rosca Política: 189", layout="wide", page_icon="🗳️")
@@ -7,7 +8,7 @@ st.set_page_config(page_title="Rosca Política: 189", layout="wide", page_icon="
 # --- VARIABLES GLOBALES ---
 PRESUPUESTO_INICIAL = 250000
 RENTA_BASE_TURNO = 250000
-VOTOS_PARA_GANAR = 189 
+VOTOS_PARA_GANAR = 189
 
 # --- AUDIO (EFECTOS) ---
 SFX_WIN = "https://www.myinstants.com/media/sounds/aplausos_1.mp3"
@@ -96,7 +97,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# --- 1. IDENTIDAD DE PARTIDOS ---
+# --- 1. IDENTIDAD DE PARTIDOS (CORREGIDO PARA COINCIDIR CON TUS NOMBRES) ---
 PARTY_COLORS = {
     "Peronismo (PJ/PJ Federal)": {"hex": "#1E88E5", "mark": "🟦", "name": "PJ"},
     "La Libertad Avanza (LLA)": {"hex": "#8E24AA", "mark": "🟪", "name": "LLA"},
@@ -119,11 +120,12 @@ def get_visual_id(cand_name):
     """Devuelve [Marca Color] [Emoji]"""
     if not cand_name: return "" 
     p_key = get_party_from_candidate(cand_name)
-    mark = PARTY_COLORS[p_key]["mark"] if p_key else "⬜"
+    # Fallback si no encuentra la key (aunque ahora debería encontrarla)
+    mark = PARTY_COLORS[p_key]["mark"] if p_key in PARTY_COLORS else "⬜"
     
     # Buscar emoji
     emoji = "👤"
-    if p_key:
+    if p_key and p_key in PARTIDOS:
         emoji = PARTIDOS[p_key]["candidatos"][cand_name].get("emoji", "👤")
     
     return f"{mark} {emoji}"
@@ -259,7 +261,6 @@ PARTIDOS = {
         "Benegas Lynch": {"emoji": "🦅", "FG": -10, "TR": -25, "ET": -20, "PN": -10, "PC": -15, "PE": -40, "EA": 35, "CP": -30, "SO": 10, "REL": 15, "JUV": -10, "EMP": 45, "PROG": -50, "PYME": 10},
         "Tronco Figliuolo": {"emoji": "🪵", "FG": -25, "TR": -10, "ET": -5, "PN": 10, "PC": 5, "PE": -15, "EA": 20, "CP": -10, "SO": 20, "REL": 10, "JUV": 35, "EMP": 20, "PROG": -25, "PYME": 20},
         "Carolina Píparo": {"emoji": "👩", "FG": 10, "TR": -10, "ET": 0, "PN": 5, "PC": 15, "PE": -10, "EA": 15, "CP": -5, "SO": 40, "REL": 15, "JUV": 10, "EMP": 10, "PROG": -30, "PYME": 15},
-        "Santiago Caputo": {"emoji": "🚬", "FG": -20, "TR": -20, "ET": -25, "PN": -20, "PC": 5, "PE": -40, "EA": 30, "CP": -40, "SO": 50, "REL": 10, "JUV": 75, "EMP": 35, "PROG": -60, "PYME": -5},
         "Mariano Cúneo": {"emoji": "⚖️", "FG": -15, "TR": -10, "ET": 5, "PN": 0, "PC": 30, "PE": -20, "EA": 20, "CP": -20, "SO": 45, "REL": 0, "JUV": 10, "EMP": 30, "PROG": -10, "PYME": 10}
     }},
     "Propuesta Republicana (PRO)": {"color": "🟡", "candidatos": {
@@ -280,7 +281,7 @@ PARTIDOS = {
         "Gabriela Michetti": {"emoji": "♿", "FG": 20, "TR": 5, "ET": 10, "PN": -10, "PC": 30, "PE": 10, "EA": 10, "CP": -25, "SO": 0, "REL": 50, "JUV": -20, "EMP": 10, "PROG": -5, "PYME": 10},
         "Carlos Melconian": {"emoji": "🍝", "FG": -10, "TR": -10, "ET": 30, "PN": 20, "PC": 20, "PE": -15, "EA": 30, "CP": -20, "SO": 10, "REL": 5, "JUV": -20, "EMP": 50, "PROG": -30, "PYME": 15},
         "Fernando de Andreis": {"emoji": "🤫", "FG": -10, "TR": -10, "ET": 20, "PN": 10, "PC": 40, "PE": -20, "EA": 20, "CP": -30, "SO": 10, "REL": 0, "JUV": 20, "EMP": 20, "PROG": -10, "PYME": 10}
-   }},
+    }},
     "Union Civica Radical (UCR)": {"color": "⚪", "candidatos": {
         "Leonel Chiarella": {"emoji": "🦊", "FG": 10, "TR": -5, "ET": 10, "PN": 10, "PC": 20, "PE": 10, "EA": 15, "CP": -30, "SO": 20, "REL": 5, "JUV": 30, "EMP": 5, "PROG": -5, "PYME": 5},
         "Martín Lousteau": {"emoji": "🎓", "FG": 30, "TR": -25, "ET": 25, "PN": -25, "PC": -20, "PE": 20, "EA": 5, "CP": -20, "SO": 10, "REL": -20, "JUV": 25, "EMP": 15, "PROG": 25, "PYME": 15},
@@ -291,7 +292,7 @@ PARTIDOS = {
         "Rodrigo de Loredo": {"emoji": "🚌", "FG": 5, "TR": 5, "ET": -10, "PN": 5, "PC": -10, "PE": -15, "EA": 5, "CP": -40, "SO": 5, "REL": -15, "JUV": 30, "EMP": 5, "PROG": 10, "PYME": 10},
         "Ricardo Alfonsín": {"emoji": "👴", "FG": 20, "TR": -20, "ET": 15, "PN": 5, "PC": -15, "PE": 20, "EA": 15, "CP": -20, "SO": -15, "REL": 10, "JUV": 0, "EMP": -15, "PROG": 30, "PYME": 5},
         "Lula Levy": {"emoji": "🤳", "FG": -25, "TR": -45, "ET": 40, "PN": 5, "PC": 15, "PE": 25, "EA": 5, "CP": -35, "SO": -10, "REL": -25, "JUV": 40, "EMP": 5, "PROG": 15, "PYME": 10},
-        "Maximiliano Pullaro": {"emoji": "👮", "FG": 30, "TR": 20, "ET": 15, "PN": 15, "PC": 20, "PE": -5, "EA": 20, "CP": -15, "SO": 25, "REL": 0, "JUV": 10, "EMP": 10, "PROG": -10, "PYME": 5},
+        "Maximiliano Pullaro": {"emoji": "👮", "FG": 30, "TR": 20, "ET": 15, "PN": 15, "PC": 20, "PE": -5, "EA": 20, "CP": -15, "SO": 25, "REL": 0, "JUV": 10, "EMP": 10, "PROG": -10, "PYME": 15},
         "Eduardo Vischi": {"emoji": "⚪", "FG": 20, "TR": 10, "ET": 10, "PN": 5, "PC": 20, "PE": 10, "EA": 15, "CP": -10, "SO": -10, "REL": -10, "JUV": -20, "EMP": 5, "PROG": 5, "PYME": 5},
         "Luis Naidenoff": {"emoji": "⚪", "FG": 25, "TR": 10, "ET": -10, "PN": 10, "PC": 20, "PE": 5, "EA": 25, "CP": -30, "SO": 15, "REL": 10, "JUV": -10, "EMP": 10, "PROG": -5, "PYME": 10},
         "Pamela Verasay": {"emoji": "⚪", "FG": 20, "TR": 5, "ET": 5, "PN": 15, "PC": -10, "PE": 10, "EA": 15, "CP": -10, "SO": -5, "REL": -10, "JUV": -10, "EMP": 5, "PROG": 0, "PYME": 15},
@@ -326,7 +327,7 @@ PARTIDOS = {
         "Luis Zamora": {"emoji": "📚", "FG": -35, "TR": 10, "ET": 50, "PN": -10, "PC": 20, "PE": 10, "EA": -10, "CP": -10, "SO": -30, "REL": -20, "JUV": 20, "EMP": -50, "PROG": 50, "PYME": 0},
         "Eduardo Belliboni": {"emoji": "🔥", "FG": -65, "TR": 50, "ET": -20, "PN": -30, "PC": -45, "PE": 30, "EA": -45, "CP": -30, "SO": -60, "REL": -40, "JUV": -20, "EMP": -70, "PROG": 60, "PYME": -40}
     }},
-    "Union de Partidos Nacionalistas (PD, ERF, FPF y +)": {"color": "⚫", "candidatos": {
+    "Union de Partidos Nacionalistas (PD, ERF, FPF y +": {"color": "⚫", "candidatos": {
         "Victoria Villarruel": {"emoji": "🛡️", "FG": -10, "TR": 15, "ET": -20, "PN": 5, "PC": 5, "PE": 20, "EA": 10, "CP": 5, "SO": 55, "REL": 35, "JUV": 10, "EMP": 15, "PROG": -30, "PYME": 5},
         "Miguel Ángel Pichetto": {"emoji": "👔", "FG": 20, "TR": 10, "ET": 10, "PN": 20, "PC": 20, "PE": 0, "EA": -20, "CP": -20, "SO": 25, "REL": -10, "JUV": -20, "EMP": 30, "PROG": -10, "PYME": 15},
         "Santiago Cúneo": {"emoji": "🤬", "FG": 30, "TR": -10, "ET": -35, "PN": 40, "PC": -40, "PE": 10, "EA": 5, "CP": 5, "SO": 20, "REL": 15, "JUV": 20, "EMP": -15, "PROG": -10, "PYME": 10},
@@ -534,7 +535,6 @@ def calcular_afinidad(cand, tipo, nombre_entidad):
     return score
 
 def update_owners():
-    # Provincias
     for p in MAPA_DATA:
         slots = st.session_state.slots[p]
         mx = max(slots.values()) if slots else 0
@@ -545,13 +545,11 @@ def update_owners():
                 st.session_state.owners[p] = lideres[0]
         else:
             st.session_state.owners[p] = None
-            
-    # Grupos Sociales
     for g in SOCIAL_GROUPS:
         slots = st.session_state.social_slots[g]
-        max_f = max(slots.values()) if slots else 0
-        if max_f >= 3:
-            lideres = [c for c, q in slots.items() if q == max_f]
+        mx = max(slots.values()) if slots else 0
+        if mx >= 3:
+            lideres = [c for c, q in slots.items() if q == mx]
             curr = st.session_state.social_owners[g]
             if curr not in lideres:
                 st.session_state.social_owners[g] = lideres[0]
@@ -605,59 +603,38 @@ def check_election_readiness():
 def eliminar_candidato(nombre):
     if nombre in st.session_state.p:
         del st.session_state.p[nombre]
-    
     for p in MAPA_DATA:
         if nombre in st.session_state.slots[p]:
-            if st.session_state.slots[p].get(nombre, 0) >= 10:
-                st.session_state.hard_locked[p] = False
-            if nombre in st.session_state.slots[p]:
-                del st.session_state.slots[p][nombre]
-
+            if st.session_state.slots[p].get(nombre, 0) >= 10: st.session_state.hard_locked[p] = False
+            if nombre in st.session_state.slots[p]: del st.session_state.slots[p][nombre]
     for g in SOCIAL_GROUPS:
         if nombre in st.session_state.social_slots[g]:
-            if st.session_state.social_slots[g].get(nombre, 0) >= 10:
-                st.session_state.hard_locked[g] = False
-            if nombre in st.session_state.social_slots[g]:
-                del st.session_state.social_slots[g][nombre]
-    
+            if st.session_state.social_slots[g].get(nombre, 0) >= 10: st.session_state.hard_locked[g] = False
+            if nombre in st.session_state.social_slots[g]: del st.session_state.social_slots[g][nombre]
     if nombre in st.session_state.ai_conflict_memory:
         del st.session_state.ai_conflict_memory[nombre]
-
     update_owners()
 
 def calcular_control_grupos():
     fuerza_grupos = {code: {c: 0 for c in st.session_state.p} for code in STATE_GROUPS}
     total_votos_grupo = {code: 0 for code in STATE_GROUPS}
-
     for p_name, p_data in MAPA_DATA.items():
         grupos_prov = PROV_TO_GROUP_RAW.get(p_name, [])
         for g in grupos_prov:
             total_votos_grupo[g] += p_data["votos"]
-
     for p_name, owner in st.session_state.owners.items():
         if not owner or owner not in st.session_state.p: continue
-        
         fichas_owner = st.session_state.slots[p_name].get(owner, 0)
         if fichas_owner < 3: continue 
-        
         grupos_prov = PROV_TO_GROUP_RAW.get(p_name, [])
         fuerza = MAPA_DATA[p_name]["votos"] 
-        
         for g in grupos_prov:
             fuerza_grupos[g][owner] += fuerza
-
     return fuerza_grupos, total_votos_grupo
 
 def procesar_turno():
-    reporte = {
-        "inversiones": [],
-        "conflictos": [],
-        "cambios": [],
-        "balance": []
-    }
-    
+    reporte = {"inversiones": [], "conflictos": [], "cambios": [], "balance": []}
     mi_nombre = next(c for c, i in st.session_state.p.items() if not i["is_ia"])
-    
     inversiones_turno = {p: {} for p in MAPA_DATA}
     inv_social = {g: {} for g in SOCIAL_GROUPS}
     
@@ -671,11 +648,7 @@ def procesar_turno():
         if info["is_ia"]:
             dinero_actual = get_total_money(cand)
             stats = get_candidate_stats(cand)
-            
-            # --- ESTRATEGIA UNIFICADA ---
             oportunidades = []
-
-            # Grupos deseados
             grupos_deseados = []
             for g, data in STATE_GROUPS.items():
                 if stats.get(g, 0) > 0:
@@ -687,59 +660,34 @@ def procesar_turno():
             grupos_deseados.sort(reverse=True)
             top_grupos = [x[1] for x in grupos_deseados[:3]]
 
-            # Provincias
             for p in MAPA_DATA:
                 fichas_mias = st.session_state.slots[p].get(cand, 0)
                 if fichas_mias >= 10: continue
                 if st.session_state.hard_locked[p]: continue
-
                 lider_enemigo = 0
-                total_fichas_prov = 0
                 for c, q in st.session_state.slots[p].items():
-                    total_fichas_prov += q
                     if c != cand and q > lider_enemigo: lider_enemigo = q
-                
                 afinidad = calcular_afinidad(cand, "PROVINCIA", p)
                 votos = MAPA_DATA[p]["votos"]
                 score = votos * 50 + afinidad * 5 
-                
                 prov_grupos = PROV_TO_GROUP_RAW.get(p, [])
                 for g_code in top_grupos:
                     if g_code in prov_grupos: score += 2000
-
                 conflict_count = st.session_state.ai_conflict_memory[cand].get(p, 0)
                 if conflict_count >= 2: score -= 500000 
                 elif conflict_count == 1: score -= 1000
-                
-                if lider_enemigo >= 7 and fichas_mias < 3: score -= 10000
-                if total_fichas_prov == 0: score += 3000 
-                if fichas_mias > lider_enemigo and fichas_mias >= 3: score += 5000 
-                if lider_enemigo >= 8: score += 2000 
-                
                 score *= random.uniform(0.9, 1.15)
                 oportunidades.append({"tipo": "PROVINCIA", "id": p, "score": score, "costo": COSTOS_FIJOS[p]})
 
-            # Social
             for g in SOCIAL_GROUPS:
                 fichas_mias = st.session_state.social_slots[g].get(cand, 0)
                 if fichas_mias >= 10: continue
                 if st.session_state.hard_locked.get(g, False): continue
-                
-                fichas_enemigo = 0
-                for c_rival, q in st.session_state.social_slots[g].items():
-                    if c_rival != cand and q > fichas_enemigo: fichas_enemigo = q
-
                 afinidad = calcular_afinidad(cand, "SOCIAL", g)
                 social_score = (SOCIAL_GROUPS[g]["renta"] / 20) + (afinidad * 50)
-                if fichas_enemigo >= 8 and fichas_mias > 0: social_score += 1500 
-                elif fichas_mias >= 8: social_score += 1000 
-                elif fichas_enemigo > fichas_mias: social_score += 500
-                
-                social_score *= random.uniform(0.9, 1.15)
                 oportunidades.append({"tipo": "SOCIAL", "id": g, "score": social_score, "costo": SOCIAL_GROUPS[g]["costo"]})
             
             oportunidades.sort(key=lambda x: x["score"], reverse=True)
-
             umbral_ahorro = 20000 
             if any(v >= 2 for v in st.session_state.ai_conflict_memory[cand].values()):
                 umbral_ahorro = 80000 
@@ -754,12 +702,10 @@ def procesar_turno():
                     else:
                         curr = st.session_state.social_slots[target].get(cand, 0)
                         landed = cand in st.session_state.landed_status.get(target, [])
-                    
                     limit = 2 if (curr == 0 and not landed) else (10-curr)
                     qty = 1
                     if op["score"] >= 4000: qty = min(limit, int(dinero_actual / op["costo"]))
                     elif op["score"] > 2000: qty = min(limit, 2)
-                    
                     if qty > 0 and check_solvencia(cand, target, qty, op["tipo"] == "SOCIAL"):
                         if op["tipo"] == "PROVINCIA":
                             inversiones_turno[target][cand] = inversiones_turno[target].get(cand, 0) + qty
@@ -771,27 +717,22 @@ def procesar_turno():
                             if target not in st.session_state.landed_status: st.session_state.landed_status[target] = []
                             if cand not in st.session_state.landed_status[target]: st.session_state.landed_status[target].append(cand)
                             reporte["inversiones"].append(f"{cand} apoyó a {SOCIAL_GROUPS[target]['nombre']} (+{qty})")
-
                         gastar_dinero(cand, target, qty, op["tipo"] == "SOCIAL")
                         dinero_actual -= (op["costo"] * qty)
 
-    # 2. PROCESAR JUGADOR REAL
     for ent, cant in st.session_state.pending_user.items():
         if cant > 0:
             if ent in SOCIAL_GROUPS:
                 inv_social[ent][mi_nombre] = cant
                 gastar_dinero(mi_nombre, ent, cant, True)
                 reporte["inversiones"].append(f"TÚ invirtiste en {SOCIAL_GROUPS[ent]['nombre']} (+{cant})")
-                if ent not in st.session_state.landed_status: st.session_state.landed_status[ent] = []
-                if mi_nombre not in st.session_state.landed_status[ent]: st.session_state.landed_status[ent].append(mi_nombre)
             else:
                 inversiones_turno[ent][mi_nombre] = cant
                 gastar_dinero(mi_nombre, ent, cant, False)
                 reporte["inversiones"].append(f"TÚ invirtiste en {ent} (+{cant})")
-                if ent not in st.session_state.landed_status: st.session_state.landed_status[ent] = []
-                if mi_nombre not in st.session_state.landed_status[ent]: st.session_state.landed_status[ent].append(mi_nombre)
+            if ent not in st.session_state.landed_status: st.session_state.landed_status[ent] = []
+            if mi_nombre not in st.session_state.landed_status[ent]: st.session_state.landed_status[ent].append(mi_nombre)
 
-    # 3. RESOLUCIÓN
     def resolver(inversiones_dict, estado_slots, hard_lock_dict, memory_dict, is_prov=True):
         for ent, invs in inversiones_dict.items():
             if not invs: continue
@@ -802,11 +743,10 @@ def procesar_turno():
                 if total_proyectado > 10: total_proyectado = 10
                 if total_proyectado not in proyecciones: proyecciones[total_proyectado] = []
                 proyecciones[total_proyectado].append(cand)
-            
             for total_obj, candidatos in proyecciones.items():
                 if len(candidatos) > 1:
                     nombres = ", ".join(candidatos)
-                    reporte["conflictos"].append(f"⚔️ **{ent}**: Choque entre {nombres} intentando llegar a {total_obj} fichas.")
+                    reporte["conflictos"].append(f"⚔️ **{ent}**: Choque entre {nombres} por llegar a {total_obj} fichas.")
                     for c in candidatos:
                         if is_prov and c in memory_dict: memory_dict[c][ent] = memory_dict[c].get(ent, 0) + 1
                         if ent not in st.session_state.landed_status: st.session_state.landed_status[ent] = []
@@ -815,26 +755,23 @@ def procesar_turno():
                     unico_cand = candidatos[0]
                     cant_inv = invs[unico_cand]
                     estado_slots[ent][unico_cand] = estado_slots[ent].get(unico_cand, 0) + cant_inv
-                    
                     if is_prov and unico_cand in memory_dict: memory_dict[unico_cand][ent] = 0 
-                    
-                    if estado_slots[ent][unico_cand] >= 10: hard_lock_dict[ent] = True
+                    if estado_slots[ent][unico_cand] >= 10: 
+                        hard_lock_dict[ent] = True
+                        reporte["cambios"].append(f"🔒 {ent} ha sido BLOQUEADO por {unico_cand}.")
                     if ent not in st.session_state.landed_status: st.session_state.landed_status[ent] = []
                     if unico_cand not in st.session_state.landed_status[ent]: st.session_state.landed_status[ent].append(unico_cand)
 
     resolver(inversiones_turno, st.session_state.slots, st.session_state.hard_locked, st.session_state.ai_conflict_memory, True)
     resolver(inv_social, st.session_state.social_slots, st.session_state.hard_locked, st.session_state.ai_conflict_memory, False)
     
-    # Detectar cambios
     old_owners = st.session_state.owners.copy()
     update_owners()
     for p in MAPA_DATA:
         if st.session_state.owners[p] != old_owners[p] and st.session_state.owners[p] is not None:
              reporte["cambios"].append(f"🚩 **{p}** ahora es territorio de {st.session_state.owners[p]}")
 
-    # 4. RENTAS
     fuerza_grupos, total_votos_group = calcular_control_grupos()
-    
     for c in st.session_state.p:
         st.session_state.p[c]["wallets"]["base"] += RENTA_BASE_TURNO
         income = RENTA_BASE_TURNO
@@ -855,10 +792,7 @@ def procesar_turno():
     st.session_state.last_report = reporte
     st.session_state.pending_user = {}
     st.session_state.turno += 1
-    
-    # --- LÓGICA DE ELECCIÓN AVISADA ---
     mapa_completo = check_election_readiness()
-    
     if mapa_completo:
         if not st.session_state.get('election_pending', False):
             st.session_state.election_pending = True
@@ -886,17 +820,17 @@ if st.session_state.winner or st.session_state.loser:
         st.markdown(f"""
             <div class='win-msg'>
             🎉 ¡FELICIDADES {mi_nombre.upper()}! 🎉<br>
-            ERES EL NUEVO PRESIDENTE 🇦🇷
+            ERES EL NUEVO PRESIDENTE/A 🇦🇷
             </div>
             <audio autoplay src="{SFX_WIN}"></audio>
         """, unsafe_allow_html=True)
         st.balloons()
     else:
-        ganador_real = st.session_state.winner if st.session_state.winner else "OTRO CANDIDATO"
+        ganador_real = st.session_state.winner if st.session_state.winner else "NADIE"
         st.markdown(f"""
             <div class='lose-msg'>
-            💀 Lo siento {mi_nombre}...<br>
-            Ganó {ganador_real}. Vuelve a intentarlo 📉
+            💀 PERDISTE...<br>
+            Ganó {ganador_real}.
             </div>
             <audio autoplay src="{SFX_LOSE}"></audio>
         """, unsafe_allow_html=True)
@@ -967,14 +901,15 @@ elif st.session_state.modo_eleccion:
         st.progress(min(v/VOTOS_PARA_GANAR, 1.0))
         
     eliminado = sorted_v[-1][0]
-    st.error(f"{eliminado} eliminado.")
+    if len(sorted_v) > 1:
+        st.error(f"{eliminado} eliminado.")
     
     if st.button("SIGUIENTE"):
         mi_name = next(c for c, i in st.session_state.p.items() if not i["is_ia"])
         if sorted_v[0][1] >= VOTOS_PARA_GANAR:
             if sorted_v[0][0] == mi_name: st.session_state.winner = mi_name
             else: st.session_state.winner = sorted_v[0][0]; st.session_state.loser = mi_name
-        elif len(sorted_v) == 1:
+        elif len(sorted_v) == 1: # Solo queda uno
              st.session_state.winner = sorted_v[0][0]
              if sorted_v[0][0] != mi_name: st.session_state.loser = mi_name
         elif eliminado == mi_name:
@@ -993,7 +928,7 @@ else:
     if st.session_state.get('election_pending', False):
         st.sidebar.markdown("<div class='warning-msg'>⚠️ ELECCIÓN PRÓXIMO TURNO</div>", unsafe_allow_html=True)
 
-    # --- SIMULACIÓN DE GASTO PARA VISUALIZACIÓN ---
+    # --- SIMULACIÓN DE GASTO ---
     sim_wallets = st.session_state.p[mi_nombre]["wallets"].copy()
     gasto_breakdown = {"General": 0}
     
@@ -1034,7 +969,6 @@ else:
     with tab_spy:
         target = st.selectbox("Objetivo:", list(st.session_state.p.keys()))
         stats = get_candidate_stats(target)
-        
         st.markdown(f"**Perfil de {target}**")
         for k, v in stats.items():
             if k != "emoji":
@@ -1045,7 +979,6 @@ else:
         st.markdown("---")
         st.markdown("**Inversiones Activas:**")
         found_inv = False
-        
         st.markdown("*Provincias:*")
         for p_name, slots in st.session_state.slots.items():
             fichas = slots.get(target, 0)
@@ -1071,8 +1004,7 @@ else:
                     estado = "🔒 CERRADO (10 fichas)"
                 st.write(f"- **{g_name}**: {estado}")
                 
-        if not found_inv:
-            st.caption("No tiene inversiones activas.")
+        if not found_inv: st.caption("No tiene inversiones activas.")
 
     with tab_terr:
         fuerza_grupos, total_votos_g = calcular_control_grupos()
@@ -1083,7 +1015,6 @@ else:
                     own = st.session_state.owners[p]
                     visual = get_visual_id(own)
                     st.caption(f"{visual} **{p}**")
-                
                 st.divider()
                 total = total_votos_g[g_code]
                 if total > 0:
@@ -1094,13 +1025,11 @@ else:
                             st.write(f"{c}: {int(pct*100)}%")
                             st.progress(min(pct, 1.0))
 
-    # MAIN AREA
     try: st.image("rosca politica.jpg", use_container_width=True)
     except: pass
     
     my_votes = st.session_state.votos_resolved.get(mi_nombre, 0)
     pct_win = min(my_votes / VOTOS_PARA_GANAR * 100, 100)
-    
     st.markdown(f"""
         <div class="voto-bar-wrapper">
             <div class="voto-bar-fill" style="width: {max(pct_win, 2)}%; background-color: {PARTY_COLORS[get_party_from_candidate(mi_nombre)]["hex"]};">
@@ -1113,7 +1042,6 @@ else:
         st.markdown("<div class='warning-msg'>🗳️ ¡ATENCIÓN! MAPA COMPLETO. VOTACIÓN INMINENTE.</div>", unsafe_allow_html=True)
     
     col_caja, col_gasto, col_btn = st.columns(3)
-    
     with col_caja:
         st.markdown("<div class='money-box'>", unsafe_allow_html=True)
         st.markdown("<div class='money-title'>🏦 Caja</div>", unsafe_allow_html=True)
@@ -1154,7 +1082,6 @@ else:
                 cols = st.columns(5)
                 for c in range(5):
                     p_name = next((n for n, d in MAPA_DATA.items() if d["pos"] == (r, c)), None)
-                    
                     with cols[c]:
                         if p_name:
                             data = MAPA_DATA[p_name]
@@ -1162,25 +1089,19 @@ else:
                             visual_id = get_visual_id(own)
                             v = data['votos']
                             label = f"{visual_id} {p_name}\n🗳️ {v} | 💲{int(COSTOS_FIJOS[p_name]/1000)}k"
-                            
                             if st.button(label, key=f"btn_{p_name}"):
                                 st.session_state.selected_prov = p_name
                                 st.rerun()
-                        else:
-                            st.write("")
+                        else: st.write("")
         else:
             p = st.session_state.selected_prov
             st.button("🔙 Volver", on_click=lambda: setattr(st.session_state, 'selected_prov', None))
-            
             own = st.session_state.owners[p]
             color_hex = PARTY_COLORS[get_party_from_candidate(own)]["hex"] if own else "#333"
-            
             st.markdown(f"<h2 style='border-bottom: 5px solid {color_hex}'>{p}</h2>", unsafe_allow_html=True)
             st.caption(f"Dueño actual: {own if own else 'Nadie'}")
-            
             valid_groups = PROV_TO_GROUP_RAW.get(p, [])
             st.info(f"Grupos de Interés: {', '.join(valid_groups)}")
-            
             curr = st.session_state.slots[p].get(mi_nombre, 0)
             pend = st.session_state.pending_user.get(p, 0)
             landed = mi_nombre in st.session_state.landed_status.get(p, [])
@@ -1190,7 +1111,6 @@ else:
             else:
                 limit = 10 - curr
                 if curr == 0 and not landed: limit = min(limit, 2)
-                
                 c1, c2 = st.columns(2)
                 if c1.button("➕ Comprar") and pend < limit:
                     st.session_state.pending_user[p] = pend + 1
@@ -1199,7 +1119,6 @@ else:
                     st.session_state.pending_user[p] -= 1
                     st.rerun()
                 st.write(f"Inversión Turno: {pend}")
-            
             st.divider()
             
             active_cands = set(st.session_state.slots[p].keys()) | set(st.session_state.landed_status.get(p, []))
@@ -1223,30 +1142,25 @@ else:
             with st.container():
                 c_img, c_info, c_act = st.columns([1, 4, 2])
                 c_img.markdown(f"## {data['color']}")
-                
                 with c_info:
                     own = st.session_state.social_owners[g_code]
                     visual_id = get_visual_id(own)
                     st.markdown(f"**{data['nombre']}** {visual_id}")
                     st.caption(f"Renta: ${data['renta']:,} | Costo: ${data['costo']:,}")
-                    
                     slots = st.session_state.social_slots[g_code]
                     if slots:
                         for c, q in slots.items():
                             if q > 0:
                                 st.write(f"{c}: {q}")
                                 st.progress(q/10)
-
                 with c_act:
-                    if st.session_state.hard_locked.get(g_code, False):
-                        st.write("🔒")
+                    if st.session_state.hard_locked.get(g_code, False): st.write("🔒")
                     else:
                         curr = st.session_state.social_slots[g_code].get(mi_nombre, 0)
                         pend = st.session_state.pending_user.get(g_code, 0)
                         landed = mi_nombre in st.session_state.landed_status.get(g_code, [])
                         limit = 10 - curr
                         if curr == 0 and not landed: limit = min(limit, 2)
-
                         if st.button("➕", key=f"s_add_{g_code}") and pend < limit:
                             st.session_state.pending_user[g_code] = pend + 1
                             st.rerun()
@@ -1259,20 +1173,13 @@ else:
     if st.session_state.last_report:
         st.markdown("### 📰 Reporte del Turno")
         log = st.session_state.last_report
-        
         with st.expander("💸 Inversiones", expanded=True):
             for l in log["inversiones"]: st.markdown(f"<div class='report-card report-invest'>{l}</div>", unsafe_allow_html=True)
-            
         with st.expander("⚔️ Conflictos", expanded=True):
             if log["conflictos"]:
                 for l in log["conflictos"]: st.markdown(f"<div class='report-card report-conflict'>{l}</div>", unsafe_allow_html=True)
             else: st.write("Sin conflictos.")
-            
         with st.expander("🚩 Cambios de Mando", expanded=True):
              if log["cambios"]:
                 for l in log["cambios"]: st.markdown(f"<div class='report-card report-change'>{l}</div>", unsafe_allow_html=True)
              else: st.write("El mapa se mantiene estable.")
-
-
-
-
