@@ -104,7 +104,7 @@ PARTY_COLORS = {
     "Propuesta Republicana (PRO)": {"hex": "#FFD700", "mark": "🟨", "name": "PRO"},
     "Union Civica Radical (UCR)": {"hex": "#2E7D32", "mark": "🟩", "name": "UCR"},
     "Izquierda Argentina Unida (FIT-U/PO/Nuevo Mas y +)": {"hex": "#D32F2F", "mark": "🟥", "name": "FIT"},
-    "Union de Partidos Nacionalistas (PD, ERF, FPF y +": {"hex": "#212121", "mark": "⬛", "name": "PN"},
+    "Union de Partidos Nacionalistas (PD, ERF, FPF y +)": {"hex": "#212121", "mark": "⬛", "name": "PN"},
     "Independientes (Sin Partido/Varios Partidos)": {"hex": "#FF9800", "mark": "⚪", "name": "IND"},
     "Especiales": {"hex": "#9E9E9E", "mark": "⬜", "name": "ESP"},
     "Presidentes Históricos": {"hex": "#795548", "mark": "🟫", "name": "HIST"}
@@ -327,7 +327,7 @@ PARTIDOS = {
         "Luis Zamora": {"emoji": "📚", "FG": -35, "TR": 10, "ET": 50, "PN": -10, "PC": 20, "PE": 10, "EA": -10, "CP": -10, "SO": -30, "REL": -20, "JUV": 20, "EMP": -50, "PROG": 50, "PYME": 0},
         "Eduardo Belliboni": {"emoji": "🔥", "FG": -65, "TR": 50, "ET": -20, "PN": -30, "PC": -45, "PE": 30, "EA": -45, "CP": -30, "SO": -60, "REL": -40, "JUV": -20, "EMP": -70, "PROG": 60, "PYME": -40}
     }},
-    "Union de Partidos Nacionalistas (PD, ERF, FPF y +": {"color": "⚫", "candidatos": {
+    "Union de Partidos Nacionalistas (PD, ERF, FPF y +)": {"color": "⚫", "candidatos": {
         "Victoria Villarruel": {"emoji": "🛡️", "FG": -10, "TR": 15, "ET": -20, "PN": 5, "PC": 5, "PE": 20, "EA": 10, "CP": 5, "SO": 55, "REL": 35, "JUV": 10, "EMP": 15, "PROG": -30, "PYME": 5},
         "Miguel Ángel Pichetto": {"emoji": "👔", "FG": 20, "TR": 10, "ET": 10, "PN": 20, "PC": 20, "PE": 0, "EA": -20, "CP": -20, "SO": 25, "REL": -10, "JUV": -20, "EMP": 30, "PROG": -10, "PYME": 15},
         "Santiago Cúneo": {"emoji": "🤬", "FG": 30, "TR": -10, "ET": -35, "PN": 40, "PC": -40, "PE": 10, "EA": 5, "CP": 5, "SO": 20, "REL": 15, "JUV": 20, "EMP": -15, "PROG": -10, "PYME": 10},
@@ -1183,3 +1183,4 @@ else:
              if log["cambios"]:
                 for l in log["cambios"]: st.markdown(f"<div class='report-card report-change'>{l}</div>", unsafe_allow_html=True)
              else: st.write("El mapa se mantiene estable.")
+
