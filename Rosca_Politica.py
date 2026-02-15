@@ -386,7 +386,7 @@ PARTIDOS = {
         "Hugo Bodart": {"emoji": "🚩", "FG": -30, "TR": 30, "ET": 25, "PN": 15, "PC": -25, "PE": 40, "EA": -20, "CP": -35, "SO": -15, "REL": -35, "JUV": -20, "EMP": -50, "PROG": 50, "PYME": -15},
         "Juan Carlos Giordano": {"emoji": "📢", "FG": 5, "TR": 20, "ET": 20, "PN": 30, "PC": 5, "PE": 25, "EA": -5, "CP": -5, "SO": -25, "REL": -20, "JUV": -5, "EMP": -45, "PROG": 50, "PYME": 5}
     }},
-    "Union de Partidos Nacionalistas (PD, ERF, FPF y +": {"color": "⚫", "candidatos": {
+    "Union de Partidos Nacionalistas (PD, ERF, FPF y +)": {"color": "⚫", "candidatos": {
         # --- LIDERAZGO ---
         "Victoria Villarruel": {"emoji": "🛡️", "FG": -10, "TR": 15, "ET": -20, "PN": 5, "PC": 5, "PE": 20, "EA": 10, "CP": 5, "SO": 55, "REL": 35, "JUV": 10, "EMP": 15, "PROG": -30, "PYME": 5},
         "Miguel Ángel Pichetto": {"emoji": "👔", "FG": 20, "TR": 10, "ET": 10, "PN": 20, "PC": 20, "PE": 0, "EA": -20, "CP": -20, "SO": 25, "REL": -10, "JUV": -20, "EMP": 30, "PROG": -10, "PYME": 15},
@@ -1247,5 +1247,6 @@ else:
              if log["cambios"]:
                 for l in log["cambios"]: st.markdown(f"<div class='report-card report-change'>{l}</div>", unsafe_allow_html=True)
              else: st.write("El mapa se mantiene estable.")
+
 
 
