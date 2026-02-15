@@ -446,7 +446,7 @@ PARTIDOS = {
         "Luis Rosales": {"emoji": "👔", "FG": 15, "TR": 5, "ET": 10, "PN": -20, "PC": 5, "PE": -25, "EA": 5, "CP": -20, "SO": 10, "REL": 5, "JUV": -25, "EMP": 5, "PROG": -10, "PYME": 15}
     }},
     "Especiales": {"color": "#FFD700", "candidatos": {
-        "Candidato Independiente": {"emoji": "👤", "FG": 0, "TR": 0, "ET": 0, "PN": 0, "PC": 0, "PE": 0, "EA": 0, "CP": 0, "SO": 0, "REL": 0, "JUV": 0, "EMP": 0, "PROG": 0, "PYME": 0}
+        "Candidato Independiente": {"emoji": "👤", "FG": 0, "TR": 0, "ET": 0, "PN": 0, "PC": 0, "PE": 0, "EA": 0, "CP": 0, "SO": 0, "REL": 0, "JUV": 0, "EMP": 0, "PROG": 0, "PYME": 0},
         "Diego Maradona": {"emoji": "🔟", "FG": -10, "TR": 30, "ET": 10, "PN": 55, "PC": 20, "PE": 10, "EA": -5, "CP": 45, "SO": -50, "REL": 20, "JUV": 50, "EMP": 5, "PROG": 30, "PYME": 10},
         "Papa Francisco": {"emoji": "🇻🇦", "FG": 20, "TR": 20, "ET": 10, "PN": 0, "PC": 10, "PE": 20, "EA": 5, "CP": 10, "SO": -10, "REL": 100, "JUV": 10, "EMP": -30, "PROG": 40, "PYME": 0},
         "Manuel Belgrano": {"emoji": "🇦🇷", "FG": 50, "TR": 75, "ET": 60, "PN": 55, "PC": 100, "PE": 55, "EA": 100, "CP": 100, "SO": 50, "REL": 50, "JUV": 50, "EMP": 0, "PROG": 50, "PYME": 0},
@@ -1235,6 +1235,7 @@ else:
              if log["cambios"]:
                 for l in log["cambios"]: st.markdown(f"<div class='report-card report-change'>{l}</div>", unsafe_allow_html=True)
              else: st.write("El mapa se mantiene estable.")
+
 
 
 
