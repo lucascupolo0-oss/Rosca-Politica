@@ -104,7 +104,7 @@ PARTY_COLORS = {
     "Propuesta Republicana (PRO)": {"hex": "#FFD700", "mark": "🟨", "name": "PRO"},
     "Union Civica Radical (UCR)": {"hex": "#2E7D32", "mark": "🟩", "name": "UCR"},
     "Izquierda Argentina Unida (FIT-U/PO/Nuevo Mas y +)": {"hex": "#D32F2F", "mark": "🟥", "name": "FIT"},
-    "Union de Partidos Nacionalistas (PD, ERF, FPF y +)": {"hex": "#212121", "mark": "⬛", "name": "PN"},
+    "Union de Partidos Nacionalistas (PD, ERF, FPF y +)": {"hex": "#757575", "mark": "⬛", "name": "PN"},
     "Independientes (Sin Partido/Varios Partidos)": {"hex": "#FF9800", "mark": "⚪", "name": "IND"},
     "Especiales": {"hex": "#9E9E9E", "mark": "⬜", "name": "ESP"},
     "Presidentes Históricos": {"hex": "#795548", "mark": "🟫", "name": "HIST"}
@@ -1247,6 +1247,7 @@ else:
              if log["cambios"]:
                 for l in log["cambios"]: st.markdown(f"<div class='report-card report-change'>{l}</div>", unsafe_allow_html=True)
              else: st.write("El mapa se mantiene estable.")
+
 
 
 
