@@ -115,7 +115,6 @@ PARTY_COLORS = {
     "Especiales": {"hex": "#FFD700", "mark": "⭐", "name": "Esp"}, # Dorado
     "Presidentes Históricos": {"hex": "#795548", "mark": "🟤", "name": "Hist"}
 }
-}
 
 def get_party_from_candidate(cand_name):
     for p_key, p_data in PARTIDOS.items():
@@ -1255,6 +1254,7 @@ else:
              if log["cambios"]:
                 for l in log["cambios"]: st.markdown(f"<div class='report-card report-change'>{l}</div>", unsafe_allow_html=True)
              else: st.write("El mapa se mantiene estable.")
+
 
 
 
