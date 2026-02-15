@@ -596,11 +596,11 @@ PARTIDOS = {
         "Ramón Puerta": {"emoji": "🚪", "FG": -50, "TR": 25, "ET": 10, "PN": 20, "PC": 5, "PE": 20, "EA": -15, "CP": 35, "SO": 10, "REL": 20, "JUV": -20, "EMP": 15, "PROG": 20, "PYME": 20},
         "Eduardo Camaño": {"emoji": "🕰️", "FG": -60, "TR": 25, "ET": 10, "PN": 20, "PC": 5, "PE": 20, "EA": -15, "CP": 35, "SO": 10, "REL": 20, "JUV": -20, "EMP": 15, "PROG": 20, "PYME": 20},
         "Eduardo Duhalde Presidente": {"emoji": "♟️", "FG": 45, "TR": -5, "ET": -25, "PN": -5, "PC": -30, "PE": -45, "EA": -10, "CP": -10, "SO": 60, "REL": 5, "JUV": -45, "EMP": 15, "PROG": -25, "PYME": -20},
-        "Néstor Kirchner": {"emoji": "🐧", "FG": 15, "TR": 20, "ET": 20, "PN": 10, "PC": -20, "PE": 25, "EA": -45, "CP": 25, "SO": -10, "REL": -5, "JUV": 15, "EMP": 0, "PROG": 15, "PYME": 10}
+        "Néstor Kirchner": {"emoji": "🐧", "FG": 15, "TR": 20, "ET": 20, "PN": 10, "PC": -20, "PE": 25, "EA": -45, "CP": 25, "SO": -10, "REL": -5, "JUV": 15, "EMP": 0, "PROG": 15, "PYME": 10},
         "Cristina Kirchner 1er Mandato": {"emoji": "✌️", "FG": 25, "TR": 10, "ET": 15, "PN": -55, "PC": 25, "PE": 40, "EA": -45, "CP": 25, "SO": -15, "REL": -5, "JUV": -5, "EMP": -25, "PROG": 20, "PYME": 10},
         "Cristina Kirchner 2do Mandato": {"emoji": "✌️", "FG": -30, "TR": -10, "ET": 15, "PN": 0, "PC": 45, "PE": 20, "EA": -25, "CP": 55, "SO": -15, "REL": -5, "JUV": -5, "EMP": -25, "PROG": 50, "PYME": 10},
         "Mauricio Macri Presidente": {"emoji": "🐱", "FG": 20, "TR": -15, "ET": -20, "PN": -50, "PC": -20, "PE": -20, "EA": 45, "CP": -40, "SO": 20, "REL": 10, "JUV": 10, "EMP": 65, "PROG": -15, "PYME": -30},
-        "Alberto Fernandez Presidente": {"emoji": "🎸", "FG": -10, "TR": 5, "ET": 15, "PN": -30, "PC": 25, "PE": 25, "EA": -40, "CP": 10, "SO": -15, "REL": -25, "JUV": 15, "EMP": 5, "PROG": 30, "PYME": 0},
+        "Alberto Fernandez Presidente": {"emoji": "🎸", "FG": -10, "TR": 5, "ET": 15, "PN": -30, "PC": 25, "PE": 25, "EA": -40, "CP": 10, "SO": -15, "REL": -25, "JUV": 15, "EMP": 5, "PROG": 30, "PYME": 0}
     }}
 }
 
@@ -1278,6 +1278,7 @@ else:
              if log["cambios"]:
                 for l in log["cambios"]: st.markdown(f"<div class='report-card report-change'>{l}</div>", unsafe_allow_html=True)
              else: st.write("El mapa se mantiene estable.")
+
 
 
 
