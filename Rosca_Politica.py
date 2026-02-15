@@ -293,7 +293,6 @@ PARTIDOS = {
         "Néstor Grindetti": {"emoji": "⚽", "FG": 10, "TR": -5, "ET": -15, "PN": -5, "PC": -20, "PE": -25, "EA": 0, "CP": -20, "SO": 25, "REL": 10, "JUV": -15, "EMP": 20, "PROG": 0, "PYME": 10}
     }},
     "Union Civica Radical (UCR)": {"color": "🔴", "candidatos": {
-        # --- PRESIDENTE Y RENOVACIÓN ---
         "Leonel Chiarella": {"emoji": "🦊", "FG": 10, "TR": -5, "ET": 10, "PN": 10, "PC": 20, "PE": 10, "EA": 15, "CP": -30, "SO": 20, "REL": 5, "JUV": 30, "EMP": 5, "PROG": -5, "PYME": 5},
         "Martín Lousteau": {"emoji": "🎓", "FG": 30, "TR": -25, "ET": 25, "PN": -25, "PC": -20, "PE": 20, "EA": 5, "CP": -20, "SO": 10, "REL": -20, "JUV": 25, "EMP": 15, "PROG": 25, "PYME": 15},
         "Ricardo Alfonsín": {"emoji": "👴", "FG": 20, "TR": -20, "ET": 15, "PN": 5, "PC": -15, "PE": 20, "EA": 15, "CP": -20, "SO": -15, "REL": 10, "JUV": 0, "EMP": -15, "PROG": 30, "PYME": 5},
@@ -344,7 +343,6 @@ PARTIDOS = {
     }},
     
     "Izquierda Argentina Unida (FIT-U/PO/Nuevo Mas y +)": {"color": "🟥", "candidatos": {
-        # --- CANDIDATOS PRESIDENCIALES / LIDERAZGO ---
         "Myriam Bregman": {"emoji": "✊", "FG": -35, "TR": -5, "ET": 30, "PN": 30, "PC": 10, "PE": 30, "EA": -20, "CP": -25, "SO": -20, "REL": -10, "JUV": 50, "EMP": -30, "PROG": 25, "PYME": -20},
         "Nicolás del Caño": {"emoji": "📹", "FG": -25, "TR": 10, "ET": 25, "PN": 20, "PC": 15, "PE": 25, "EA": 0, "CP": 0, "SO": -25, "REL": -25, "JUV": 30, "EMP": -25, "PROG": 30, "PYME": -25},
         "Manuela Castañeira": {"emoji": "🚩", "FG": -65, "TR": 15, "ET": 60, "PN": 15, "PC": 30, "PE": 40, "EA": -20, "CP": -10, "SO": -35, "REL": -20, "JUV": 35, "EMP": -20, "PROG": 30, "PYME": -15},
@@ -355,8 +353,6 @@ PARTIDOS = {
         "Luca Bonfante": {"emoji": "🎓", "FG": -10, "TR": 5, "ET": 45, "PN": 5, "PC": -10, "PE": 25, "EA": -5, "CP": -5, "SO": -25, "REL": -45, "JUV": 55, "EMP": -45, "PROG": 50, "PYME": 0},
         "Christian Castillo": {"emoji": "📕", "FG": -20, "TR": 10, "ET": 15, "PN": 10, "PC": -10, "PE": 20, "EA": -30, "CP": -30, "SO": -40, "REL": -30, "JUV": 10, "EMP": -40, "PROG": 40, "PYME": -30},
         "Jorge Altamira": {"emoji": "👴", "FG": -35, "TR": 25, "ET": 30, "PN": 15, "PC": -10, "PE": 35, "EA": -10, "CP": -10, "SO": -45, "REL": -25, "JUV": 10, "EMP": -45, "PROG": 45, "PYME": -10},
-        
-        # --- REFERENTES TERRITORIALES / SINDICALES ---
         "Alejandro Vilca": {"emoji": "🌵", "FG": 5, "TR": 30, "ET": 10, "PN": 20, "PC": -35, "PE": 20, "EA": 5, "CP": -20, "SO": -30, "REL": -10, "JUV": 5, "EMP": -40, "PROG": 40, "PYME": -10},
         "Celeste Fierro": {"emoji": "💚", "FG": -10, "TR": 20, "ET": 20, "PN": -20, "PC": 5, "PE": 20, "EA": -15, "CP": -15, "SO": -30, "REL": -40, "JUV": 20, "EMP": -40, "PROG": 40, "PYME": 0},
         "Eduardo Belliboni": {"emoji": "🔥", "FG": -65, "TR": 50, "ET": -20, "PN": -30, "PC": -45, "PE": 30, "EA": -45, "CP": -30, "SO": -60, "REL": -40, "JUV": -20, "EMP": -70, "PROG": 60, "PYME": -40},
@@ -364,9 +360,6 @@ PARTIDOS = {
         "Carlos Santillán": {"emoji": "🐕", "FG": 30, "TR": 40, "ET": -10, "PN": 0, "PC": -20, "PE": 20, "EA": 5, "CP": -30, "SO": -10, "REL": 10, "JUV": -20, "EMP": -30, "PROG": 30, "PYME": -10},
         "Mónica Schlotthauer": {"emoji": "🚂", "FG": -10, "TR": 50, "ET": 40, "PN": -20, "PC": -30, "PE": 10, "EA": -20, "CP": -20, "SO": -30, "REL": -20, "JUV": 10, "EMP": -60, "PROG": 50, "PYME": -10},
         "Vilma Ripoll": {"emoji": "⚕️", "FG": -30, "TR": 30, "ET": 30, "PN": -10, "PC": 10, "PE": 30, "EA": -20, "CP": -20, "SO": -30, "REL": -30, "JUV": -10, "EMP": -50, "PROG": 60, "PYME": -10},
-        
-        # --- HISTÓRICOS Y OTROS --
-    
         "Luis Zamora": {"emoji": "📚", "FG": -35, "TR": 10, "ET": 50, "PN": -10, "PC": 20, "PE": 10, "EA": -10, "CP": -10, "SO": -30, "REL": -20, "JUV": 20, "EMP": -50, "PROG": 50, "PYME": 0},
         "Ailén Barbani": {"emoji": "💅", "FG": -20, "TR": 0, "ET": 10, "PN": 0, "PC": 10, "PE": 10, "EA": 0, "CP": -10, "SO": -10, "REL": -20, "JUV": 50, "EMP": -20, "PROG": 20, "PYME": 0},
         "Federico Winokur": {"emoji": "🏫", "FG": -40, "TR": 20, "ET": 50, "PN": 15, "PC": -50, "PE": 30, "EA": -50, "CP": -35, "SO": -45, "REL": -40, "JUV": 25, "EMP": -50, "PROG": 45, "PYME": -10},
@@ -375,7 +368,6 @@ PARTIDOS = {
     }},
     
     "Union de Partidos Nacionalistas (PD, ERF, FPF y +)": {"color": "⚫", "candidatos": {
-        # --- LIDERAZGO ---
         "Victoria Villarruel": {"emoji": "🛡️", "FG": -10, "TR": 15, "ET": -20, "PN": 5, "PC": 5, "PE": 20, "EA": 10, "CP": 5, "SO": 55, "REL": 35, "JUV": 10, "EMP": 15, "PROG": -30, "PYME": 5},
         "Miguel Ángel Pichetto": {"emoji": "👔", "FG": 20, "TR": 10, "ET": 10, "PN": 20, "PC": 20, "PE": 0, "EA": -20, "CP": -20, "SO": 25, "REL": -10, "JUV": -20, "EMP": 30, "PROG": -10, "PYME": 15},
         "Santiago Cúneo": {"emoji": "🤬", "FG": 30, "TR": -10, "ET": -35, "PN": 40, "PC": -40, "PE": 10, "EA": 5, "CP": 5, "SO": 20, "REL": 15, "JUV": 20, "EMP": -15, "PROG": -10, "PYME": 10},
@@ -384,16 +376,12 @@ PARTIDOS = {
         "Cesar Biondini": {"emoji": "🐣", "FG": -5, "TR": 0, "ET": 25, "PN": 35, "PC": 25, "PE": 0, "EA": -45, "CP": -5, "SO": 35, "REL": 25, "JUV": 20, "EMP": -30, "PROG": -25, "PYME": -10},
         "Aldo Rico": {"emoji": "🪖", "FG": -20, "TR": 15, "ET": -10, "PN": 20, "PC": 10, "PE": 5, "EA": -25, "CP": -5, "SO": 50, "REL": 40, "JUV": -30, "EMP": -15, "PROG": -25, "PYME": 20},
         "José Bonacci": {"emoji": "📜", "FG": -65, "TR": 25, "ET": -20, "PN": 50, "PC": -45, "PE": 5, "EA": -30, "CP": -15, "SO": 40, "REL": 30, "JUV": -25, "EMP": 20, "PROG": -60, "PYME": 20},
-
-        # --- REFERENTES DE NICHO ---
         "Cynthia Hotton": {"emoji": "✝️", "FG": 5, "TR": 10, "ET": -20, "PN": 10, "PC": 5, "PE": 5, "EA": 10, "CP": -30, "SO": 20, "REL": 70, "JUV": -25, "EMP": 10, "PROG": -75, "PYME": 5},
         "Padre Olivera Ravasi": {"emoji": "✝️", "FG": -20, "TR": -10, "ET": 10, "PN": 20, "PC": -30, "PE": -20, "EA": 0, "CP": -20, "SO": 50, "REL": 80, "JUV": 10, "EMP": 10, "PROG": -80, "PYME": -10},
         "Marcelo Gullo": {"emoji": "🇪🇸", "FG": 10, "TR": 10, "ET": 30, "PN": 20, "PC": -10, "PE": -5, "EA": -20, "CP": 30, "SO": 10, "REL": 40, "JUV": -10, "EMP": -10, "PROG": -20, "PYME": -30},
         "Adrian Salbuchi": {"emoji": "🌍", "FG": -10, "TR": 10, "ET": 10, "PN": 30, "PC": -20, "PE": 20, "EA": -10, "CP": 10, "SO": 20, "REL": -10, "JUV": -10, "EMP": -60, "PROG": -30, "PYME": 10},
         "Chinda Brandolino": {"emoji": "⚕️", "FG": -20, "TR": 5, "ET": -20, "PN": 10, "PC": -40, "PE": 10, "EA": -30, "CP": -30, "SO": 10, "REL": 60, "JUV": -20, "EMP": -40, "PROG": -75, "PYME": 5},
         "Cecilia Pando": {"emoji": "🧣", "FG": -45, "TR": -10, "ET": -20, "PN": 20, "PC": -50, "PE": -35, "EA": 30, "CP": -50, "SO": 70, "REL": 40, "JUV": -40, "EMP": 10, "PROG": -80, "PYME": -30},
-        
-        # --- OTROS ---
         "Alberto Samid": {"emoji": "🥩", "FG": -35, "TR": -15, "ET": -30, "PN": 50, "PC": 5, "PE": 10, "EA": -5, "CP": 10, "SO": 10, "REL": 25, "JUV": 5, "EMP": 10, "PROG": -15, "PYME": 15},
         "Jorge Sobisch": {"emoji": "🏔️", "FG": 20, "TR": 0, "ET": -20, "PN": 25, "PC": 30, "PE": 10, "EA": -10, "CP": -25, "SO": 30, "REL": 15, "JUV": -30, "EMP": 15, "PROG": -25, "PYME": 20},
         "Eduardo Amadeo": {"emoji": "💼", "FG": 10, "TR": -10, "ET": -10, "PN": 10, "PC": 10, "PE": 10, "EA": 10, "CP": -10, "SO": 10, "REL": 10, "JUV": -10, "EMP": 10, "PROG": -10, "PYME": 10},
@@ -1235,6 +1223,7 @@ else:
              if log["cambios"]:
                 for l in log["cambios"]: st.markdown(f"<div class='report-card report-change'>{l}</div>", unsafe_allow_html=True)
              else: st.write("El mapa se mantiene estable.")
+
 
 
 
