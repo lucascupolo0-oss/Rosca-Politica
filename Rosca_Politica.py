@@ -99,7 +99,6 @@ st.markdown("""
 
 # --- 1. IDENTIDAD DE PARTIDOS (CORREGIDO PARA COINCIDIR CON TUS NOMBRES) ---
 PARTY_COLORS = {
-PARTY_COLORS = {
     # Coincide con: "Peronismo (PJ/PJ Federal)" -> AHORA: "Peronismo (PJ/PJ Federal)" (NO, cambiaste el nombre)
     # TUS NUEVOS NOMBRES SON:
     
@@ -1256,6 +1255,7 @@ else:
              if log["cambios"]:
                 for l in log["cambios"]: st.markdown(f"<div class='report-card report-change'>{l}</div>", unsafe_allow_html=True)
              else: st.write("El mapa se mantiene estable.")
+
 
 
 
