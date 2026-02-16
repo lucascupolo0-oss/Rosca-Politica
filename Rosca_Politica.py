@@ -108,7 +108,7 @@ PARTY_COLORS = {
     "Union Civica Radical (UCR)": {"hex": "#D32F2F", "mark": "🔴", "name": "UCR"},
     "Peronismo Federal (PJ/Cordobesismo/Federales)": {"hex": "#4DD0E1", "mark": "🟦", "name": "PJ-Fed"},
     "Izquierda Argentina Unida (FIT-U/PO/Nuevo Mas y +)": {"hex": "#B71C1C", "mark": "🟥", "name": "FIT-U"},
-    "Union de Partidos Nacionalistas (PD, ERF, FPF y +": {"hex": "#607D8B", "mark": "⚫", "name": "PN"}, # Gris oscuro
+    "Union de Partidos Nacionalistas (PD, ERF, FPF y +)": {"hex": "#607D8B", "mark": "⚫", "name": "PN"}, # Gris oscuro
     "Progresismo (Socialdemocratas/Progresistas Ind.)": {"hex": "#F54927", "mark": "🟠", "name": "Prog"},
     "Libertarios/Libertarios Ind. (UCeDé, Lib. No Oficialismo)": {"hex": "#A982D9", "mark": "🟪", "name": "Lib-Ind"},
     "Partidos Provinciales": {"hex": "#4D4B12", "mark": "🟨", "name": "Prov"}, # Naranja
@@ -1278,6 +1278,7 @@ else:
              if log["cambios"]:
                 for l in log["cambios"]: st.markdown(f"<div class='report-card report-change'>{l}</div>", unsafe_allow_html=True)
              else: st.write("El mapa se mantiene estable.")
+
 
 
 
