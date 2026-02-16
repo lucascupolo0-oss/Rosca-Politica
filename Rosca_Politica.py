@@ -643,7 +643,7 @@ def update_owners():
     for g in SOCIAL_GROUPS:
         slots = st.session_state.social_slots[g]
         mx = max(slots.values()) if slots else 0
-        if mx >= 3:
+        if mx >= 4:
             lideres = [c for c, q in slots.items() if q == mx]
             curr = st.session_state.social_owners[g]
             if curr not in lideres:
@@ -1278,6 +1278,7 @@ else:
              if log["cambios"]:
                 for l in log["cambios"]: st.markdown(f"<div class='report-card report-change'>{l}</div>", unsafe_allow_html=True)
              else: st.write("El mapa se mantiene estable.")
+
 
 
 
