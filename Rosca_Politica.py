@@ -158,7 +158,6 @@ SOCIAL_GROUPS = {
 }
 
 PROV_TO_GROUP_RAW = {
-PROV_TO_GROUP_RAW = {
     # --- GRANDES (28+ Votos) -> 4 a 5 Grupos ---
     # Córdoba: El corazón productivo y Anti-K. (Sin CP).
     # Pivotes: Campo/Industria (PN/TR) vs Federalismo/Anti-K (FG/EA).
@@ -1343,6 +1342,7 @@ else:
              if log["cambios"]:
                 for l in log["cambios"]: st.markdown(f"<div class='report-card report-change'>{l}</div>", unsafe_allow_html=True)
              else: st.write("El mapa se mantiene estable.")
+
 
 
 
