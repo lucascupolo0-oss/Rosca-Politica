@@ -557,6 +557,7 @@ PARTIDOS = {
         "Nahuel Moreno": {"emoji": "🔥", "FG": -30, "TR": 60, "ET": 20, "PN": 10, "PC": 20, "PE": 20, "EA": -20, "CP": -10, "SO": -40, "REL": -40, "JUV": 25, "EMP": -70, "PROG": 75, "PYME": -20},
         "Adolfo Alsina": {"emoji": "🎩", "FG": 20, "TR": 10, "ET": 10, "PN": 20, "PC": 10, "PE": 10, "EA": 10, "CP": 10, "SO": 20, "REL": 10, "JUV": -20, "EMP": 10, "PROG": -10, "PYME": 10},
         "Norma Plá": {"emoji": "👵", "FG": 10, "TR": -15, "ET": 60, "PN": 10, "PC": 20, "PE": 35, "EA": -10, "CP": 10, "SO": -20, "REL": 10, "JUV": 10, "EMP": -50, "PROG": 40, "PYME": 0},
+        "José De la Sota": {"emoji": "🧱", "FG": 25, "TR": 15, "ET": 5, "PN": 25, "PC": -15, "PE": 15, "EA": 45, "CP": 25, "SO": 10, "REL": 25, "JUV": 0, "EMP": 20, "PROG": 5, "PYME": 35},
         "Ernesto 'Che' Guevara": {"emoji": "⭐️", "FG": -80, "TR": 40, "ET": 20, "PN": 55, "PC": -40, "PE": 100, "EA": -60, "CP": -20, "SO": -70, "REL": -50, "JUV": 90, "EMP": -100, "PROG": 80, "PYME": -50},
         # FIGURAS ALTAMENTE ACLAMADAS #
         "Diego Maradona": {"emoji": "🔟", "FG": -10, "TR": 30, "ET": 10, "PN": 55, "PC": 20, "PE": 10, "EA": -5, "CP": 45, "SO": -50, "REL": 20, "JUV": 50, "EMP": 5, "PROG": 30, "PYME": 10},
@@ -1341,6 +1342,7 @@ else:
              if log["cambios"]:
                 for l in log["cambios"]: st.markdown(f"<div class='report-card report-change'>{l}</div>", unsafe_allow_html=True)
              else: st.write("El mapa se mantiene estable.")
+
 
 
 
