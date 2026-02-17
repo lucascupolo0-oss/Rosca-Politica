@@ -211,7 +211,7 @@ PROV_TO_GROUP_RAW = {
     # Neuquén: Vaca Muerta (Trabajo y Empresas).
     "Neuquén": ["TR", "PN", "FG"], 
     # Chubut: Petróleo y Pesca.
-    "Chubut": ["TR", "PN", "EA"], 
+    "Chubut": ["TR", "PN", "PC"], 
     # San Luis: Logística y Cambio reciente.
     "San Luis": ["PC", "PN", "ET"], 
     # Formosa: Estado e Insfrán puro.
@@ -1341,6 +1341,7 @@ else:
              if log["cambios"]:
                 for l in log["cambios"]: st.markdown(f"<div class='report-card report-change'>{l}</div>", unsafe_allow_html=True)
              else: st.write("El mapa se mantiene estable.")
+
 
 
 
