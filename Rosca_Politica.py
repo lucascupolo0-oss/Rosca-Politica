@@ -173,11 +173,11 @@ PROV_TO_GROUP_RAW = {
 
     # PBA Norte: Campo rico y clase alta.
     # Pivotes: Agro (PN) vs Anti-K (EA).
-    "PBA Norte": ["FG", "PN", "ET", "EA"], 
+    "PBA Norte": ["TR", "PN", "ET"], 
 
     # PBA Oeste: El Conurbano profundo. 
     # Pivotes: Aparato Peronista (CP/PE) vs Trabajadores/Cambio Pobreza (TR/PC).
-    "PBA Oeste": ["TR", "PE", "CP"], 
+    "PBA Oeste": ["FG", "PE", "CP"], 
 
 
     # --- INTERMEDIOS (11-27 Votos) -> 3 a 4 Grupos ---
@@ -1341,6 +1341,7 @@ else:
              if log["cambios"]:
                 for l in log["cambios"]: st.markdown(f"<div class='report-card report-change'>{l}</div>", unsafe_allow_html=True)
              else: st.write("El mapa se mantiene estable.")
+
 
 
 
