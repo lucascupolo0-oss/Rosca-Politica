@@ -227,7 +227,6 @@ PROV_TO_GROUP_RAW = {
     # Tierra del Fuego: Industria ensambladora (TR) y Subsidios (PE).
     "Tierra del Fuego": ["TR", "PE"] 
 }
-}
 
 COSTOS_FIJOS = {
     "Jujuy": 20000, "Formosa": 15000, "Salta": 35000, "Chaco": 25000, "Misiones": 35000,
@@ -1342,6 +1341,7 @@ else:
              if log["cambios"]:
                 for l in log["cambios"]: st.markdown(f"<div class='report-card report-change'>{l}</div>", unsafe_allow_html=True)
              else: st.write("El mapa se mantiene estable.")
+
 
 
 
