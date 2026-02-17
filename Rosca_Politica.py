@@ -145,7 +145,7 @@ STATE_GROUPS = {
     "PC": {"nombre": "Prov. Cambiantes", "renta": 75000, "color": "⚪"},
     "PE": {"nombre": "Presencia Estatal", "renta": 75000, "color": "🟡"},
     "EA": {"nombre": "Eternos Anti-PJ", "renta": 100000, "color": "⬛"},
-    "CP": {"nombre": "Clásicos Peronistas", "renta": 75000, "color": "🟦"}
+    "CP": {"nombre": "Clásicos Peronistas", "renta": 50000, "color": "🟦"}
 }
 
 SOCIAL_GROUPS = {
@@ -173,7 +173,7 @@ PROV_TO_GROUP_RAW = {
 
     # PBA Norte: Campo rico y clase alta.
     # Pivotes: Agro (PN) vs Anti-K (EA).
-    "PBA Norte": ["TR", "PN", "ET"], 
+    "PBA Norte": ["TR", "ET"], 
 
     # PBA Oeste: El Conurbano profundo. 
     # Pivotes: Aparato Peronista (CP/PE) vs Trabajadores/Cambio Pobreza (TR/PC).
@@ -232,7 +232,7 @@ COSTOS_FIJOS = {
     "Jujuy": 20000, "Formosa": 15000, "Salta": 35000, "Chaco": 25000, "Misiones": 35000,
     "Tucumán": 75000, "Santiago del Estero": 30000, "Corrientes": 30000, "La Rioja": 10000,
     "Catamarca": 12500, "San Juan": 25000, "Santa Fe": 200000, "Entre Ríos": 37500,
-    "San Luis": 15000, "Córdoba": 200000, "PBA Norte": 125000, "CABA": 150000,
+    "San Luis": 15000, "Córdoba": 200000, "PBA Norte": 100000, "CABA": 150000,
     "Mendoza": 75000, "PBA Oeste": 200000, "PBA Centro": 50000, "La Pampa": 12500,
     "PBA Costa": 35000, "Neuquén": 22500, "Río Negro": 25000, "Chubut": 20000,
     "Santa Cruz": 10000, "Tierra del Fuego": 10000
@@ -1341,6 +1341,7 @@ else:
              if log["cambios"]:
                 for l in log["cambios"]: st.markdown(f"<div class='report-card report-change'>{l}</div>", unsafe_allow_html=True)
              else: st.write("El mapa se mantiene estable.")
+
 
 
 
