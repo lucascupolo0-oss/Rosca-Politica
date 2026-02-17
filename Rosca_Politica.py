@@ -219,7 +219,7 @@ PROV_TO_GROUP_RAW = {
     # La Rioja: Estado y Caudillismo.
     "La Rioja": ["PE", "CP"], 
     # Catamarca: Minería y Estado.
-    "Catamarca": ["PN", "PE"], 
+    "Catamarca": ["PN", "PE", "CP"], 
     # La Pampa: Campo y PJ.
     "La Pampa": ["PN", "CP"], 
     # Santa Cruz: Estado y Sindicatos.
@@ -1341,6 +1341,7 @@ else:
              if log["cambios"]:
                 for l in log["cambios"]: st.markdown(f"<div class='report-card report-change'>{l}</div>", unsafe_allow_html=True)
              else: st.write("El mapa se mantiene estable.")
+
 
 
 
