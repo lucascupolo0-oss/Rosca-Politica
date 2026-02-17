@@ -158,15 +158,76 @@ SOCIAL_GROUPS = {
 }
 
 PROV_TO_GROUP_RAW = {
-    "Jujuy": ["PE", "EA"], "Formosa": ["PE", "CP"], "Salta": ["FG", "PC"], "Chaco": ["PE", "CP"],
-    "Misiones": ["FG", "PN"], "Tucumán": ["FG", "PN", "CP"], "Santiago del Estero": ["CP"],
-    "Corrientes": ["EA"], "La Rioja": ["PE", "CP"], "Catamarca": ["PN", "PE", "CP"],
-    "San Juan": ["PN", "CP"], "Santa Fe": ["FG", "ET", "PN", "PC"], "Entre Ríos": ["PN", "PC"],
-    "San Luis": ["PC", "CP"], "Córdoba": ["FG", "ET", "PN", "EA"], "PBA Norte": ["FG", "TR", "ET"],
-    "CABA": ["FG", "TR", "ET", "EA"], "Mendoza": ["FG", "ET", "PN"], "PBA Oeste": ["FG", "PE", "CP"],
-    "PBA Centro": ["ET", "PN"], "La Pampa": ["PE", "CP"], "PBA Costa": ["TR", "ET"],
-    "Neuquén": ["TR", "PN", "PC"], "Río Negro": ["TR", "EA"], "Chubut": ["TR", "PN", "PC"],
-    "Santa Cruz": ["PN", "PE", "CP"], "Tierra del Fuego": ["TR", "PE"]
+PROV_TO_GROUP_RAW = {
+    # --- GRANDES (28+ Votos) -> 4 a 5 Grupos ---
+    # Córdoba: El corazón productivo y Anti-K. (Sin CP).
+    # Pivotes: Campo/Industria (PN/TR) vs Federalismo/Anti-K (FG/EA).
+    "Córdoba": ["FG", "PN", "EA", "TR", "ET"], 
+
+    # Santa Fe: La provincia más compleja. Puerto, Campo, Narco, Socialismo.
+    # Pivotes: Cambio (PC) vs Institucional (ET) vs Productivo (PN/TR).
+    "Santa Fe": ["FG", "PN", "TR", "ET", "PC"], 
+
+    # CABA: Servicios, Anti-Peronismo y Clase Media.
+    # Pivotes: Educación (ET) vs Cambio Liberal (PC/EA).
+    "CABA": ["FG", "ET", "EA", "PC"], 
+
+    # PBA Norte: Campo rico y clase alta.
+    # Pivotes: Agro (PN) vs Anti-K (EA).
+    "PBA Norte": ["FG", "PN", "ET", "EA"], 
+
+    # PBA Oeste: El Conurbano profundo. 
+    # Pivotes: Aparato Peronista (CP/PE) vs Trabajadores/Cambio Pobreza (TR/PC).
+    "PBA Oeste": ["TR", "PE", "CP"], 
+
+
+    # --- INTERMEDIOS (11-27 Votos) -> 3 a 4 Grupos ---
+    # Mendoza: Conservadora y vitivinícola.
+    "Mendoza": ["FG", "PN", "EA", "ET"], 
+    # Tucumán: Norte productivo y peronista.
+    "Tucumán": ["FG", "PN", "CP", "ET"], 
+    # Entre Ríos: Campo y Federalismo.
+    "Entre Ríos": ["FG", "PN", "PC", "EA"], 
+    # Salta: Diversidad norteña.
+    "Salta": ["FG", "PC", "TR", "PN"], 
+    # Misiones: Provincialismo fuerte y Turismo.
+    "Misiones": ["FG", "PN", "PC"], 
+    # Corrientes: Radicalismo y Energía.
+    "Corrientes": ["FG", "EA", "PN"], 
+    # Chaco: Pobreza estructural y Agro.
+    "Chaco": ["PE", "CP", "TR", "PN"], 
+    # Santiago del Estero: Feudo de Zamora pero con obra pública.
+    "Santiago del Estero": ["CP", "PE", "FG"], 
+    # PBA Centro: El interior agrícola bonaerense.
+    "PBA Centro": ["PN", "FG", "ET"], 
+    # PBA Costa: Turismo y Pesca.
+    "PBA Costa": ["TR", "PC", "ET"], 
+    # --- CHICOS (0-11 Votos) -> 1 a 3 Grupos (Específicos) ---
+    # Jujuy: Litio (PN) y Estado Radical (PE/EA).
+    "Jujuy": ["PN", "PE", "EA"], 
+    # San Juan: Minería y Peronismo clásico.
+    "San Juan": ["PN", "CP", "PE"], 
+    # Río Negro: Fruticultura y Provincialismo.
+    "Río Negro": ["FG", "PN", "TR"], 
+    # Neuquén: Vaca Muerta (Trabajo y Empresas).
+    "Neuquén": ["TR", "PN", "FG"], 
+    # Chubut: Petróleo y Pesca.
+    "Chubut": ["TR", "PN", "EA"], 
+    # San Luis: Logística y Cambio reciente.
+    "San Luis": ["PC", "PN", "ET"], 
+    # Formosa: Estado e Insfrán puro.
+    "Formosa": ["PE", "CP"], 
+    # La Rioja: Estado y Caudillismo.
+    "La Rioja": ["PE", "CP"], 
+    # Catamarca: Minería y Estado.
+    "Catamarca": ["PN", "PE"], 
+    # La Pampa: Campo y PJ.
+    "La Pampa": ["PN", "CP"], 
+    # Santa Cruz: Estado y Sindicatos.
+    "Santa Cruz": ["PE", "TR", "CP"], 
+    # Tierra del Fuego: Industria ensambladora (TR) y Subsidios (PE).
+    "Tierra del Fuego": ["TR", "PE"] 
+}
 }
 
 COSTOS_FIJOS = {
@@ -1282,6 +1343,7 @@ else:
              if log["cambios"]:
                 for l in log["cambios"]: st.markdown(f"<div class='report-card report-change'>{l}</div>", unsafe_allow_html=True)
              else: st.write("El mapa se mantiene estable.")
+
 
 
 
