@@ -139,13 +139,13 @@ def get_visual_id(cand_name):
 # --- 2. GRUPOS Y MAPA ---
 STATE_GROUPS = {
     "FG": {"nombre": "Federalismo y Gob.", "renta": 50000, "color": "🟢"},
-    "TR": {"nombre": "Trabajo", "renta": 100000, "color": "🟠"},
+    "TR": {"nombre": "Trabajo", "renta": 75000, "color": "🟠"},
     "ET": {"nombre": "Educación y Transp.", "renta": 50000, "color": "🔵"},
     "PN": {"nombre": "Producción Nac.", "renta": 100000, "color": "🟣"},
-    "PC": {"nombre": "Prov. Cambiantes", "renta": 75000, "color": "⚪"},
+    "PC": {"nombre": "Prov. Cambiantes", "renta": 100000, "color": "⚪"},
     "PE": {"nombre": "Presencia Estatal", "renta": 75000, "color": "🟡"},
     "EA": {"nombre": "Eternos Anti-PJ", "renta": 100000, "color": "⬛"},
-    "CP": {"nombre": "Clásicos Peronistas", "renta": 50000, "color": "🟦"}
+    "CP": {"nombre": "Clásicos Peronistas", "renta": 75000, "color": "🟦"}
 }
 
 SOCIAL_GROUPS = {
@@ -1341,6 +1341,7 @@ else:
              if log["cambios"]:
                 for l in log["cambios"]: st.markdown(f"<div class='report-card report-change'>{l}</div>", unsafe_allow_html=True)
              else: st.write("El mapa se mantiene estable.")
+
 
 
 
