@@ -205,7 +205,7 @@ PROV_TO_GROUP_RAW = {
     # Jujuy: Litio (PN) y Estado Radical (PE/EA).
     "Jujuy": ["PN", "PE", "EA"], 
     # San Juan: Minería y Peronismo clásico.
-    "San Juan": ["PN", "CP", "PE"], 
+    "San Juan": ["PN", "PE"], 
     # Río Negro: Fruticultura y Provincialismo.
     "Río Negro": ["FG", "PN", "TR"], 
     # Neuquén: Vaca Muerta (Trabajo y Empresas).
@@ -223,7 +223,7 @@ PROV_TO_GROUP_RAW = {
     # La Pampa: Campo y PJ.
     "La Pampa": ["PN", "CP"], 
     # Santa Cruz: Estado y Sindicatos.
-    "Santa Cruz": ["PE", "TR", "CP"], 
+    "Santa Cruz": [ "TR", "CP"], 
     # Tierra del Fuego: Industria ensambladora (TR) y Subsidios (PE).
     "Tierra del Fuego": ["TR", "PE"] 
 }
@@ -1341,6 +1341,7 @@ else:
              if log["cambios"]:
                 for l in log["cambios"]: st.markdown(f"<div class='report-card report-change'>{l}</div>", unsafe_allow_html=True)
              else: st.write("El mapa se mantiene estable.")
+
 
 
 
