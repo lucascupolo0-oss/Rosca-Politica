@@ -1288,127 +1288,6 @@ tab_rank, tab_spy, tab_terr = st.sidebar.tabs(["📊 Ranking", "🕵️ Espionaj
                             pct = f / total
                             st.write(f"{c}: {int(pct*100)}%")
                             st.progress(min(pct, 1.0))
-    
-    with tab_rank:
-        update_votos()
-        votos_sorted = sorted(st.session_state.votos_resolved.items(), key=lambda x: x[1], reverse=True)
-        for c, v in votos_sorted:
-            d = get_total_money(c)
-            color = get_party_from_candidate(c)
-            hex_c = PARTY_COLORS[color]["hex"] if color else "#ccc"
-            st.markdown(f"<span style='color:{hex_c}'><b>{c}</b></span><br>🗳️ {v} | 💵 ${d:,}", unsafe_allow_html=True)
-            st.progress(min(v/VOTOS_PARA_GANAR, 1.0))
-            
-    with tab_rank:
-        update_votos()
-        votos_sorted = sorted(st.session_state.votos_resolved.items(), key=lambda x: x[1], reverse=True)
-        for c, v in votos_sorted:
-            d = get_total_money(c)
-            color = get_party_from_candidate(c)
-            hex_c = PARTY_COLORS[color]["hex"] if color else "#ccc"
-            
-            # --- NUEVO: Verificar si tiene VP y armar el texto ---
-            vp_name = st.session_state.p[c].get("vp", "Ninguno")
-            if vp_name != "Ninguno":
-                display_name = f"{c} - {vp_name}"
-            else:
-                display_name = c
-                
-            # Mostrar en pantalla
-            st.markdown(f"<span style='color:{hex_c}'><b>{display_name}</b></span><br>🗳️ {v} | 💵 ${d:,}", unsafe_allow_html=True)
-            st.progress(min(v/VOTOS_PARA_GANAR, 1.0))
-
-     with tab_spy:
-        target = st.selectbox("Objetivo:", list(st.session_state.p.keys()))
-        stats = get_candidate_stats(target)
-        st.markdown(f"**Perfil de {target}**")
-        for k, v in stats.items():
-            if k != "emoji":
-                name = STATE_GROUPS.get(k, {}).get("nombre", SOCIAL_GROUPS.get(k, {}).get("nombre", k))
-                col_t = "green" if v > 0 else "red"
-                st.markdown(f":{col_t}[{name}: {v:+}%]")
-        
-        st.markdown("---")
-        st.markdown("**Inversiones Activas:**")
-        found_inv = False
-        
-        st.markdown("*Provincias:*")
-        # --- FIX: Cambiamos el nombre de la variable a slots_prov ---
-        for p_name, slots_prov in st.session_state.slots.items():
-            fichas = slots_prov.get(target, 0)
-            is_landed = target in st.session_state.landed_status.get(p_name, [])
-            if fichas > 0 or is_landed:
-                found_inv = True
-                estado = f"{fichas} fichas"
-                if fichas == 0 and is_landed: estado = "0 (Pie en el territorio)"
-                if st.session_state.hard_locked.get(p_name, False) and fichas >= 10:
-                    estado = "🔒 CERRADO (10 fichas)"
-                st.write(f"- **{p_name}**: {estado}")
-
-        st.markdown("*Grupos Sociales:*")
-        # --- FIX: Cambiamos el nombre de la variable a slots_soc ---
-        for g_code, slots_soc in st.session_state.social_slots.items():
-            fichas = slots_soc.get(target, 0)
-            is_landed = target in st.session_state.landed_status.get(g_code, [])
-            if fichas > 0 or is_landed:
-                found_inv = True
-                g_name = SOCIAL_GROUPS[g_code]["nombre"]
-                estado = f"{fichas} fichas"
-                if fichas == 0 and is_landed: estado = "0 (Pie en el territorio)"
-                if st.session_state.hard_locked.get(g_code, False) and fichas >= 10:
-                    estado = "🔒 CERRADO (10 fichas)"
-                st.write(f"- **{g_name}**: {estado}")
-                
-        if not found_inv: st.caption("No tiene inversiones activas.")
-        
-        st.markdown("---")
-        st.markdown("**Inversiones Activas:**")
-        found_inv = False
-        st.markdown("*Provincias:*")
-        for p_name, slots in st.session_state.slots.items():
-            fichas = slots.get(target, 0)
-            is_landed = target in st.session_state.landed_status.get(p_name, [])
-            if fichas > 0 or is_landed:
-                found_inv = True
-                estado = f"{fichas} fichas"
-                if fichas == 0 and is_landed: estado = "0 (Pie en el territorio)"
-                if st.session_state.hard_locked[p_name] and fichas >= 10:
-                    estado = "🔒 CERRADO (10 fichas)"
-                st.write(f"- **{p_name}**: {estado}")
-
-        st.markdown("*Grupos Sociales:*")
-        for g_code, slots in st.session_state.social_slots.items():
-            fichas = slots.get(target, 0)
-            is_landed = target in st.session_state.landed_status.get(g_code, [])
-            if fichas > 0 or is_landed:
-                found_inv = True
-                g_name = SOCIAL_GROUPS[g_code]["nombre"]
-                estado = f"{fichas} fichas"
-                if fichas == 0 and is_landed: estado = "0 (Pie en el territorio)"
-                if st.session_state.hard_locked.get(g_code, False) and fichas >= 10:
-                    estado = "🔒 CERRADO (10 fichas)"
-                st.write(f"- **{g_name}**: {estado}")
-                
-        if not found_inv: st.caption("No tiene inversiones activas.")
-
-    with tab_terr:
-        fuerza_grupos, total_votos_g = calcular_control_grupos()
-        for g_code, data in STATE_GROUPS.items():
-            with st.expander(f"{data['color']} {data['nombre']}"):
-                provs = [p for p, grps in PROV_TO_GROUP_RAW.items() if g_code in grps]
-                for p in provs:
-                    own = st.session_state.owners[p]
-                    visual = get_visual_id(own)
-                    st.caption(f"{visual} **{p}**")
-                st.divider()
-                total = total_votos_g[g_code]
-                if total > 0:
-                    ranking = sorted(fuerza_grupos[g_code].items(), key=lambda x: x[1], reverse=True)
-                    for c, f in ranking:
-                        if f > 0:
-                            pct = f / total
-                            st.write(f"{c}: {int(pct*100)}%")
-                            st.progress(min(pct, 1.0))
 
     try: st.image("rosca politica.jpg", use_container_width=True)
     except: pass
@@ -1568,6 +1447,7 @@ tab_rank, tab_spy, tab_terr = st.sidebar.tabs(["📊 Ranking", "🕵️ Espionaj
              if log["cambios"]:
                 for l in log["cambios"]: st.markdown(f"<div class='report-card report-change'>{l}</div>", unsafe_allow_html=True)
              else: st.write("El mapa se mantiene estable.")
+
 
 
 
