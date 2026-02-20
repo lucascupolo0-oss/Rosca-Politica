@@ -1240,6 +1240,49 @@ else:
             # Mostrar en pantalla
             st.markdown(f"<span style='color:{hex_c}'><b>{display_name}</b></span><br>🗳️ {v} | 💵 ${d:,}", unsafe_allow_html=True)
             st.progress(min(v/VOTOS_PARA_GANAR, 1.0))
+
+     with tab_spy:
+        target = st.selectbox("Objetivo:", list(st.session_state.p.keys()))
+        stats = get_candidate_stats(target)
+        st.markdown(f"**Perfil de {target}**")
+        for k, v in stats.items():
+            if k != "emoji":
+                name = STATE_GROUPS.get(k, {}).get("nombre", SOCIAL_GROUPS.get(k, {}).get("nombre", k))
+                col_t = "green" if v > 0 else "red"
+                st.markdown(f":{col_t}[{name}: {v:+}%]")
+        
+        st.markdown("---")
+        st.markdown("**Inversiones Activas:**")
+        found_inv = False
+        
+        st.markdown("*Provincias:*")
+        # --- FIX: Cambiamos el nombre de la variable a slots_prov ---
+        for p_name, slots_prov in st.session_state.slots.items():
+            fichas = slots_prov.get(target, 0)
+            is_landed = target in st.session_state.landed_status.get(p_name, [])
+            if fichas > 0 or is_landed:
+                found_inv = True
+                estado = f"{fichas} fichas"
+                if fichas == 0 and is_landed: estado = "0 (Pie en el territorio)"
+                if st.session_state.hard_locked.get(p_name, False) and fichas >= 10:
+                    estado = "🔒 CERRADO (10 fichas)"
+                st.write(f"- **{p_name}**: {estado}")
+
+        st.markdown("*Grupos Sociales:*")
+        # --- FIX: Cambiamos el nombre de la variable a slots_soc ---
+        for g_code, slots_soc in st.session_state.social_slots.items():
+            fichas = slots_soc.get(target, 0)
+            is_landed = target in st.session_state.landed_status.get(g_code, [])
+            if fichas > 0 or is_landed:
+                found_inv = True
+                g_name = SOCIAL_GROUPS[g_code]["nombre"]
+                estado = f"{fichas} fichas"
+                if fichas == 0 and is_landed: estado = "0 (Pie en el territorio)"
+                if st.session_state.hard_locked.get(g_code, False) and fichas >= 10:
+                    estado = "🔒 CERRADO (10 fichas)"
+                st.write(f"- **{g_name}**: {estado}")
+                
+        if not found_inv: st.caption("No tiene inversiones activas.")
         
         st.markdown("---")
         st.markdown("**Inversiones Activas:**")
@@ -1448,4 +1491,5 @@ else:
              if log["cambios"]:
                 for l in log["cambios"]: st.markdown(f"<div class='report-card report-change'>{l}</div>", unsafe_allow_html=True)
              else: st.write("El mapa se mantiene estable.")
+
 
