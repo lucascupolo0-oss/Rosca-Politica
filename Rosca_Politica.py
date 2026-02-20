@@ -413,7 +413,6 @@ PARTIDOS = {
         "Gustavo Bordet": {"emoji": "🚜", "FG": 30, "TR": 5, "ET": 5, "PN": 30, "PC": 10, "PE": 10, "EA": -10, "CP": 10, "SO": 5, "REL": 5, "JUV": -5, "EMP": 10, "PROG": 0, "PYME": 15},
         "A. Rodriguez Saá": {"emoji": "🏞️", "FG": 15, "TR": -5, "ET": -15, "PN": -5, "PC": -10, "PE": 15, "EA": 10, "CP": 10, "SO": 20, "REL": 10, "JUV": -30, "EMP": 15, "PROG": -15, "PYME": 10},
         "Eduardo Duhalde": {"emoji": "♟️", "FG": 25, "TR": -5, "ET": -25, "PN": -5, "PC": -30, "PE": 15, "EA": 0, "CP": 5, "SO": 30, "REL": 5, "JUV": -30, "EMP": 15, "PROG": -25, "PYME": 10},
-        "Martin Ayerbe": {"emoji": "❌", "FG": 10, "TR": 5, "ET": -25, "PN": 35, "PC": -30, "PE": 15, "EA": 5, "CP": 15, "SO": -5, "REL": 25, "JUV": 0, "EMP": 5, "PROG": 15, "PYME": 5},
         "Fernando Gray": {"emoji": "📡", "FG": 15, "TR": -25, "ET": -10, "PN": 10, "PC": -30, "PE": 10, "EA": -55, "CP": 25, "SO": 5, "REL": 10, "JUV": -10, "EMP": 5, "PROG": -5, "PYME": 35}    
     }},
     "Izquierda Argentina Unida (FIT-U/PO/Nuevo Mas y +)": {"color": "🟥", "candidatos": {
@@ -452,6 +451,7 @@ PARTIDOS = {
         "José Bonacci": {"emoji": "📜", "FG": -65, "TR": 25, "ET": -20, "PN": 50, "PC": -45, "PE": 5, "EA": -30, "CP": -15, "SO": 40, "REL": 30, "JUV": -25, "EMP": 20, "PROG": -60, "PYME": 20},
         "Dante Gebel": {"emoji": "✝️", "FG": 10, "TR": 0, "ET": -15, "PN": -10, "PC": 30, "PE": 15, "EA": 0, "CP": 10, "SO": 10, "REL": 85, "JUV": 25, "EMP": 35, "PROG": -50, "PYME": -10},
         "Alejandro Kim": {"emoji": "🍜", "FG": 15, "TR": 15, "ET": -10, "PN": 5, "PC": -30, "PE": -5, "EA": -50, "CP": 25, "SO": 15, "REL": 25, "JUV": 25, "EMP": -15, "PROG": 10, "PYME": 10},
+        "Martin Ayerbe": {"emoji": "❌", "FG": 10, "TR": 5, "ET": -25, "PN": 35, "PC": -30, "PE": 15, "EA": 5, "CP": 15, "SO": -5, "REL": 25, "JUV": 0, "EMP": 5, "PROG": 15, "PYME": 5},
         "G. Durand Cornejo": {"emoji": "💉", "FG": 10, "TR": 5, "ET": -35, "PN": 10, "PC": 5, "PE": 5, "EA": 0, "CP": -10, "SO": 40, "REL": 50, "JUV": -45, "EMP": -10, "PROG": -35, "PYME": 15},
         "Enrique Venturino": {"emoji": "⚓", "FG": 10, "TR": 0, "ET": 0, "PN": 30, "PC": -10, "PE": 10, "EA": -10, "CP": 20, "SO": 50, "REL": 20, "JUV": -20, "EMP": 0, "PROG": -40, "PYME": 10},
         "Cynthia Hotton": {"emoji": "✝️", "FG": 5, "TR": 10, "ET": -20, "PN": 10, "PC": 5, "PE": 5, "EA": 10, "CP": -30, "SO": 20, "REL": 70, "JUV": -25, "EMP": 10, "PROG": -75, "PYME": 5},
@@ -574,9 +574,13 @@ PARTIDOS = {
         "Adolfo Alsina": {"emoji": "🎩", "FG": 20, "TR": 10, "ET": 10, "PN": 20, "PC": 10, "PE": 10, "EA": 10, "CP": 10, "SO": 20, "REL": 10, "JUV": -20, "EMP": 10, "PROG": -10, "PYME": 10},
         "Norma Plá": {"emoji": "👵", "FG": 10, "TR": -15, "ET": 60, "PN": 10, "PC": 20, "PE": 35, "EA": -10, "CP": 10, "SO": -20, "REL": 10, "JUV": 10, "EMP": -50, "PROG": 40, "PYME": 0},
         "José De la Sota": {"emoji": "🧱", "FG": 25, "TR": 15, "ET": 5, "PN": 25, "PC": -15, "PE": 15, "EA": 45, "CP": 25, "SO": 10, "REL": 25, "JUV": 0, "EMP": 20, "PROG": 5, "PYME": 35},
+        "Álvaro Alsogaray": {"emoji": "📈", "FG": 10, "TR": -10, "ET": -15, "PN": 25, "PC": 5, "PE": -45, "EA": 45, "CP": -40, "SO": 15, "REL": 20, "JUV": 0, "EMP": 50, "PROG": -45, "PYME": 20},
         "Ernesto 'Che' Guevara": {"emoji": "⭐️", "FG": -80, "TR": 40, "ET": 20, "PN": 55, "PC": -40, "PE": 100, "EA": -60, "CP": -20, "SO": -70, "REL": -50, "JUV": 90, "EMP": -100, "PROG": 80, "PYME": -50},
         "Palito Ortega": {"emoji": "🎤", "FG": 15, "TR": 20, "ET": 10, "PN": 15, "PC": 25, "PE": 10, "EA": -20, "CP": 30, "SO": 5, "REL": 20, "JUV": -15, "EMP": 5, "PROG": 15, "PYME": 20},
         "Carlos Reutemann": {"emoji": "🏎️", "FG": 25, "TR": 15, "ET": 10, "PN": 20, "PC": 10, "PE": 10, "EA": 10, "CP": 10, "SO": 25, "REL": 20, "JUV": -30, "EMP": 25, "PROG": -5, "PYME": 20},
+        "Lisandro de la Torre": {"emoji": "🦁", "FG": 10, "TR": 10, "ET": -15, "PN": 25, "PC": 25, "PE": -45, "EA": 45, "CP": -40, "SO": 15, "REL": 30, "JUV": 0, "EMP": 50, "PROG": -45, "PYME": 20},
+        "Jose Penelón": {"emoji": "☭", "FG": -10, "TR": 40, "ET": 30, "PN": 10, "PC": -10, "PE": 35, "EA": -15, "CP": 5, "SO": -25, "REL": -20, "JUV": 10, "EMP": -45, "PROG": 45, "PYME": -20},
+        "Oscar Alende": {"emoji": "💊", "FG": 25, "TR": 20, "ET": 35, "PN": 65, "PC": 20, "PE": 20, "EA": 10, "CP": 5, "SO": -5, "REL": -5, "JUV": 10, "EMP": -10, "PROG": 35, "PYME": 20},
         # FIGURAS ALTAMENTE ACLAMADAS #
         "Diego Maradona": {"emoji": "🔟", "FG": -10, "TR": 30, "ET": 10, "PN": 55, "PC": 20, "PE": 10, "EA": -5, "CP": 45, "SO": -50, "REL": 20, "JUV": 50, "EMP": 5, "PROG": 30, "PYME": 10},
         "Papa Francisco": {"emoji": "🇻🇦", "FG": 20, "TR": 20, "ET": 10, "PN": 0, "PC": 10, "PE": 20, "EA": 5, "CP": 10, "SO": -10, "REL": 100, "JUV": 10, "EMP": -30, "PROG": 40, "PYME": 0},
@@ -688,10 +692,29 @@ PARTIDOS = {
 # --- LÓGICA DE JUEGO ---
 
 def get_candidate_stats(cand_name):
+    # 1. Buscar las stats base del Presidente
+    base_stats = {}
     for p in PARTIDOS.values():
         if cand_name in p["candidatos"]:
-            return p["candidatos"][cand_name]
-    return {}
+            base_stats = p["candidatos"][cand_name].copy()
+            break
+            
+    # 2. Si el juego ya empezó y tiene un VP asignado, sumamos su influencia
+    if 'p' in st.session_state and cand_name in st.session_state.p:
+        vp_name = st.session_state.p[cand_name].get("vp", "Ninguno")
+        if vp_name != "Ninguno":
+            vp_stats = {}
+            for p in PARTIDOS.values():
+                if vp_name in p["candidatos"]:
+                    vp_stats = p["candidatos"][vp_name]
+                    break
+            
+            # Sumar el 50% de las stats del Vicepresidente
+            for stat, val in vp_stats.items():
+                if stat != "emoji":
+                    base_stats[stat] = base_stats.get(stat, 0) + int(val * 0.5)
+                    
+    return base_stats
 
 def get_total_money(cand):
     if cand in st.session_state.p:
@@ -1023,39 +1046,86 @@ elif not st.session_state.game_started:
     try: st.image("rosca politica.jpg", use_container_width=True)
     except: pass
     
+    # --- 1. SELECCIÓN DE PRESIDENTE Y RIVALES ---
     c1, c2 = st.columns(2)
-    p_sel = c1.selectbox("Partido", list(PARTIDOS.keys()))
-    c_sel = c1.selectbox("Candidato", list(PARTIDOS[p_sel]["candidatos"].keys()))
-    all_cands = [c for p in PARTIDOS.values() for c in p["candidatos"] if c != c_sel]
-    ias = c2.multiselect("Rivales (Máx 4)", all_cands, max_selections=4)
+    p_sel = c1.selectbox("Tu Partido", list(PARTIDOS.keys()))
+    c_sel = c1.selectbox("Tu Candidato a Presidente", list(PARTIDOS[p_sel]["candidatos"].keys()))
     
-    st.markdown(f"### 📊 Estadísticas de {c_sel}")
-    stats = get_candidate_stats(c_sel)
+    all_cands_names = [c for p in PARTIDOS.values() for c in p["candidatos"]]
+    opciones_rivales = [c for c in all_cands_names if c != c_sel]
+    ias = c2.multiselect("Rivales IA (Máx 4)", opciones_rivales, max_selections=4)
     
+    # --- 2. SISTEMA DE VICEPRESIDENTES (OPCIONAL) ---
+    st.markdown("### 🤝 Configurar Fórmulas (Vicepresidentes)")
+    st.caption("El Vicepresidente aporta el **50% de sus estadísticas** a la fórmula.")
+    vps_seleccionados = {}
+    
+    jugadores_totales = [c_sel] + ias
+    
+    for jug in jugadores_totales:
+        col_chk, col_sel = st.columns([1, 3])
+        con_vp = col_chk.checkbox(f"Asignar VP a {jug}", key=f"chk_vp_{jug}")
+        
+        if con_vp:
+            # Evitar que se elija a sí mismo o a un candidato que ya está jugando
+            cands_prohibidos = jugadores_totales + list(vps_seleccionados.values())
+            opciones_vp = [c for c in all_cands_names if c not in cands_prohibidos]
+            vps_seleccionados[jug] = col_sel.selectbox(f"Elegir VP para {jug}", opciones_vp, key=f"sel_vp_{jug}")
+        else:
+            vps_seleccionados[jug] = "Ninguno"
+            col_sel.write("*(Va en solitario)*")
+
+    # --- 3. MOSTRAR TUS STATS FINALES ---
+    st.markdown("---")
+    vp_text = f" y {vps_seleccionados[c_sel]}" if vps_seleccionados[c_sel] != "Ninguno" else " (Solitario)"
+    st.markdown(f"### 📊 Tus Estadísticas Finales: {c_sel}{vp_text}")
+    
+    # Simular la suma para mostrarla en pantalla antes de empezar
+    stats_finales = PARTIDOS[p_sel]["candidatos"][c_sel].copy()
+    if vps_seleccionados[c_sel] != "Ninguno":
+        vp_name = vps_seleccionados[c_sel]
+        vp_stats = {}
+        for p_dict in PARTIDOS.values():
+            if vp_name in p_dict["candidatos"]:
+                vp_stats = p_dict["candidatos"][vp_name]
+                break
+        for k, v in vp_stats.items():
+            if k != "emoji":
+                stats_finales[k] = stats_finales.get(k, 0) + int(v * 0.5)
+
     col_t, col_s = st.columns(2)
     with col_t:
         st.subheader("Territoriales")
-        for k, v in stats.items():
-            if k in STATE_GROUPS:
-                st.metric(STATE_GROUPS[k]["nombre"], f"{v:+}%")
+        for k in STATE_GROUPS:
+            if k in stats_finales:
+                st.metric(STATE_GROUPS[k]["nombre"], f"{stats_finales[k]:+}%")
     with col_s:
         st.subheader("Sociales")
-        for k, v in stats.items():
-            if k in SOCIAL_GROUPS:
-                st.metric(SOCIAL_GROUPS[k]["nombre"], f"{v:+}%")
+        for k in SOCIAL_GROUPS:
+            if k in stats_finales:
+                st.metric(SOCIAL_GROUPS[k]["nombre"], f"{stats_finales[k]:+}%")
 
+    # --- 4. BOTÓN DE INICIO ---
     if st.button("JUGAR"):
         if not ias: st.error("Faltan rivales")
         else:
-            jugadores = [c_sel] + ias
-            st.session_state.p = {c: {"is_ia": c!=c_sel, "wallets": {"base": PRESUPUESTO_INICIAL}} for c in jugadores}
+            st.session_state.p = {}
+            for jug in jugadores_totales:
+                es_ia = (jug != c_sel)
+                st.session_state.p[jug] = {
+                    "is_ia": es_ia, 
+                    "wallets": {"base": PRESUPUESTO_INICIAL}, 
+                    "vp": vps_seleccionados[jug] # <-- Guardamos el VP en la memoria
+                }
+                
+            # Inicialización del mapa...
             st.session_state.slots = {p: {} for p in MAPA_DATA}
             st.session_state.owners = {p: None for p in MAPA_DATA}
             st.session_state.social_slots = {g: {} for g in SOCIAL_GROUPS}
             st.session_state.social_owners = {g: None for g in SOCIAL_GROUPS}
             st.session_state.hard_locked = {k: False for k in list(MAPA_DATA.keys()) + list(SOCIAL_GROUPS.keys())}
             st.session_state.landed_status = {k: [] for k in list(MAPA_DATA.keys()) + list(SOCIAL_GROUPS.keys())}
-            st.session_state.ai_conflict_memory = {c: {} for c in jugadores}
+            st.session_state.ai_conflict_memory = {c: {} for c in jugadores_totales}
             st.session_state.pending_user = {}
             st.session_state.turno = 1
             st.session_state.modo_eleccion = False
@@ -1359,6 +1429,7 @@ else:
              if log["cambios"]:
                 for l in log["cambios"]: st.markdown(f"<div class='report-card report-change'>{l}</div>", unsafe_allow_html=True)
              else: st.write("El mapa se mantiene estable.")
+
 
 
 
