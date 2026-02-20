@@ -1222,15 +1222,24 @@ else:
             st.markdown(f"<span style='color:{hex_c}'><b>{c}</b></span><br>🗳️ {v} | 💵 ${d:,}", unsafe_allow_html=True)
             st.progress(min(v/VOTOS_PARA_GANAR, 1.0))
             
-    with tab_spy:
-        target = st.selectbox("Objetivo:", list(st.session_state.p.keys()))
-        stats = get_candidate_stats(target)
-        st.markdown(f"**Perfil de {target}**")
-        for k, v in stats.items():
-            if k != "emoji":
-                name = STATE_GROUPS.get(k, {}).get("nombre", SOCIAL_GROUPS.get(k, {}).get("nombre", k))
-                col = "green" if v > 0 else "red"
-                st.markdown(f":{col}[{name}: {v:+}%]")
+    with tab_rank:
+        update_votos()
+        votos_sorted = sorted(st.session_state.votos_resolved.items(), key=lambda x: x[1], reverse=True)
+        for c, v in votos_sorted:
+            d = get_total_money(c)
+            color = get_party_from_candidate(c)
+            hex_c = PARTY_COLORS[color]["hex"] if color else "#ccc"
+            
+            # --- NUEVO: Verificar si tiene VP y armar el texto ---
+            vp_name = st.session_state.p[c].get("vp", "Ninguno")
+            if vp_name != "Ninguno":
+                display_name = f"{c} - {vp_name}"
+            else:
+                display_name = c
+                
+            # Mostrar en pantalla
+            st.markdown(f"<span style='color:{hex_c}'><b>{display_name}</b></span><br>🗳️ {v} | 💵 ${d:,}", unsafe_allow_html=True)
+            st.progress(min(v/VOTOS_PARA_GANAR, 1.0))
         
         st.markdown("---")
         st.markdown("**Inversiones Activas:**")
@@ -1439,3 +1448,4 @@ else:
              if log["cambios"]:
                 for l in log["cambios"]: st.markdown(f"<div class='report-card report-change'>{l}</div>", unsafe_allow_html=True)
              else: st.write("El mapa se mantiene estable.")
+
