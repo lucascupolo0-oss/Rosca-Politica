@@ -283,7 +283,7 @@ PARTIDOS = {
         "Leandro Santoro": {"emoji": "🏙️", "FG": 20, "TR": -20, "ET": 10, "PN": 5, "PC": 10, "PE": 25, "EA": 0, "CP": 5, "SO": -5, "REL": 20, "JUV": 10, "EMP": -10, "PROG": 30, "PYME": 5},
         "Guillermo Moreno": {"emoji": "🌭", "FG": 10, "TR": 0, "ET": -10, "PN": 5, "PC": 0, "PE": 5, "EA": -50, "CP": 30, "SO": 10, "REL": 40, "JUV": 5, "EMP": -5, "PROG": -5, "PYME": 15},
         "Gildo Insfrán": {"emoji": "🧉", "FG": 30, "TR": -15, "ET": 5, "PN": 10, "PC": -45, "PE": 50, "EA": -65, "CP": 40, "SO": 10, "REL": -15, "JUV": -25, "EMP": -20, "PROG": 0, "PYME": -5},
-        "Ricardo Quintela": {"emoji": "💵", "FG": 25, "TR": 5, "ET": 10, "PN": -5, "PC": -25, "PE": 25, "EA": -25, "CP": 35, "SO": 5, "REL": 5, "JUV": -15, "EMP": -15, "PROG": 15, "PYME": 5},
+        "Ricardo Quintela": {"emoji": "💵", "FG": 25, "TR": 5, "ET": 10, "PN": -5, "PC": -25, "PE": 25, "EA": -25, "CP": 35, "SO": 5, "REL": 15, "JUV": -15, "EMP": -15, "PROG": 15, "PYME": 5},
         "Gustavo Melella": {"emoji": "🏔️", "FG": 15, "TR": 30, "ET": 10, "PN": -5, "PC": -25, "PE": 25, "EA": -20, "CP": 25, "SO": -10, "REL": -5, "JUV": 10, "EMP": -10, "PROG": 20, "PYME": 5},
         "Jorge Capitanich": {"emoji": "📚", "FG": 30, "TR": 10, "ET": 10, "PN": -10, "PC": -20, "PE": 40, "EA": -40, "CP": 30, "SO": -10, "REL": 5, "JUV": -10, "EMP": -10, "PROG": 20, "PYME": -10},
         "Germán Martínez": {"emoji": "📋", "FG": 10, "TR": 10, "ET": 10, "PN": -10, "PC": 20, "PE": 20, "EA": -30, "CP": 30, "SO": 0, "REL": -5, "JUV": -20, "EMP": -10, "PROG": 10, "PYME": -10},
@@ -300,7 +300,8 @@ PARTIDOS = {
         "Mariano Recalde": {"emoji": "📋", "FG": 15, "TR": 0, "ET": 25, "PN": -5, "PC": -10, "PE": 25, "EA": -40, "CP": 40, "SO": 0, "REL": 5, "JUV": 5, "EMP": -20, "PROG": 25, "PYME": -5},
         "Diego Giuliano": {"emoji": "🚗", "FG": 35, "TR": -10, "ET": 35, "PN": -15, "PC": 0, "PE": 5, "EA": -10, "CP": 15, "SO": 5, "REL": 10, "JUV": -25, "EMP": -20, "PROG": 5, "PYME": 15},
         "Victoria Tolosa Paz": {"emoji": "👠", "FG": 5, "TR": 5, "ET": 10, "PN": -25, "PC": 15, "PE": 25, "EA": -20, "CP": 15, "SO": -5, "REL": 5, "JUV": 20, "EMP": -5, "PROG": 5, "PYME": 5},
-        "Julia Strada": {"emoji": "📊", "FG": -5, "TR": 15, "ET": 30, "PN": 10, "PC": 5, "PE": 25, "EA": -25, "CP": 10, "SO": -10, "REL": -20, "JUV": 10, "EMP": 0, "PROG": 20, "PYME": 10},
+        "Julia Strada": {"emoji": "📊", "FG": -5, "TR": 15, "ET": 30, "PN": 10, "PC": 5, "PE": 25, "EA": -25, "CP": 10, "SO": -10, "REL": -20, "JUV": 10, "EMP": -25, "PROG": 30, "PYME": 10},
+        "Florencia Carignano": {"emoji": "📦", "FG": -15, "TR": 25, "ET": 20, "PN": 20, "PC": -5, "PE": 20, "EA": -35, "CP": 20, "SO": 0, "REL": -15, "JUV": 20, "EMP": -10, "PROG": 20, "PYME": 5},
         "Natalia Zaracho": {"emoji": "♻️", "FG": -50, "TR": 35, "ET": 0, "PN": -20, "PC": -20, "PE": 50, "EA": -50, "CP": 30, "SO": -50, "REL": -10, "JUV": 25, "EMP": -70, "PROG": 50, "PYME": -10},
         "Fernando Espinoza": {"emoji": "🥁", "FG": -10, "TR": 20, "ET": -10, "PN": -10, "PC": -50, "PE": 50, "EA": -50, "CP": 60, "SO": -10, "REL": 0, "JUV": 10, "EMP": -30, "PROG": 10, "PYME": 10},
         "Alicia Kirchner": {"emoji": "🦂", "FG": -10, "TR": 35, "ET": -25, "PN": -15, "PC": -45, "PE": 20, "EA": -45, "CP": 45, "SO": -15, "REL": 5, "JUV": -15, "EMP": -25, "PROG": 20, "PYME": 20},
@@ -376,6 +377,7 @@ PARTIDOS = {
         "Mario Negri": {"emoji": "👴", "FG": 10, "TR": 10, "ET": 15, "PN": 5, "PC": -10, "PE": 10, "EA": 15, "CP": -20, "SO": 5, "REL": -10, "JUV": -25, "EMP": 10, "PROG": 5, "PYME": 10},
         "Gustavo Valdés": {"emoji": "🐊", "FG": 60, "TR": 5, "ET": -10, "PN": -15, "PC": -25, "PE": 0, "EA": 30, "CP": -20, "SO": 10, "REL": 10, "JUV": -10, "EMP": 10, "PROG": -10, "PYME": 10},
         "Alfredo Cornejo": {"emoji": "🍇", "FG": 30, "TR": 10, "ET": 10, "PN": 10, "PC": 20, "PE": 10, "EA": 25, "CP": -50, "SO": 20, "REL": -5, "JUV": -15, "EMP": 20, "PROG": -15, "PYME": 20},
+        "Pablo Juliano": {"emoji": "🛑", "FG": 20, "TR": 40, "ET": 10, "PN": 10, "PC": -20, "PE": 10, "EA": 5, "CP": -30, "SO": -10, "REL": -10, "JUV": 5, "EMP": -30, "PROG": 10, "PYME": 20},
         "Carlos Sadir": {"emoji": "🌄", "FG": 20, "TR": -10, "ET": -10, "PN": 5, "PC": 10, "PE": 20, "EA": 30, "CP": -10, "SO": 10, "REL": 5, "JUV": -10, "EMP": 10, "PROG": -5, "PYME": 10},
         "Leandro Zdero": {"emoji": "🌲", "FG": 15, "TR": 5, "ET": 5, "PN": -10, "PC": 10, "PE": 15, "EA": 25, "CP": -5, "SO": 0, "REL": -5, "JUV": 15, "EMP": 25, "PROG": -20, "PYME": 10},
         "Daniel Angelici": {"emoji": "🎰", "FG": -10, "TR": -10, "ET": -10, "PN": 5, "PC": -30, "PE": 10, "EA": 5, "CP": -10, "SO": 20, "REL": 10, "JUV": -10, "EMP": 50, "PROG": -40, "PYME": -10},
@@ -437,8 +439,9 @@ PARTIDOS = {
         "Vilma Ripoll": {"emoji": "⚕️", "FG": -30, "TR": 30, "ET": 30, "PN": -10, "PC": 10, "PE": 30, "EA": -20, "CP": -20, "SO": -30, "REL": -30, "JUV": -10, "EMP": -50, "PROG": 60, "PYME": -10},
         "Luis Zamora": {"emoji": "📚", "FG": -35, "TR": 10, "ET": 50, "PN": -10, "PC": 20, "PE": 10, "EA": -10, "CP": -10, "SO": -30, "REL": -20, "JUV": 20, "EMP": -50, "PROG": 50, "PYME": 0},
         "Ailén Barbani": {"emoji": "💅", "FG": -20, "TR": 0, "ET": 10, "PN": 0, "PC": 10, "PE": 10, "EA": 0, "CP": -10, "SO": -10, "REL": -20, "JUV": 50, "EMP": -20, "PROG": 20, "PYME": 0},
+        "Héctor Heberling": {"emoji": "🚩", "FG": -10, "TR": 25, "ET": 30, "PN": 35, "PC": 10, "PE": 30, "EA": -10, "CP": -10, "SO": -25, "REL": -5, "JUV": 5, "EMP": -25, "PROG": 30, "PYME": -10},
         "Federico Winokur": {"emoji": "🏫", "FG": -40, "TR": 20, "ET": 50, "PN": 15, "PC": -50, "PE": 30, "EA": -50, "CP": -35, "SO": -45, "REL": -40, "JUV": 25, "EMP": -50, "PROG": 45, "PYME": -10},
-        "Hugo Bodart": {"emoji": "🚩", "FG": -30, "TR": 30, "ET": 25, "PN": 15, "PC": -25, "PE": 40, "EA": -20, "CP": -35, "SO": -15, "REL": -35, "JUV": -20, "EMP": -50, "PROG": 50, "PYME": -15},
+        "Hugo Bodart": {"emoji": "👨‍🏭", "FG": -30, "TR": 30, "ET": 25, "PN": 15, "PC": -25, "PE": 40, "EA": -20, "CP": -35, "SO": -15, "REL": -35, "JUV": -20, "EMP": -50, "PROG": 50, "PYME": -15},
         "Mercedes Trimarchi": {"emoji": "✊", "FG": -10, "TR": 10, "ET": 20, "PN": -10, "PC": 10, "PE": 20, "EA": -10, "CP": -10, "SO": -30, "REL": -60, "JUV": 30, "EMP": -30, "PROG": 70, "PYME": 0},
         "Juan Carlos Giordano": {"emoji": "📢", "FG": 5, "TR": 20, "ET": 20, "PN": 30, "PC": 5, "PE": 25, "EA": -5, "CP": -5, "SO": -25, "REL": -20, "JUV": -5, "EMP": -45, "PROG": 50, "PYME": 5}
     }},
@@ -462,7 +465,7 @@ PARTIDOS = {
         "Padre Olivera Ravasi": {"emoji": "☦️", "FG": -20, "TR": -10, "ET": 10, "PN": 20, "PC": -30, "PE": -20, "EA": 0, "CP": -20, "SO": 50, "REL": 80, "JUV": 10, "EMP": 10, "PROG": -80, "PYME": -10},
         "Marcelo Gullo": {"emoji": "🇪🇸", "FG": 10, "TR": 10, "ET": 30, "PN": 20, "PC": -10, "PE": -5, "EA": -20, "CP": 30, "SO": 10, "REL": 40, "JUV": -10, "EMP": -10, "PROG": -20, "PYME": -30},
         "Adrian Salbuchi": {"emoji": "🌍", "FG": -10, "TR": 10, "ET": 10, "PN": 30, "PC": -20, "PE": 20, "EA": -10, "CP": 10, "SO": 20, "REL": -10, "JUV": -10, "EMP": -60, "PROG": -30, "PYME": 10},
-        "Chinda Brandolino": {"emoji": "📿", "FG": -20, "TR": 5, "ET": -20, "PN": 10, "PC": -40, "PE": 10, "EA": -30, "CP": -30, "SO": 10, "REL": 60, "JUV": -20, "EMP": -40, "PROG": -75, "PYME": 5},
+        "Chinda Brandolino": {"emoji": "📿", "FG": -20, "TR": 5, "ET": -20, "PN": 10, "PC": -40, "PE": 10, "EA": -30, "CP": -30, "SO": 10, "REL": 60, "JUV": 20, "EMP": -40, "PROG": -75, "PYME": 5},
         "Cecilia Pando": {"emoji": "🧣", "FG": -45, "TR": -10, "ET": -20, "PN": 20, "PC": -50, "PE": -35, "EA": 30, "CP": -50, "SO": 70, "REL": 40, "JUV": -40, "EMP": 10, "PROG": -80, "PYME": -30},
         "Alberto Samid": {"emoji": "🥩", "FG": -35, "TR": -15, "ET": -30, "PN": 50, "PC": 5, "PE": 10, "EA": -5, "CP": 10, "SO": 10, "REL": 25, "JUV": 5, "EMP": 10, "PROG": -15, "PYME": 15},
         "Jorge Sobisch": {"emoji": "🏔️", "FG": 20, "TR": 0, "ET": -20, "PN": 25, "PC": 30, "PE": 10, "EA": -10, "CP": -25, "SO": 30, "REL": 15, "JUV": -30, "EMP": 15, "PROG": -25, "PYME": 20},
@@ -627,6 +630,7 @@ PARTIDOS = {
         "El Dipy": {"emoji": "🎵", "FG": -15, "TR": 10, "ET": -10, "PN": 0, "PC": 50, "PE": -20, "EA": 10, "CP": 0, "SO": -15, "REL": -20, "JUV": 60, "EMP": 5, "PROG": -10, "PYME": 5},
         "Walter Erviti": {"emoji": "🦱", "FG": -25, "TR": -10, "ET": -15, "PN": 25, "PC": 10, "PE": 15, "EA": -5, "CP": 0, "SO": 10, "REL": 45, "JUV": 45, "EMP": -15, "PROG": -5, "PYME": -10},
         "Mago sin Dientes": {"emoji": "🎩", "FG": -20, "TR": -10, "ET": -10, "PN": -10, "PC": 0, "PE": -20, "EA": 25, "CP": -30, "SO": 10, "REL": 10, "JUV": 20, "EMP": -10, "PROG": -30, "PYME": 5},
+        "Fama y Guita": {"emoji": "⚒️", "FG": 50, "TR": -50, "ET": 50, "PN": 75, "PC": -30, "PE": 50, "EA": -50, "CP": -50, "SO": -50, "REL": -80, "JUV": 60, "EMP": -60, "PROG": 80, "PYME": 5},
         "Jorge Porcel Jr": {"emoji": "🍝", "FG": -30, "TR": -50, "ET": -20, "PN": -30, "PC": -20, "PE": 10, "EA": 0, "CP": 0, "SO": -30, "REL": -10, "JUV": 10, "EMP": -50, "PROG": 0, "PYME": -30},
         "Jorge Lanata": {"emoji": "🚬", "FG": 5, "TR": 0, "ET": 10, "PN": 5, "PC": -20, "PE": -10, "EA": 50, "CP": -40, "SO": 10, "REL": -10, "JUV": 20, "EMP": 10, "PROG": -30, "PYME": 5},
         "Luis Majul": {"emoji": "📖", "FG": -30, "TR": -20, "ET": -50, "PN": -25, "PC": -60, "PE": 0, "EA": 45, "CP": -35, "SO": 20, "REL": 10, "JUV": 5, "EMP": 15, "PROG": -35, "PYME": 10},
@@ -1460,6 +1464,7 @@ else:
              if log["cambios"]:
                 for l in log["cambios"]: st.markdown(f"<div class='report-card report-change'>{l}</div>", unsafe_allow_html=True)
              else: st.write("El mapa se mantiene estable.")
+
 
 
 
