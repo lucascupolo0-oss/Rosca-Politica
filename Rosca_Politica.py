@@ -1224,12 +1224,21 @@ else:
             hex_c = PARTY_COLORS.get(color, {}).get("hex", "#ccc") if color else "#ccc"
             
             vp_name = st.session_state.p[c].get("vp", "Ninguno")
+            custom_party = st.session_state.p[c].get("custom_party", "").strip()
+            
             if vp_name != "Ninguno":
                 display_name = f"{c} - {vp_name}"
             else:
                 display_name = c
+            
+            # Si hay un nombre de partido, lo ponemos entre paréntesis en una nueva línea
+            if custom_party != "":
+                party_html = f"<br><span style='color: #555; font-size: 0.9em; font-weight: normal;'>({custom_party})</span>"
+            else:
+                party_html = ""
                 
-            st.markdown(f"<span style='color:{hex_c}'><b>{display_name}</b></span><br>🗳️ {v} | 💵 ${d:,}", unsafe_allow_html=True)
+            # Ensamblamos todo el texto
+            st.markdown(f"<div style='line-height: 1.3; margin-bottom: 5px;'><span style='color:{hex_c}'><b>{display_name}</b></span>{party_html}<br>🗳️ {v} | 💵 ${d:,}</div>", unsafe_allow_html=True)
             st.progress(min(v/VOTOS_PARA_GANAR, 1.0))
             
     with tab_spy:
@@ -1450,4 +1459,5 @@ else:
              if log["cambios"]:
                 for l in log["cambios"]: st.markdown(f"<div class='report-card report-change'>{l}</div>", unsafe_allow_html=True)
              else: st.write("El mapa se mantiene estable.")
+
 
