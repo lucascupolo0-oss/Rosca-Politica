@@ -1296,7 +1296,7 @@ tab_rank, tab_spy, tab_terr = st.sidebar.tabs(["📊 Ranking", "🕵️ Espionaj
     pct_win = min(my_votes / VOTOS_PARA_GANAR * 100, 100)
     st.markdown(f"""
         <div class="voto-bar-wrapper">
-            <div class="voto-bar-fill" style="width: {max(pct_win, 2)}%; background-color: {PARTY_COLORS[get_party_from_candidate(mi_nombre)]["hex"]};">
+            <div class="voto-bar-fill" style="width: {max(pct_win, 2)}%; background-color: {PARTY_COLORS.get(get_party_from_candidate(mi_nombre), {}).get("hex", "#333")};">
                 {my_votes} / {VOTOS_PARA_GANAR}
             </div>
         </div>
@@ -1361,7 +1361,7 @@ tab_rank, tab_spy, tab_terr = st.sidebar.tabs(["📊 Ranking", "🕵️ Espionaj
             p = st.session_state.selected_prov
             st.button("🔙 Volver", on_click=lambda: setattr(st.session_state, 'selected_prov', None))
             own = st.session_state.owners[p]
-            color_hex = PARTY_COLORS[get_party_from_candidate(own)]["hex"] if own else "#333"
+            color_hex = PARTY_COLORS.get(get_party_from_candidate(own), {}).get("hex", "#333") if own else "#333"
             st.markdown(f"<h2 style='border-bottom: 5px solid {color_hex}'>{p}</h2>", unsafe_allow_html=True)
             st.caption(f"Dueño actual: {own if own else 'Nadie'}")
             valid_groups = PROV_TO_GROUP_RAW.get(p, [])
@@ -1447,8 +1447,3 @@ tab_rank, tab_spy, tab_terr = st.sidebar.tabs(["📊 Ranking", "🕵️ Espionaj
              if log["cambios"]:
                 for l in log["cambios"]: st.markdown(f"<div class='report-card report-change'>{l}</div>", unsafe_allow_html=True)
              else: st.write("El mapa se mantiene estable.")
-
-
-
-
-
