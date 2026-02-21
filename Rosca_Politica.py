@@ -1090,7 +1090,6 @@ elif not st.session_state.game_started:
     vp_text = f" y {vps_seleccionados[c_sel]}" if vps_seleccionados[c_sel] != "Ninguno" else " (Solitario)"
     st.markdown(f"### 📊 Tus Estadísticas Finales: {c_sel}{vp_text}")
     
-    # Simular la suma para mostrarla en pantalla antes de empezar
     stats_finales = PARTIDOS[p_sel]["candidatos"][c_sel].copy()
     if vps_seleccionados[c_sel] != "Ninguno":
         vp_name = vps_seleccionados[c_sel]
@@ -1125,10 +1124,9 @@ elif not st.session_state.game_started:
                 st.session_state.p[jug] = {
                     "is_ia": es_ia, 
                     "wallets": {"base": PRESUPUESTO_INICIAL}, 
-                    "vp": vps_seleccionados[jug] # <-- Guardamos el VP en la memoria
+                    "vp": vps_seleccionados[jug]
                 }
                 
-            # Inicialización del mapa...
             st.session_state.slots = {p: {} for p in MAPA_DATA}
             st.session_state.owners = {p: None for p in MAPA_DATA}
             st.session_state.social_slots = {g: {} for g in SOCIAL_GROUPS}
@@ -1165,7 +1163,7 @@ elif st.session_state.modo_eleccion:
         if sorted_v[0][1] >= VOTOS_PARA_GANAR:
             if sorted_v[0][0] == mi_name: st.session_state.winner = mi_name
             else: st.session_state.winner = sorted_v[0][0]; st.session_state.loser = mi_name
-        elif len(sorted_v) == 1: # Solo queda uno
+        elif len(sorted_v) == 1:
              st.session_state.winner = sorted_v[0][0]
              if sorted_v[0][0] != mi_name: st.session_state.loser = mi_name
         elif eliminado == mi_name:
@@ -1210,7 +1208,7 @@ else:
     total_gasto_display = sum(gasto_breakdown.values())
     dinero_disp = get_total_money(mi_nombre)
 
-tab_rank, tab_spy, tab_terr = st.sidebar.tabs(["📊 Ranking", "🕵️ Espionaje", "🏳️ Territorio"])
+    tab_rank, tab_spy, tab_terr = st.sidebar.tabs(["📊 Ranking", "🕵️ Espionaje", "🏳️ Territorio"])
     
     with tab_rank:
         update_votos()
