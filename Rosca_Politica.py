@@ -625,6 +625,7 @@ PARTIDOS = {
         "Marcos Aramburu": {"emoji": "🍮", "FG": -20, "TR": -10, "ET": 10, "PN": 10, "PC": 10, "PE": 10, "EA": -30, "CP": 30, "SO": -10, "REL": -20, "JUV": 60, "EMP": -10, "PROG": 40, "PYME": 0},
         "Pedro Rosemblat": {"emoji": "🗳️", "FG": -10, "TR": -10, "ET": 20, "PN": 10, "PC": -10, "PE": 20, "EA": -40, "CP": 50, "SO": -20, "REL": -20, "JUV": 50, "EMP": -20, "PROG": 40, "PYME": -10},
         "El Dipy": {"emoji": "🎵", "FG": -15, "TR": 10, "ET": -10, "PN": 0, "PC": 50, "PE": -20, "EA": 10, "CP": 0, "SO": -15, "REL": -20, "JUV": 60, "EMP": 5, "PROG": -10, "PYME": 5},
+        "Walter Erviti": {"emoji": "🦱", "FG": -25, "TR": -10, "ET": -15, "PN": 25, "PC": 10, "PE": 15, "EA": -5, "CP": 0, "SO": 10, "REL": 45, "JUV": 45, "EMP": -15, "PROG": -5, "PYME": -10},
         "Mago sin Dientes": {"emoji": "🎩", "FG": -20, "TR": -10, "ET": -10, "PN": -10, "PC": 0, "PE": -20, "EA": 25, "CP": -30, "SO": 10, "REL": 10, "JUV": 20, "EMP": -10, "PROG": -30, "PYME": 5},
         "Jorge Porcel Jr": {"emoji": "🍝", "FG": -30, "TR": -50, "ET": -20, "PN": -30, "PC": -20, "PE": 10, "EA": 0, "CP": 0, "SO": -30, "REL": -10, "JUV": 10, "EMP": -50, "PROG": 0, "PYME": -30},
         "Jorge Lanata": {"emoji": "🚬", "FG": 5, "TR": 0, "ET": 10, "PN": 5, "PC": -20, "PE": -10, "EA": 50, "CP": -40, "SO": 10, "REL": -10, "JUV": 20, "EMP": 10, "PROG": -30, "PYME": 5},
@@ -1459,5 +1460,6 @@ else:
              if log["cambios"]:
                 for l in log["cambios"]: st.markdown(f"<div class='report-card report-change'>{l}</div>", unsafe_allow_html=True)
              else: st.write("El mapa se mantiene estable.")
+
 
 
