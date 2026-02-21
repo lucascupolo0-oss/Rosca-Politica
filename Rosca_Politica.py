@@ -578,6 +578,7 @@ PARTIDOS = {
         "Martín Rodríguez": {"emoji": "⚔️", "FG": 50, "TR": 15, "ET": 10, "PN": 50, "PC": 50, "PE": 10, "EA": 10, "CP": 10, "SO": 25, "REL": 15, "JUV": -10, "EMP": 15, "PROG": -10, "PYME": 20},
         "José Maria Paz": {"emoji": "🦾", "FG": -30, "TR": 20, "ET": 35, "PN": 10, "PC": 15, "PE": 15, "EA": 20, "CP": -15, "SO": 65, "REL": 10, "JUV": -10, "EMP": 10, "PROG": -20, "PYME": 10},
         "Gregorio Lamadrid": {"emoji": "🐎", "FG": -45, "TR": 10, "ET": 40, "PN": 5, "PC": 10, "PE": 10, "EA": 15, "CP": -10, "SO": 100, "REL": 10, "JUV": -10, "EMP": 5, "PROG": -15, "PYME": 10},
+        "Juan B. Alberdi": {"emoji": "✒️", "FG": 20, "TR": -10, "ET": 80, "PN": 60, "PC": 10, "PE": -50, "EA": 50, "CP": -40, "SO": 20, "REL": -10, "JUV": 25, "EMP": 60, "PROG": -20, "PYME": 40},
         "Hermes Binner": {"emoji": "🌹", "FG": -10, "TR": 25, "ET": 35, "PN": 20, "PC": 30, "PE": 30, "EA": -5, "CP": -10, "SO": -20, "REL": -10, "JUV": 10, "EMP": -10, "PROG": 35, "PYME": 15},
         "Ricardo Balbín": {"emoji": "👴", "FG": 45, "TR": 10, "ET": 20, "PN": 5, "PC": -10, "PE": 10, "EA": 50, "CP": -50, "SO": 10, "REL": -5, "JUV": -25, "EMP": -5, "PROG": -5, "PYME": 5},
         "Mohamed Alí Seineldin": {"emoji": "🔫", "FG": -45, "TR": 10, "ET": -15, "PN": 30, "PC": -15, "PE": -10, "EA": -5, "CP": -5, "SO": 60, "REL": 50, "JUV": -50, "EMP": -30, "PROG": -40, "PYME": 5},
@@ -638,19 +639,28 @@ PARTIDOS = {
         "Baby Etchecopar": {"emoji": "🎙️", "FG": 10, "TR": 0, "ET": -25, "PN": 10, "PC": 5, "PE": -20, "EA": 15, "CP": -50, "SO": 55, "REL": 45, "JUV": -50, "EMP": 25, "PROG": -85, "PYME": 15},
         "Agustin Laje": {"emoji": "📖", "FG": -15, "TR": 5, "ET": -20, "PN": -35, "PC": 5, "PE": -45, "EA": 40, "CP": -35, "SO": 20, "REL": 35, "JUV": 25, "EMP": 30, "PROG": -50, "PYME": 25},
         "Marcelo Longobardi": {"emoji": "📻", "FG": 10, "TR": 0, "ET": 5, "PN": 10, "PC": 15, "PE": -10, "EA": 35, "CP": -30, "SO": 15, "REL": 5, "JUV": 10, "EMP": 20, "PROG": -30, "PYME": 15},
+        "Antonio de la Rúa": {"emoji": "🎵", "FG": -25, "TR": 15, "ET": -30, "PN": -25, "PC": 10, "PE": 10, "EA": 5, "CP": -45, "SO": 15, "REL": -30, "JUV": -30, "EMP": 25, "PROG": -10, "PYME": -5},
         # VERSIONES ESPECIALES #
         "Alberto Pandemia": {"emoji": "😷", "FG": 25, "TR": 25, "ET": 25, "PN": 25, "PC": 25, "PE": 25, "EA": 0, "CP": 25, "SO": 25, "REL": 25, "JUV": 25, "EMP": 25, "PROG": 25, "PYME": 25},
+        "Macri No se Inunda Mas": {"emoji": "🌊", "FG": 50, "TR": 50, "ET": -25, "PN": 45, "PC": 45, "PE": 45, "EA": 60, "CP": 25, "SO": 35, "REL": 45, "JUV": 35, "EMP": 15, "PROG": 55, "PYME": 65},
         "Cobos Vice": {"emoji": "🚫", "FG": 20, "TR": 20, "ET": 15, "PN": 75, "PC": 20, "PE": -25, "EA": 50, "CP": 15, "SO": 0, "REL": 10, "JUV": 0, "EMP": 25, "PROG": -25, "PYME": 25},
-        "Lavagna Ministro": {"emoji": "🧦", "FG": 15, "TR": 50, "ET": 10, "PN": 50, "PC": 10, "PE": 25, "EA": 50, "CP": 50, "SO": 10, "REL": 25, "JUV": 0, "EMP": 50, "PROG": 0, "PYME": 50},
+        "Moreno Mundo Peronizado": {"emoji": "✌️", "FG": 50, "TR": 50, "ET": 50, "PN": 50, "PC": -100, "PE": 25, "EA": -100, "CP": 100, "SO": 25, "REL": 25, "JUV": 25, "EMP": 25, "PROG": -25, "PYME": 25},
+        "Lavagna Ministro": {"emoji": "📈", "FG": 15, "TR": 50, "ET": 10, "PN": 50, "PC": 10, "PE": 25, "EA": 50, "CP": 50, "SO": 10, "REL": 25, "JUV": 0, "EMP": 50, "PROG": 0, "PYME": 50},
         "Cavallo 1 a 1": {"emoji": "💵", "FG": -5, "TR": 10, "ET": -50, "PN": -50, "PC": 20, "PE": -150, "EA": 50, "CP": 50, "SO": 10, "REL": 10, "JUV": 10, "EMP": 150, "PROG": -25, "PYME": -50},
-        "Perón 3er Mandato": {"emoji": "👑", "FG": 20, "TR": 45, "ET": -25, "PN": 50, "PC": 10, "PE": 5, "EA": -50, "CP": 50, "SO": 150, "REL": 50, "JUV": -1574, "EMP": 15, "PROG": -1574, "PYME": 30},
         "Lousteau 125": {"emoji": "📉", "FG": -20, "TR": -50, "ET": 10, "PN": -150, "PC": 10, "PE": 35, "EA": -20, "CP": -30, "SO": 0, "REL": -20, "JUV": 10, "EMP": -50, "PROG": 25, "PYME": -50},
         "Cristina Presa": {"emoji": "⛓️", "FG": -30, "TR": -30, "ET": -30, "PN": -30, "PC": -30, "PE": -30, "EA": -30, "CP": -30, "SO": -30, "REL": -30, "JUV": -30, "EMP": -30, "PROG": -30, "PYME": -30},
         "Perón Exilio": {"emoji": "✈️", "FG": -72, "TR": 72, "ET": 72, "PN": 72, "PC": -72, "PE": 72, "EA": -72, "CP": 72, "SO": -72, "REL": -72, "JUV": 72, "EMP": -72, "PROG": 72, "PYME": 72},
+        "Menem Hay que contar los Judios": {"emoji": "🚁", "FG": -100, "TR": 25, "ET": -25, "PN": 50, "PC": -50, "PE": -50, "EA": -50, "CP": -50, "SO": 0, "REL": -200, "JUV": -50, "EMP": 50, "PROG": -50, "PYME": 50},
+        "La Casa esta en Orden": {"emoji": "🏡", "FG": 200, "TR": 10, "ET": 10, "PN": 10, "PC": 10, "PE": 10, "EA": 10, "CP": -10, "SO": 200, "REL": 10, "JUV": 10, "EMP": 10, "PROG": 10, "PYME": 10},
+        "Dylan": {"emoji": "🐕‍🦺", "FG": 100, "TR": 100, "ET": 100, "PN": 100, "PC": 100, "PE": 100, "EA": -100, "CP": 100, "SO": 100, "REL": 100, "JUV": 100, "EMP": 100, "PROG": 100, "PYME": 100},
+        "Estas Nerviosho?": {"emoji": "🐧", "FG": 25, "TR": 25, "ET": 25, "PN": 25, "PC": -25, "PE": 25, "EA": -75, "CP": 100, "SO": 25, "REL": 25, "JUV": 25, "EMP": 25, "PROG": 25, "PYME": 25},
+        "Al Amigo, Todo, Al Enemigo...": {"emoji": "➗", "FG": -50, "TR": 50, "ET": 50, "PN": 50, "PC": -50, "PE": 50, "EA": -100, "CP": 100, "SO": 100, "REL": 50, "JUV": 50, "EMP": -50, "PROG": 50, "PYME": 50},
         "Scioli Presidente": {"emoji": "🦾", "FG": 30, "TR": 10, "ET": 25, "PN": 25, "PC": 50, "PE": 25, "EA": -5, "CP": 50, "SO": 5, "REL": 25, "JUV": 25, "EMP": -10, "PROG": 25, "PYME": -10},
+        "Chupete Aburrido": {"emoji": "👶🏻", "FG": 50, "TR": 15, "ET": 15, "PN": 35, "PC": 80, "PE": 15, "EA": 15, "CP": 10, "SO": 25, "REL": 25, "JUV": 35, "EMP": 20, "PROG": 5, "PYME": -5},
         "Bullrich Montonera": {"emoji": "💣", "FG": -50, "TR": 5, "ET": 10, "PN": 5, "PC": -35, "PE": 15, "EA": -10, "CP": -5, "SO": 50, "REL": -10, "JUV": 15, "EMP": -45, "PROG": 10, "PYME": -20},
         "Luis Juez (Mix)": {"emoji": "🌭", "FG": 5, "TR": -5, "ET": 5, "PN": -5, "PC": 5, "PE": -5, "EA": 5, "CP": 5, "SO": -5, "REL": 5, "JUV": 0, "EMP": 5, "PROG": 5, "PYME": -5},
         "PDBCEM": {"emoji": "🎲", "FG": 45, "TR": 15, "ET": 35, "PN": 50, "PC": 40, "PE": 20, "EA": 5, "CP": 5, "SO": 30, "REL": -5, "JUV": 30, "EMP": -10, "PROG": 60, "PYME": 15},
+        "Inteligencia Artificial": {"emoji": "🤖", "FG": 0, "TR": -80, "ET": -80, "PN": 50, "PC": 50, "PE": 50, "EA": 0, "CP": 0, "SO": 50, "REL": -80, "JUV": 40, "EMP": 80, "PROG": -50, "PYME": 30},
         "MILICHO CHORRO": {"emoji": "👮", "FG": -50, "TR": -50, "ET": -50, "PN": -50, "PC": -50, "PE": -50, "EA": -50, "CP": -50, "SO": -50, "REL": -50, "JUV": -50, "EMP": -50, "PROG": -50, "PYME": -50}
 
     }},
@@ -1464,6 +1474,7 @@ else:
              if log["cambios"]:
                 for l in log["cambios"]: st.markdown(f"<div class='report-card report-change'>{l}</div>", unsafe_allow_html=True)
              else: st.write("El mapa se mantiene estable.")
+
 
 
 
