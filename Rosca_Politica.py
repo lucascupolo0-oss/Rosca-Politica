@@ -1065,28 +1065,32 @@ elif not st.session_state.game_started:
     opciones_rivales = [c for c in all_cands_names if c != c_sel]
     ias = c2.multiselect("Rivales IA (Máx 4)", opciones_rivales, max_selections=4)
     
-    # --- 2. SISTEMA DE VICEPRESIDENTES (OPCIONAL) ---
-    st.markdown("### 🤝 Configurar Fórmulas (Vicepresidentes)")
-    st.caption("El Vicepresidente aporta el **50% de sus estadísticas** a la fórmula.")
+# --- 2. SISTEMA DE VICEPRESIDENTES Y PARTIDOS ---
+    st.markdown("### 🤝 Configurar Fórmulas y Partidos")
+    st.caption("El VP aporta el **50% de sus stats**. El nombre del partido es opcional.")
     vps_seleccionados = {}
+    nombres_partidos = {}
     
     jugadores_totales = [c_sel] + ias
     
     for jug in jugadores_totales:
-        col_chk, col_sel = st.columns([1, 3])
-        con_vp = col_chk.checkbox(f"Asignar VP a {jug}", key=f"chk_vp_{jug}")
+        st.markdown(f"**Candidato: {jug}**")
+        col_chk, col_sel, col_nombre = st.columns([1, 2, 2])
+        con_vp = col_chk.checkbox(f"Con VP", key=f"chk_vp_{jug}")
         
         if con_vp:
-            # Evitar que se elija a sí mismo o a un candidato que ya está jugando
             cands_prohibidos = jugadores_totales + list(vps_seleccionados.values())
             opciones_vp = [c for c in all_cands_names if c not in cands_prohibidos]
-            vps_seleccionados[jug] = col_sel.selectbox(f"Elegir VP para {jug}", opciones_vp, key=f"sel_vp_{jug}")
+            vps_seleccionados[jug] = col_sel.selectbox("Elegir VP", opciones_vp, key=f"sel_vp_{jug}", label_visibility="collapsed")
         else:
             vps_seleccionados[jug] = "Ninguno"
-            col_sel.write("*(Va en solitario)*")
+            col_sel.write("*(Solitario)*")
+            
+        # Text input para el nombre del partido
+        nombres_partidos[jug] = col_nombre.text_input("Nombre del Partido", key=f"txt_partido_{jug}", placeholder="Ej: Frente Patriota...")
+        st.divider()
 
     # --- 3. MOSTRAR TUS STATS FINALES ---
-    st.markdown("---")
     vp_text = f" y {vps_seleccionados[c_sel]}" if vps_seleccionados[c_sel] != "Ninguno" else " (Solitario)"
     st.markdown(f"### 📊 Tus Estadísticas Finales: {c_sel}{vp_text}")
     
@@ -1115,7 +1119,7 @@ elif not st.session_state.game_started:
                 st.metric(SOCIAL_GROUPS[k]["nombre"], f"{stats_finales[k]:+}%")
 
     # --- 4. BOTÓN DE INICIO ---
-    if st.button("JUGAR"):
+    if st.button("JUGAR", type="primary", use_container_width=True):
         if not ias: st.error("Faltan rivales")
         else:
             st.session_state.p = {}
@@ -1124,7 +1128,8 @@ elif not st.session_state.game_started:
                 st.session_state.p[jug] = {
                     "is_ia": es_ia, 
                     "wallets": {"base": PRESUPUESTO_INICIAL}, 
-                    "vp": vps_seleccionados[jug]
+                    "vp": vps_seleccionados[jug],
+                    "custom_party": nombres_partidos[jug].strip() # <-- ACA GUARDAMOS EL PARTIDO
                 }
                 
             st.session_state.slots = {p: {} for p in MAPA_DATA}
@@ -1445,3 +1450,4 @@ else:
              if log["cambios"]:
                 for l in log["cambios"]: st.markdown(f"<div class='report-card report-change'>{l}</div>", unsafe_allow_html=True)
              else: st.write("El mapa se mantiene estable.")
+
